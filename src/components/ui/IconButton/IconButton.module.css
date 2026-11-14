@@ -1,0 +1,43 @@
+/* _icon-button — private primitive */
+.base {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: var(--component-icon-button-radius);
+  transition: background-color 120ms ease;
+}
+.m {
+  width: var(--component-icon-button-size-m);
+  height: var(--component-icon-button-size-m);
+}
+.s {
+  width: var(--component-icon-button-size-s);
+  height: var(--component-icon-button-size-s);
+}
+
+/* IconButton — public */
+.primary {
+  background: var(--component-icon-button-primary-bg-default);
+  color: var(--component-icon-button-primary-icon);
+}
+.primary:hover {
+  background: var(--component-icon-button-primary-bg-hover);
+}
+.secondary {
+  background: var(--component-icon-button-secondary-bg-default);
+  color: var(--component-icon-button-secondary-icon);
+  box-shadow: inset 0 0 0 1px var(--component-icon-button-secondary-border);
+}
+.secondary:hover {
+  background: var(--component-icon-button-secondary-bg-hover);
+}
+.secondary:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--component-icon-button-secondary-border), var(--focus-ring);
+}
+.ghost {
+  background: var(--component-icon-button-ghost-bg-default);
+  color: var(--component-icon-button-ghost-icon);
+}
+.ghost:hover {
+  background: var(--component-icon-button-ghost-bg-hover);
+}

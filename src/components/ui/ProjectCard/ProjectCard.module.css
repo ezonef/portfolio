@@ -1,0 +1,78 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--component-project-card-gap);
+  min-width: 0;
+}
+
+.cover {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 360px;
+  padding: var(--component-project-card-inset);
+  overflow: hidden;
+}
+.compact {
+  height: 220px;
+}
+/* tags sit above the image */
+.cover > :not(.image) {
+  position: relative;
+  z-index: 1;
+}
+.image {
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+/* border drawn above the image */
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px var(--component-project-card-border-default);
+  pointer-events: none;
+}
+.card:hover .cover::after {
+  box-shadow: inset 0 0 0 2px var(--component-project-card-border-hover);
+}
+
+.caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.title {
+  font: 500 26px/1.2 var(--font-sans);
+  letter-spacing: -0.6px;
+  color: var(--component-project-card-title-default);
+}
+.card:hover .title {
+  color: var(--component-project-card-title-hover);
+}
+.description {
+  font: 400 15px/1.5 var(--font-sans);
+  color: var(--component-project-card-description);
+}
+.meta {
+  flex-shrink: 0;
+  font: 400 11px/1.6 var(--font-mono);
+  color: var(--component-project-card-meta);
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .cover {
+    height: 240px;
+  }
+  .title {
+    font-size: 21px;
+  }
+}

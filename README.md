@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
 
-## Getting Started
+Personal portfolio — Next.js (App Router) + React + TypeScript, styled with CSS Modules and design tokens exported from the Figma design system.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install      # once, installs dependencies
+npm run dev      # dev server on http://localhost:3000 (hot reload)
+npm run lint     # code checks
+npm run build    # production build — run before pushing
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/                    routes (each folder = a URL)
+    layout.tsx            <html>, fonts (Inter Tight, JetBrains Mono), global CSS
+    page.tsx              Home  →  /
+    process/page.tsx      /process            (placeholder)
+    projects/[slug]/      /projects/<slug>    (placeholder per project)
+  components/
+    ui/                   design-system components — 1:1 with Figma
+      Button, IconButton, Chip, Tag, NavLink, MenuItem, SearchField, ProjectCard, Icon
+    site/                 page-level pieces built from ui/
+      SiteHeader, ContactMenu, ProjectsModal, MobileMenu, SelectedWork, SiteFooter
+  data/                   content: site.ts (name, email, links), projects.ts, ascii.ts
+  styles/
+    tokens.css            design tokens (primitive → semantic → component)
+    typography.css        text styles (.heading-h2, .mono-label …)
+public/images/            project covers
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design tokens (how styling works)
 
-## Learn More
+Three tiers, same names as the Figma variables (Code syntax → Web):
 
-To learn more about Next.js, take a look at the following resources:
+1. **primitive** — raw values: `--stone-950`, `--blue-600`, `--space-16`
+2. **semantic** — roles: `--color-bg-page`, `--color-text-secondary`
+3. **component** — per component: `--component-button-primary-bg-default`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Components use **only** tier 3. To restyle a button, change its component token (or the role it points to), not the component CSS.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Example — the Primary button in `Button.module.css`:
 
-## Deploy on Vercel
+```css
+.primary { background: var(--component-button-primary-bg-default); }
+.primary:hover { background: var(--component-button-primary-bg-hover); }
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Figma → code mapping
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Figma | Code |
+|---|---|
+| `Button` · Type / Size | `<Button variant="ghost" size="s">` |
+| `_button` (private primitive) | `.base`, `.m`, `.s` classes in `Button.module.css` |
+| `_button` → Show icon / Icon | `icon="arrow-right"` prop |
+| `Chip` · State=Selected | `<Chip selected>` |
+| `MenuItem` · State=Selected | `<MenuItem selected>` |
+| Text style `Heading/H2` | `className="heading-h2"` |
+
+## To do
+
+- Replace `[NAME]`, `[EMAIL]`, `[handle]` in `src/data/site.ts`
+- Add `public/cv.pdf`
+- Build the Case, All projects and My design process pages from the Figma designs

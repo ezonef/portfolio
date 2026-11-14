@@ -1,0 +1,60 @@
+/* _button — private primitive: geometry only, no colours */
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--component-button-gap);
+  border-radius: var(--component-button-radius);
+  font: 400 13px/1.3 var(--font-mono);
+  white-space: nowrap;
+  transition: background-color 120ms ease;
+}
+
+.m {
+  height: var(--component-button-height-m);
+  padding-inline: var(--component-button-padding-x-m);
+}
+
+.s {
+  height: var(--component-button-height-s);
+  padding-inline: var(--component-button-padding-x-s);
+}
+
+/* Button — public: appearance per Type */
+.primary {
+  background: var(--component-button-primary-bg-default);
+  color: var(--component-button-primary-text);
+}
+.primary:hover {
+  background: var(--component-button-primary-bg-hover);
+}
+
+.secondary {
+  background: var(--component-button-secondary-bg-default);
+  color: var(--component-button-secondary-text);
+  box-shadow: inset 0 0 0 1px var(--component-button-secondary-border);
+}
+.secondary:hover {
+  background: var(--component-button-secondary-bg-hover);
+}
+
+.ghost {
+  background: var(--component-button-ghost-bg-default);
+  color: var(--component-button-ghost-text);
+}
+.ghost:hover {
+  background: var(--component-button-ghost-bg-hover);
+}
+
+.inverse {
+  background: var(--component-button-inverse-bg-default);
+  color: var(--component-button-inverse-text);
+}
+.inverse:hover {
+  background: var(--component-button-inverse-bg-hover);
+}
+
+/* keep the inset border visible together with the focus ring */
+.secondary:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--component-button-secondary-border), var(--focus-ring);
+}

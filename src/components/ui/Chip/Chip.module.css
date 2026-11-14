@@ -1,0 +1,39 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--component-chip-gap);
+  height: var(--component-chip-height);
+  padding-inline: var(--component-chip-padding-x);
+  border-radius: var(--component-chip-radius);
+  background: var(--component-chip-bg-default);
+  color: var(--component-chip-text-default);
+  box-shadow: inset 0 0 0 1px var(--component-chip-border);
+  font: 400 12px/1.3 var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 120ms ease;
+}
+.chip:hover {
+  background: var(--component-chip-bg-hover);
+}
+.chip:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--component-chip-border), var(--focus-ring);
+}
+.icon {
+  color: var(--component-chip-icon-default);
+}
+.count {
+  color: var(--component-chip-count-default);
+}
+
+.selected,
+.selected:hover {
+  background: var(--component-chip-bg-selected);
+  color: var(--component-chip-text-selected);
+}
+.selected .count {
+  color: var(--component-chip-count-selected);
+}
+.selected .icon {
+  color: var(--component-chip-icon-selected);
+}

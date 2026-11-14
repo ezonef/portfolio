@@ -1,0 +1,265 @@
+/*
+ * Design tokens — mirror of the Figma variables (collections: primitive, semantic).
+ * Three tiers:
+ *   1. primitive  — raw values. Never use directly in components.
+ *   2. semantic   — roles (--color-bg-page, --color-text-secondary…).
+ *   3. component  — one set per component (--component-button-primary-bg-default…).
+ * Components read ONLY tier 3. Names match the "Code syntax (Web)" of each Figma variable.
+ */
+:root {
+  /* ---------- primitive ---------- */
+  --white: #ffffff;
+  --stone-50: #f7f6f2;
+  --stone-100: #eeede8;
+  --stone-200: #e2e0d8;
+  --stone-250: #d6d4cc;
+  --stone-300: #cfcdc5;
+  --stone-500: #9a9a94;
+  --stone-550: #8c8c86;
+  --stone-700: #5a5a55;
+  --stone-750: #4a4a46;
+  --stone-800: #333330;
+  --stone-900: #2a2a28;
+  --stone-950: #111111;
+  --stone-1000: #0e0e0e;
+  --blue-50: #e9ebfc;
+  --blue-600: #2f3fe0;
+  --alpha-ink-70: rgb(14 14 14 / 70%);
+  --alpha-transparent: transparent;
+
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-44: 44px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+  --space-72: 72px;
+  --space-80: 80px;
+  --space-96: 96px;
+  --space-112: 112px;
+  --space-128: 128px;
+  --radius-none: 0;
+
+  /* ---------- semantic: color ---------- */
+  --color-bg-page: var(--stone-100);
+  --color-bg-raised: var(--stone-50);
+  --color-bg-surface: var(--white);
+  --color-bg-muted: var(--stone-200);
+  --color-bg-hover: var(--stone-200);
+  --color-bg-selected: var(--stone-950);
+  --color-bg-inverse: var(--stone-950);
+  --color-bg-inverse-deep: var(--stone-1000);
+  --color-bg-scrim: var(--alpha-ink-70);
+  --color-bg-accent: var(--blue-600);
+  --color-bg-accent-subtle: var(--blue-50);
+  --color-bg-transparent: var(--alpha-transparent);
+  --color-bg-action-primary-default: var(--stone-950);
+  --color-bg-action-primary-hover: var(--blue-600);
+  --color-bg-action-secondary-default: var(--alpha-transparent);
+  --color-bg-action-secondary-hover: var(--stone-200);
+  --color-bg-action-ghost-default: var(--alpha-transparent);
+  --color-bg-action-ghost-hover: var(--stone-200);
+  --color-bg-action-inverse-default: var(--stone-100);
+  --color-bg-action-inverse-hover: var(--white);
+
+  --color-text-primary: var(--stone-950);
+  --color-text-secondary: var(--stone-750);
+  --color-text-tertiary: var(--stone-550);
+  --color-text-on-inverse: var(--stone-100);
+  --color-text-on-inverse-muted: var(--stone-500);
+  --color-text-accent: var(--blue-600);
+  --color-text-on-accent: var(--white);
+
+  --color-icon-primary: var(--stone-950);
+  --color-icon-on-inverse: var(--stone-100);
+  --color-icon-accent: var(--blue-600);
+
+  --color-border-strong: var(--stone-950);
+  --color-border-subtle: var(--stone-300);
+  --color-border-inverse-subtle: var(--stone-900);
+  --color-border-accent: var(--blue-600);
+  --color-border-on-inverse: var(--stone-100);
+
+  --color-status-active-bg: var(--blue-600);
+  --color-status-active-text: var(--white);
+  --color-status-pending-bg: var(--alpha-transparent);
+  --color-status-pending-text: var(--stone-950);
+  --color-status-pending-border: var(--stone-950);
+  --color-status-blocked-bg: var(--stone-950);
+  --color-status-blocked-text: var(--white);
+
+  /* ---------- semantic: size, spacing, radius ---------- */
+  --size-control-m: var(--space-48);
+  --size-control-s: var(--space-40);
+  --size-control-xs: var(--space-32);
+  --size-chip: var(--space-44);
+  --size-field: var(--space-56);
+  --size-icon-tile: var(--space-32);
+  --spacing-control-m-x: var(--space-22);
+  --spacing-control-s-x: var(--space-16);
+  --spacing-control-gap: var(--space-8);
+  --spacing-chip-x: var(--space-16);
+  --spacing-tag-x: var(--space-10);
+  --spacing-tag-y: var(--space-6);
+  --spacing-pill-x: var(--space-6);
+  --spacing-pill-y: var(--space-2);
+  --spacing-menu-item-x: var(--space-10);
+  --spacing-menu-item-y: var(--space-8);
+  --spacing-menu-item-gap: var(--space-14);
+  --spacing-field-x: var(--space-20);
+  --spacing-field-gap: var(--space-12);
+  --spacing-card-inset: var(--space-16);
+  --spacing-card-gap: var(--space-16);
+  --radius-control: var(--radius-none);
+  --radius-card: var(--radius-none);
+  --border-width-default: var(--space-1);
+
+  /* ---------- component: button ---------- */
+  --component-button-primary-bg-default: var(--color-bg-action-primary-default);
+  --component-button-primary-bg-hover: var(--color-bg-action-primary-hover);
+  --component-button-primary-text: var(--color-text-on-inverse);
+  --component-button-primary-icon: var(--color-icon-on-inverse);
+  --component-button-secondary-bg-default: var(--color-bg-action-secondary-default);
+  --component-button-secondary-bg-hover: var(--color-bg-action-secondary-hover);
+  --component-button-secondary-text: var(--color-text-primary);
+  --component-button-secondary-icon: var(--color-icon-primary);
+  --component-button-secondary-border: var(--color-border-strong);
+  --component-button-ghost-bg-default: var(--color-bg-action-ghost-default);
+  --component-button-ghost-bg-hover: var(--color-bg-action-ghost-hover);
+  --component-button-ghost-text: var(--color-text-primary);
+  --component-button-ghost-icon: var(--color-icon-primary);
+  --component-button-inverse-bg-default: var(--color-bg-action-inverse-default);
+  --component-button-inverse-bg-hover: var(--color-bg-action-inverse-hover);
+  --component-button-inverse-text: var(--color-text-primary);
+  --component-button-inverse-icon: var(--color-icon-primary);
+  --component-button-height-m: var(--size-control-m);
+  --component-button-height-s: var(--size-control-s);
+  --component-button-padding-x-m: var(--spacing-control-m-x);
+  --component-button-padding-x-s: var(--spacing-control-s-x);
+  --component-button-gap: var(--spacing-control-gap);
+  --component-button-radius: var(--radius-control);
+
+  /* ---------- component: icon-button ---------- */
+  --component-icon-button-primary-bg-default: var(--color-bg-action-primary-default);
+  --component-icon-button-primary-bg-hover: var(--color-bg-action-primary-hover);
+  --component-icon-button-primary-icon: var(--color-icon-on-inverse);
+  --component-icon-button-secondary-bg-default: var(--color-bg-action-secondary-default);
+  --component-icon-button-secondary-bg-hover: var(--color-bg-action-secondary-hover);
+  --component-icon-button-secondary-icon: var(--color-icon-primary);
+  --component-icon-button-secondary-border: var(--color-border-strong);
+  --component-icon-button-ghost-bg-default: var(--color-bg-action-ghost-default);
+  --component-icon-button-ghost-bg-hover: var(--color-bg-action-ghost-hover);
+  --component-icon-button-ghost-icon: var(--color-icon-primary);
+  --component-icon-button-size-m: var(--size-control-m);
+  --component-icon-button-size-s: var(--size-control-s);
+  --component-icon-button-radius: var(--radius-control);
+
+  /* ---------- component: chip ---------- */
+  --component-chip-bg-default: var(--color-bg-transparent);
+  --component-chip-bg-hover: var(--color-bg-hover);
+  --component-chip-bg-selected: var(--color-bg-selected);
+  --component-chip-border: var(--color-border-strong);
+  --component-chip-text-default: var(--color-text-primary);
+  --component-chip-text-selected: var(--color-text-on-inverse);
+  --component-chip-count-default: var(--color-text-tertiary);
+  --component-chip-count-selected: var(--color-text-on-inverse-muted);
+  --component-chip-icon-default: var(--color-icon-primary);
+  --component-chip-icon-selected: var(--color-icon-on-inverse);
+  --component-chip-height: var(--size-chip);
+  --component-chip-padding-x: var(--spacing-chip-x);
+  --component-chip-gap: var(--spacing-control-gap);
+  --component-chip-radius: var(--radius-control);
+
+  /* ---------- component: tag ---------- */
+  --component-tag-outline-bg: var(--color-bg-page);
+  --component-tag-outline-border: var(--color-border-strong);
+  --component-tag-muted-bg: var(--color-bg-muted);
+  --component-tag-inverse-bg: var(--color-bg-inverse);
+  --component-tag-text: var(--color-text-primary);
+  --component-tag-text-inverse: var(--color-text-on-inverse);
+  --component-tag-padding-x: var(--spacing-tag-x);
+  --component-tag-padding-y: var(--spacing-tag-y);
+
+  /* ---------- component: nav-link ---------- */
+  --component-nav-link-text-default: var(--color-text-primary);
+  --component-nav-link-text-hover: var(--color-text-accent);
+  --component-nav-link-text-active: var(--color-text-accent);
+  --component-nav-link-icon-default: var(--color-icon-primary);
+  --component-nav-link-icon-hover: var(--color-icon-accent);
+  --component-nav-link-icon-active: var(--color-icon-accent);
+
+  /* ---------- component: menu-item ---------- */
+  --component-menu-item-bg-default: var(--color-bg-transparent);
+  --component-menu-item-bg-hover: var(--color-bg-hover);
+  --component-menu-item-bg-selected: var(--color-bg-page);
+  --component-menu-item-border-selected: var(--color-border-strong);
+  --component-menu-item-tile-bg-default: var(--color-bg-surface);
+  --component-menu-item-tile-bg-selected: var(--color-bg-inverse);
+  --component-menu-item-tile-border: var(--color-border-subtle);
+  --component-menu-item-icon-default: var(--color-icon-primary);
+  --component-menu-item-icon-selected: var(--color-icon-on-inverse);
+  --component-menu-item-title: var(--color-text-primary);
+  --component-menu-item-caption: var(--color-text-secondary);
+  --component-menu-item-meta-default: var(--color-text-tertiary);
+  --component-menu-item-meta-selected: var(--color-text-accent);
+  --component-menu-item-padding-x: var(--spacing-menu-item-x);
+  --component-menu-item-padding-y: var(--spacing-menu-item-y);
+  --component-menu-item-gap: var(--spacing-menu-item-gap);
+  --component-menu-item-tile-size: var(--size-icon-tile);
+
+  /* ---------- component: search-field ---------- */
+  --component-search-field-bg: var(--color-bg-surface);
+  --component-search-field-border-default: var(--color-border-strong);
+  --component-search-field-border-focus: var(--color-border-accent);
+  --component-search-field-icon: var(--color-icon-primary);
+  --component-search-field-placeholder: var(--color-text-tertiary);
+  --component-search-field-value: var(--color-text-primary);
+  --component-search-field-caret: var(--color-bg-accent);
+  --component-search-field-kbd-border: var(--color-border-strong);
+  --component-search-field-kbd-text: var(--color-text-primary);
+  --component-search-field-height: var(--size-field);
+  --component-search-field-padding-x: var(--spacing-field-x);
+  --component-search-field-gap: var(--spacing-field-gap);
+
+  /* ---------- component: project-card ---------- */
+  --component-project-card-border-default: var(--color-border-strong);
+  --component-project-card-border-hover: var(--color-border-accent);
+  --component-project-card-title-default: var(--color-text-primary);
+  --component-project-card-title-hover: var(--color-text-accent);
+  --component-project-card-description: var(--color-text-secondary);
+  --component-project-card-meta: var(--color-text-secondary);
+  --component-project-card-gap: var(--spacing-card-gap);
+  --component-project-card-inset: var(--spacing-card-inset);
+
+  /* ---------- component: site-header / site-footer ---------- */
+  --component-site-header-bg: var(--color-bg-page);
+  --component-site-header-border: var(--color-border-subtle);
+  --component-site-header-logo: var(--color-text-primary);
+  --component-site-header-accent: var(--color-text-accent);
+  --component-site-header-status-dot: var(--color-bg-accent);
+  --component-site-header-status-text: var(--color-text-secondary);
+  --component-site-footer-bg: var(--color-bg-inverse-deep);
+  --component-site-footer-heading: var(--color-text-on-inverse);
+  --component-site-footer-heading-muted: var(--color-text-on-inverse-muted);
+  --component-site-footer-link: var(--color-text-on-inverse);
+  --component-site-footer-label: var(--color-text-on-inverse-muted);
+  --component-site-footer-ascii: var(--color-text-tertiary);
+  --component-site-footer-border: var(--color-border-inverse-subtle);
+
+  /* ---------- effects ---------- */
+  --shadow-popover: 8px 8px 0 var(--color-border-strong);
+  --focus-ring: 0 0 0 2px var(--color-bg-page), 0 0 0 4px var(--color-border-accent);
+}

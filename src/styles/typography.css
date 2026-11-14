@@ -1,0 +1,31 @@
+/*
+ * Text styles — mirror of the Figma text styles.
+ * Use the class that matches the Figma style name: "Heading/H2" → .heading-h2.
+ * Fonts come from next/font in app/layout.tsx (--font-sans, --font-mono).
+ */
+.display-xl { font: 500 96px/1 var(--font-sans); letter-spacing: -3.5px; }
+.display-l  { font: 500 80px/1 var(--font-sans); letter-spacing: -3px; }
+.heading-h1 { font: 500 56px/1 var(--font-sans); letter-spacing: -1.7px; }
+.heading-h2 { font: 500 48px/1 var(--font-sans); letter-spacing: -1.5px; }
+.heading-h3 { font: 500 26px/1.2 var(--font-sans); letter-spacing: -0.6px; }
+.heading-h4 { font: 500 20px/1.2 var(--font-sans); letter-spacing: -0.4px; }
+
+.body-l        { font: 400 18px/1.55 var(--font-sans); }
+.body-m        { font: 400 16px/1.6 var(--font-sans); }
+.body-m-strong { font: 500 17px/1.3 var(--font-sans); }
+.body-s        { font: 400 15px/1.5 var(--font-sans); }
+
+.mono-m        { font: 400 13px/1.3 var(--font-mono); }
+.mono-m-strong { font: 500 13px/1.3 var(--font-mono); }
+.mono-s        { font: 400 12px/1.3 var(--font-mono); }
+.mono-xs       { font: 400 11px/1.3 var(--font-mono); }
+.mono-label    { font: 400 11px/1.3 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-ascii    { font: 400 10px/10px var(--font-mono); white-space: pre; }
+
+/* Large type steps down on narrow screens */
+@media (max-width: 760px) {
+  .display-xl { font-size: 56px; letter-spacing: -2px; }
+  .display-l  { font-size: 44px; letter-spacing: -1.5px; }
+  .heading-h1 { font-size: 40px; letter-spacing: -1.2px; }
+  .heading-h2 { font-size: 32px; letter-spacing: -1px; }
+}
