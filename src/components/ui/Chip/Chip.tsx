@@ -9,16 +9,20 @@ type ChipProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   count?: number;
   /** Figma: _chip → Icon (Show icon = icon is set) */
   icon?: IconName;
+  /** outline (default) or soft — filled, borderless (Projects modal) */
+  appearance?: "outline" | "soft";
   children: ReactNode;
 };
 
 /** Filter chip. In a group exactly one is selected; `aria-pressed` tells screen readers. */
-export function Chip({ selected = false, count, icon, children, className, ...rest }: ChipProps) {
+export function Chip({ selected = false, count, icon, appearance = "outline", children, className, ...rest }: ChipProps) {
   return (
     <button
       type="button"
       aria-pressed={selected}
-      className={[styles.chip, selected && styles.selected, className].filter(Boolean).join(" ")}
+      className={[styles.chip, appearance === "soft" && styles.soft, selected && styles.selected, className]
+        .filter(Boolean)
+        .join(" ")}
       {...rest}
     >
       {icon && <Icon name={icon} className={styles.icon} />}

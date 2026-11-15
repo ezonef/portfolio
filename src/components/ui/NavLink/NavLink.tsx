@@ -17,7 +17,7 @@ export function NavLink({ href, active, caret, children }: NavLinkProps) {
   return (
     <Link href={href} aria-current={active ? "page" : undefined} className={cls(active)}>
       {children}
-      {caret && <Icon name="chevron-down" />}
+      {caret && <Icon name="chevron-down" className={styles.caret} />}
     </Link>
   );
 }

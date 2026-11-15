@@ -3,6 +3,7 @@ import type { IconName } from "@/components/ui/Icon/Icon";
 // Replace the [PLACEHOLDERS] with real values — everything on the site reads from here.
 export const site = {
   name: "[NAME]",
+  fullName: "Mykyta Sharapaniuk",
   role: "Product designer",
   location: "Warsaw, PL",
   timezone: "UTC+1",
@@ -22,9 +23,9 @@ export type ContactLink = {
 
 export const contactWrite: ContactLink[] = [
   { title: "Email", caption: site.email, meta: "copy", icon: "mail", href: `mailto:${site.email}` },
-  { title: "Telegram", caption: "@[handle]", meta: "fast", icon: "send", href: "https://t.me/[handle]", external: true },
+  { title: "Telegram", caption: "@[handle]", meta: "copy", icon: "send", href: "https://t.me/[handle]", external: true },
   { title: "LinkedIn", caption: "Message or connect", meta: "↗", icon: "link", href: "https://linkedin.com/in/[handle]", external: true },
-  { title: "Book a call", caption: "30 min · Google Meet", meta: "30′", icon: "calendar", href: "https://cal.com/[handle]", external: true },
+  { title: "Book a call", caption: "30 min · Google Meet", meta: "↗", icon: "calendar", href: "https://cal.com/[handle]", external: true },
 ];
 
 export const contactLook: ContactLink[] = [

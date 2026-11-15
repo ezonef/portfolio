@@ -5,10 +5,13 @@
 .panel {
   position: absolute;
   top: calc(100% + 18px);
-  right: -120px;
+  /* Figma: panel x = 420 while "Contact" starts at 789 → 369px to the left of the trigger */
+  left: -369px;
   width: 760px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-popover);
   background: var(--color-bg-raised);
-  box-shadow: inset 0 0 0 1px var(--color-border-strong), var(--shadow-popover);
+  box-shadow: var(--shadow-popover);
   z-index: 30;
 }
 /* invisible bridge so the menu doesn't close while the pointer crosses the gap */
@@ -64,7 +67,9 @@
   gap: 16px;
   padding: 14px 28px;
   background: var(--color-bg-page);
-  border-top: 1px solid var(--color-border-strong);
+  border-top: 1px solid var(--color-border-subtle);
+  /* panel corners are rounded; the footer fill must follow them */
+  border-radius: 0 0 calc(var(--radius-popover) - 1px) calc(var(--radius-popover) - 1px);
   color: var(--color-text-secondary);
 }
 

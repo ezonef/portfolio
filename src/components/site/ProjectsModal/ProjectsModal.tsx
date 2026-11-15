@@ -5,13 +5,18 @@ import { Chip } from "@/components/ui/Chip/Chip";
 import type { IconName } from "@/components/ui/Icon/Icon";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
-import { categoryLabel, projects, type ProjectCategory } from "@/data/projects";
+import { categoryLabel, projects, type Project, type ProjectCategory, type ProjectTopic } from "@/data/projects";
 import styles from "./ProjectsModal.module.css";
 
-const quick: { id: ProjectCategory; label: string; icon: IconName }[] = [
-  { id: "admin", label: "Admin panel", icon: "list" },
-  { id: "ds", label: "Design system", icon: "layout-grid" },
-  { id: "mobile", label: "iOS app", icon: "smartphone" },
+type QuickId = ProjectCategory | ProjectTopic;
+
+// Figma: Projects modal → Quick chips (3 categories + 2 UI topics)
+const quick: { id: QuickId; label: string; icon: IconName; match: (p: Project) => boolean }[] = [
+  { id: "admin", label: "Admin panel", icon: "list", match: (p) => p.category === "admin" },
+  { id: "ds", label: "Design system", icon: "layout-grid", match: (p) => p.category === "ds" },
+  { id: "mobile", label: "iOS app", icon: "smartphone", match: (p) => p.category === "mobile" },
+  { id: "onboarding", label: "Onboarding", icon: "link", match: (p) => p.topics.includes("onboarding") },
+  { id: "drawer", label: "Drawer", icon: "monitor", match: (p) => p.topics.includes("drawer") },
 ];
 
 type Props = { open: boolean; onClose: () => void };
@@ -23,7 +28,7 @@ type Props = { open: boolean; onClose: () => void };
  */
 export function ProjectsModal({ open, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [category, setCategory] = useState<ProjectCategory | null>(null);
+  const [category, setCategory] = useState<QuickId | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -38,11 +43,13 @@ export function ProjectsModal({ open, onClose }: Props) {
   }, [open]);
 
   const list = useMemo(() => {
-    const filtered = category ? projects.filter((p) => p.category === category) : projects;
-    return showAll || category ? filtered : filtered.slice(0, 3);
+    const active = quick.find((q) => q.id === category);
+    const filtered = active ? projects.filter(active.match) : projects;
+    return showAll || active ? filtered : filtered.slice(0, 3);
   }, [category, showAll]);
 
-  const label = category ? `${categoryLabel[category]} · ${list.length}` : showAll ? "All projects" : "Recent";
+  const activeLabel = quick.find((q) => q.id === category)?.label;
+  const label = activeLabel ? `${activeLabel} · ${list.length}` : showAll ? "All projects" : "Recent";
 
   return (
     <dialog
@@ -60,6 +67,7 @@ export function ProjectsModal({ open, onClose }: Props) {
             {quick.map((c) => (
               <Chip
                 key={c.id}
+                appearance="soft"
                 icon={c.icon}
                 selected={category === c.id}
                 onClick={() => setCategory((cur) => (cur === c.id ? null : c.id))}
@@ -68,7 +76,7 @@ export function ProjectsModal({ open, onClose }: Props) {
               </Chip>
             ))}
           </div>
-          <IconButton icon="x" label="Close" onClick={onClose} autoFocus />
+          <IconButton icon="x" label="Close" variant="ghost" onClick={onClose} />
         </div>
 
         <div className={styles.body}>

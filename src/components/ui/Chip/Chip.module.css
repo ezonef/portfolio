@@ -26,6 +26,19 @@
   color: var(--component-chip-count-default);
 }
 
+/* soft: filled, borderless (Projects modal) */
+.soft {
+  background: var(--component-chip-soft-bg-default);
+  box-shadow: none;
+  border-radius: var(--component-chip-soft-radius);
+}
+.soft:hover {
+  background: var(--component-chip-soft-bg-hover);
+}
+.soft:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
 .selected,
 .selected:hover {
   background: var(--component-chip-bg-selected);

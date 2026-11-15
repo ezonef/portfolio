@@ -6,7 +6,15 @@ import { site } from "@/data/site";
 import styles from "./SiteFooter.module.css";
 
 const columns = [
-  { label: "Index", links: [{ t: "CV.pdf", h: "/cv.pdf" }, { t: "Projects", h: "/#work" }, { t: "My design process", h: "/process" }] },
+  {
+    label: "Index",
+    links: [
+      { t: "CV.pdf", h: "/cv.pdf" },
+      { t: "Projects", h: "/#work" },
+      { t: "About", h: "/#about" },
+      { t: "My design process", h: "/process" },
+    ],
+  },
   {
     label: "Elsewhere",
     links: [
@@ -61,7 +69,7 @@ export function SiteFooter() {
         </div>
 
         <div className={styles.bottom}>
-          <span>© 2026 {site.name}</span>
+          <span>© 2026 {site.fullName}</span>
           <span>Designed by me · front end built with Claude</span>
         </div>
       </div>

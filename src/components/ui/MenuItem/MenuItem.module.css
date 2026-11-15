@@ -3,6 +3,7 @@
   align-items: center;
   gap: var(--component-menu-item-gap);
   padding: var(--component-menu-item-padding-y) var(--component-menu-item-padding-x);
+  border-radius: var(--radius-control);
   background: var(--component-menu-item-bg-default);
   transition: background-color 120ms ease;
 }
@@ -16,6 +17,7 @@
   flex-shrink: 0;
   width: var(--component-menu-item-tile-size);
   height: var(--component-menu-item-tile-size);
+  border-radius: 7px; /* Figma: Icon tile radius 7 (not tokenised yet) */
   background: var(--component-menu-item-tile-bg-default);
   box-shadow: inset 0 0 0 1px var(--component-menu-item-tile-border);
   color: var(--component-menu-item-icon-default);

@@ -7,22 +7,23 @@
   color: var(--component-nav-link-text-default);
   white-space: nowrap;
 }
+.caret {
+  color: var(--component-nav-link-icon-default);
+}
+
 .link:hover {
   color: var(--component-nav-link-text-hover);
 }
-.active {
-  color: var(--component-nav-link-text-active);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.link:hover .caret {
+  color: var(--component-nav-link-icon-hover);
 }
-.caret {
-  transition: transform 120ms ease;
-}
+
+/* Figma: State=Active — no underline, caret stays down and takes the accent icon colour */
+.active,
 .link[aria-expanded="true"] {
   color: var(--component-nav-link-text-active);
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
+.active .caret,
 .link[aria-expanded="true"] .caret {
-  transform: rotate(180deg);
+  color: var(--component-nav-link-icon-active);
 }
