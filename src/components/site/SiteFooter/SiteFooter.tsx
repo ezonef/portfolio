@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button/Button";
+import { AsciiBand } from "../AsciiBand/AsciiBand";
 import { FOOTER_ASCII } from "@/data/ascii";
 import { site } from "@/data/site";
 import styles from "./SiteFooter.module.css";
@@ -21,8 +22,8 @@ const columns = [
 export function SiteFooter() {
   return (
     <footer className={styles.footer}>
-      <div className={styles.asciiWrap} aria-hidden>
-        <pre className={`mono-ascii ${styles.ascii}`}>{FOOTER_ASCII}</pre>
+      <div className={styles.asciiWrap}>
+        <AsciiBand art={FOOTER_ASCII} tone="tertiary" />
       </div>
 
       <div className={`container ${styles.inner}`}>

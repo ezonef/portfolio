@@ -1,19 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { NavButton, NavLink } from "@/components/ui/NavLink/NavLink";
 import { site } from "@/data/site";
 import { ContactMenu } from "../ContactMenu/ContactMenu";
 import { MobileMenu } from "../MobileMenu/MobileMenu";
-import { ProjectsModal } from "../ProjectsModal/ProjectsModal";
+import { useProjectsModal } from "../ProjectsModal/ProjectsModalProvider";
 import styles from "./SiteHeader.module.css";
 
 type Page = "home" | "projects" | "process";
 
 /** SiteHeader pattern: logo, nav (Projects opens the modal, Contact opens the menu), status. */
 export function SiteHeader({ current = "home" }: { current?: Page }) {
-  const [projectsOpen, setProjectsOpen] = useState(false);
+  const projects = useProjectsModal();
 
   return (
     <header className={styles.header}>
@@ -24,7 +23,7 @@ export function SiteHeader({ current = "home" }: { current?: Page }) {
         </Link>
 
         <nav aria-label="Main" className={styles.nav}>
-          <NavButton active={current === "projects" || projectsOpen} onClick={() => setProjectsOpen(true)}>
+          <NavButton active={current === "projects" || projects.isOpen} onClick={projects.open}>
             Projects
           </NavButton>
           <NavLink href="/process" active={current === "process"}>
@@ -39,10 +38,8 @@ export function SiteHeader({ current = "home" }: { current?: Page }) {
           {site.status}
         </p>
 
-        <MobileMenu onOpenProjects={() => setProjectsOpen(true)} />
+        <MobileMenu onOpenProjects={projects.open} />
       </div>
-
-      <ProjectsModal open={projectsOpen} onClose={() => setProjectsOpen(false)} />
     </header>
   );
 }

@@ -1,3 +1,4 @@
+import { AsciiBand } from "@/components/site/AsciiBand/AsciiBand";
 import { SelectedWork } from "@/components/site/SelectedWork/SelectedWork";
 import { SiteFooter } from "@/components/site/SiteFooter/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader/SiteHeader";
@@ -28,15 +29,10 @@ export default function Home() {
             <Button variant="secondary" href="/cv.pdf">
               Download CV
             </Button>
-            <Button variant="ghost" icon="arrow-right" href="/process">
-              Read my process
-            </Button>
           </div>
         </section>
 
-        <div className={styles.band} aria-hidden>
-          <pre className={`mono-ascii ${styles.ascii}`}>{HERO_ASCII}</pre>
-        </div>
+        <AsciiBand art={HERO_ASCII} tone="tertiary" bordered />
         <div className={`container mono-xs ${styles.coords}`}>
           <span>52.2297° N · 21.0122° E</span>
           <span>scroll ↓</span>

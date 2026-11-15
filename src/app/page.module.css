@@ -19,17 +19,6 @@
   margin-top: 8px;
 }
 
-.band {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  border-block: 1px solid var(--color-border-subtle);
-}
-.ascii {
-  margin: 0;
-  padding-block: 12px;
-  color: var(--color-text-accent);
-}
 .coords {
   display: flex;
   justify-content: space-between;

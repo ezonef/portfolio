@@ -5,15 +5,21 @@ import { Chip } from "@/components/ui/Chip/Chip";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
 import { categoryLabel, filterProjects, filters, projects, type ProjectFilter } from "@/data/projects";
+import { useProjectsModal } from "../ProjectsModal/ProjectsModalProvider";
 import styles from "./SelectedWork.module.css";
 
-/** "Selected work": filter chips + a horizontal track of ProjectCards with ← / → paging. */
+/**
+ * "Selected work" (Figma: Home → Selected work):
+ * title + "See all" · filter chips · [counter + ← → column] [two ProjectCards in a scrollable track].
+ */
 export function SelectedWork() {
   const [filter, setFilter] = useState<ProjectFilter>("all");
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
+  const { open } = useProjectsModal();
   const list = filterProjects(filter);
   const pad = (n: number) => String(n).padStart(2, "0");
+  const last = Math.max(0, list.length - 1);
 
   const scrollTo = (i: number) => {
     const track = trackRef.current;
@@ -32,25 +38,12 @@ export function SelectedWork() {
   return (
     <section id="work" className={`container ${styles.section}`} aria-labelledby="work-title">
       <div className={styles.head}>
-        <div className={styles.title}>
-          <h2 id="work-title" className="heading-h2">
-            Selected work
-          </h2>
-          <span className="mono-m" aria-live="polite">
-            {pad(Math.min(index + 1, list.length))} / {pad(list.length)}
-          </span>
-          <div className={styles.pager}>
-            <IconButton icon="arrow-left" label="Previous case" disabled={index === 0} onClick={() => scrollTo(index - 1)} />
-            <IconButton
-              icon="arrow-right"
-              label="Next case"
-              variant="primary"
-              disabled={index >= list.length - 1}
-              onClick={() => scrollTo(index + 1)}
-            />
-          </div>
-        </div>
-        <span className={`mono-s ${styles.total}`}>{pad(projects.length)} projects</span>
+        <h2 id="work-title" className="heading-h2">
+          Selected work
+        </h2>
+        <button type="button" className={`mono-s ${styles.seeAll}`} onClick={open}>
+          See all {pad(projects.length)} →
+        </button>
       </div>
 
       <div className={styles.chips} role="group" aria-label="Filter projects">
@@ -61,20 +54,38 @@ export function SelectedWork() {
         ))}
       </div>
 
-      <div ref={trackRef} className={styles.track}>
-        {list.map((p) => (
-          <div key={p.slug} className={styles.slide}>
-            <ProjectCard
-              href={`/projects/${p.slug}`}
-              cover={p.cover}
-              category={categoryLabel[p.category]}
-              number={p.number}
-              title={p.title}
-              description={p.description}
-              meta={`${p.company} · ${p.years}`}
+      <div className={styles.row}>
+        <div className={styles.side}>
+          <p className={styles.counter} aria-live="polite">
+            <span className={styles.current}>{pad(Math.min(index + 1, list.length))}</span>
+            <span className="mono-m"> / {pad(list.length)}</span>
+          </p>
+          <div className={styles.pager}>
+            <IconButton icon="arrow-left" label="Previous case" disabled={index === 0} onClick={() => scrollTo(index - 1)} />
+            <IconButton
+              icon="arrow-right"
+              label="Next case"
+              variant="primary"
+              disabled={index >= last}
+              onClick={() => scrollTo(index + 1)}
             />
           </div>
-        ))}
+        </div>
+
+        <div ref={trackRef} className={styles.track}>
+          {list.map((p) => (
+            <div key={p.slug} className={styles.slide}>
+              <ProjectCard
+                href={`/projects/${p.slug}`}
+                cover={p.cover}
+                category={categoryLabel[p.category]}
+                number={p.number}
+                title={p.title}
+                description={p.description}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

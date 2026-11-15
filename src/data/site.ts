@@ -30,5 +30,4 @@ export const contactWrite: ContactLink[] = [
 export const contactLook: ContactLink[] = [
   { title: "CV.pdf", caption: "2 pages · updated 11.2026", meta: "PDF", icon: "file-text", href: "/cv.pdf", external: true },
   { title: "Behance", caption: "Full case studies", meta: "↗", icon: "link", href: "https://behance.net/[handle]", external: true },
-  { title: "Figma Community", caption: "Free files & kits", meta: "↗", icon: "link", href: "https://figma.com/@[handle]", external: true },
 ];

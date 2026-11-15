@@ -53,8 +53,8 @@ export function MobileMenu({ onOpenProjects }: { onOpenProjects: () => void }) {
 
         <div className={styles.contacts}>
           <p className="mono-label">Get in touch</p>
-          {[...contactWrite, ...contactLook].map((item, i) => (
-            <MenuItem key={item.title} {...item} selected={i === 0} />
+          {[...contactWrite, ...contactLook].map((item) => (
+            <MenuItem key={item.title} {...item} />
           ))}
         </div>
       </dialog>

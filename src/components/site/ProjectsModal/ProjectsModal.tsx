@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Chip } from "@/components/ui/Chip/Chip";
 import type { IconName } from "@/components/ui/Icon/Icon";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
-import { SearchField } from "@/components/ui/SearchField/SearchField";
 import { categoryLabel, projects, type ProjectCategory } from "@/data/projects";
 import styles from "./ProjectsModal.module.css";
 
@@ -21,30 +19,30 @@ type Props = { open: boolean; onClose: () => void };
 /**
  * Projects modal on the native <dialog>: showModal() gives focus trapping, Esc to close
  * and a ::backdrop for the scrim. Clicking the scrim closes it too.
+ * Figma: quick filter chips + close in one row, then "Recent" and three ProjectCards.
  */
 export function ProjectsModal({ open, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [query, setQuery] = useState("");
   const [category, setCategory] = useState<ProjectCategory | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
     if (open && !dialog.open) dialog.showModal();
     if (!open && dialog.open) dialog.close();
+    if (!open) {
+      setCategory(null);
+      setShowAll(false);
+    }
   }, [open]);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return projects.filter(
-      (p) =>
-        (!category || p.category === category) &&
-        (!q || `${p.title} ${p.description} ${categoryLabel[p.category]}`.toLowerCase().includes(q)),
-    );
-  }, [query, category]);
+  const list = useMemo(() => {
+    const filtered = category ? projects.filter((p) => p.category === category) : projects;
+    return showAll || category ? filtered : filtered.slice(0, 3);
+  }, [category, showAll]);
 
-  const showRecent = !query && !category;
-  const list = showRecent ? projects.filter((p) => p.recent).concat(projects.filter((p) => !p.recent)).slice(0, 3) : results;
+  const label = category ? `${categoryLabel[category]} · ${list.length}` : showAll ? "All projects" : "Recent";
 
   return (
     <dialog
@@ -57,58 +55,46 @@ export function ProjectsModal({ open, onClose }: Props) {
       }}
     >
       <div className={styles.modal}>
-        <div className={styles.search}>
-          <SearchField
-            label="Search projects"
-            placeholder="Search projects, screens, UI elements, flows…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus
-            className={styles.field}
-          />
-          <IconButton icon="x" label="Close" onClick={onClose} />
-        </div>
-
-        <div className={styles.chips}>
-          {quick.map((c) => (
-            <Chip
-              key={c.id}
-              icon={c.icon}
-              selected={category === c.id}
-              onClick={() => setCategory((cur) => (cur === c.id ? null : c.id))}
-            >
-              {c.label}
-            </Chip>
-          ))}
+        <div className={styles.top}>
+          <div className={styles.chips} role="group" aria-label="Filter projects">
+            {quick.map((c) => (
+              <Chip
+                key={c.id}
+                icon={c.icon}
+                selected={category === c.id}
+                onClick={() => setCategory((cur) => (cur === c.id ? null : c.id))}
+              >
+                {c.label}
+              </Chip>
+            ))}
+          </div>
+          <IconButton icon="x" label="Close" onClick={onClose} autoFocus />
         </div>
 
         <div className={styles.body}>
           <div className={styles.label}>
-            <span className="mono-label">{showRecent ? "Recent" : `Results · ${results.length}`}</span>
-            <Link href="/#work" className={styles.seeAll} onClick={onClose}>
-              See all {String(projects.length).padStart(2, "0")} →
-            </Link>
+            <span className="mono-label">{label}</span>
+            {!category && !showAll && (
+              <button type="button" className={styles.seeAll} onClick={() => setShowAll(true)}>
+                See all {String(projects.length).padStart(2, "0")} →
+              </button>
+            )}
           </div>
 
-          {list.length > 0 ? (
-            <div className={styles.grid}>
-              {list.map((p) => (
-                <ProjectCard
-                  key={p.slug}
-                  compact
-                  href={`/projects/${p.slug}`}
-                  cover={p.cover}
-                  category={categoryLabel[p.category]}
-                  number={p.number}
-                  title={p.title}
-                  meta={`${p.company} · ${p.years}`}
-                  onNavigate={onClose}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className={styles.empty}>Nothing found for “{query}”. Try “admin”, “design system” or “iOS”.</p>
-          )}
+          <div className={styles.grid}>
+            {list.map((p) => (
+              <ProjectCard
+                key={p.slug}
+                href={`/projects/${p.slug}`}
+                cover={p.cover}
+                category={categoryLabel[p.category]}
+                number={p.number}
+                title={p.title}
+                description={p.description}
+                onNavigate={onClose}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </dialog>

@@ -1,0 +1,28 @@
+.band {
+  width: 100%;
+  overflow: hidden;
+  /* lets the child size itself in cqw (% of this element's width) */
+  container-type: inline-size;
+}
+.bordered {
+  border-block: 1px solid var(--color-border-subtle);
+}
+
+/*
+ * JetBrains Mono glyphs are 0.6em wide, so `cols` characters take cols × 0.6em.
+ * Solving for 100% of the container width gives the font size below.
+ */
+.art {
+  margin: 0;
+  padding-block: 12px;
+  font-family: var(--font-mono);
+  font-size: calc(100cqw / (var(--cols) * 0.6));
+  line-height: 1;
+  white-space: pre;
+}
+.accent {
+  color: var(--color-text-accent);
+}
+.tertiary {
+  color: var(--color-text-tertiary);
+}

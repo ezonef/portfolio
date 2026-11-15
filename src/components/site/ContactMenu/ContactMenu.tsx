@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@/components/ui/Button/Button";
 import { MenuItem } from "@/components/ui/MenuItem/MenuItem";
 import { NavButton } from "@/components/ui/NavLink/NavLink";
 import { contactLook, contactWrite, site } from "@/data/site";
@@ -14,7 +13,6 @@ import styles from "./ContactMenu.module.css";
  */
 export function ContactMenu() {
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -48,15 +46,7 @@ export function ContactMenu() {
     };
   }, [open]);
 
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(site.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      window.location.href = `mailto:${site.email}`;
-    }
-  };
+  const total = String(contactWrite.length + contactLook.length).padStart(2, "0");
 
   return (
     <div ref={rootRef} className={styles.root} onMouseEnter={show} onMouseLeave={hide}>
@@ -75,7 +65,7 @@ export function ContactMenu() {
       <div id={menuId} className={styles.panel} hidden={!open}>
         <div className={styles.head}>
           <span className="mono-label">
-            Get in touch <span className={styles.count}>07</span>
+            Get in touch <span className={styles.count}>{total}</span>
           </span>
           <span className={styles.status}>
             <span className={styles.dot} aria-hidden />
@@ -86,8 +76,8 @@ export function ContactMenu() {
         <div className={styles.columns}>
           <div className={styles.column}>
             <p className={`mono-label ${styles.group}`}>Write</p>
-            {contactWrite.map((item, i) => (
-              <MenuItem key={item.title} {...item} selected={i === 0} />
+            {contactWrite.map((item) => (
+              <MenuItem key={item.title} {...item} />
             ))}
           </div>
           <div className={styles.column}>
@@ -102,9 +92,6 @@ export function ContactMenu() {
           <span className="mono-s">
             {site.location} · {site.timezone} · {site.languages}
           </span>
-          <Button size="s" icon="copy" onClick={copyEmail}>
-            {copied ? "Copied" : "Copy email"}
-          </Button>
         </div>
       </div>
     </div>

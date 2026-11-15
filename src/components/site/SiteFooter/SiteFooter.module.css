@@ -3,13 +3,10 @@
   color: var(--component-site-footer-link);
 }
 .asciiWrap {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
   padding-top: 24px;
 }
-.ascii {
-  margin: 0;
+/* footer ASCII uses its own token on the dark surface */
+.asciiWrap pre {
   color: var(--component-site-footer-ascii);
 }
 .inner {
