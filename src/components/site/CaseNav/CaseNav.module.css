@@ -19,10 +19,14 @@
   color: var(--color-text-tertiary);
 }
 @media (hover: hover) and (pointer: fine) {
-  .muted:hover,
+  /* Monochrome: muted links darken, black links get an underline */
+  .muted:hover {
+    color: var(--color-text-primary);
+  }
   .links a:hover,
   .logo:hover {
-    color: var(--color-icon-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 .links {

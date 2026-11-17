@@ -22,8 +22,6 @@
   --stone-900: #2a2a28;
   --stone-950: #111111;
   --stone-1000: #0e0e0e;
-  --blue-50: #e9ebfc;
-  --blue-600: #2f3fe0;
   --alpha-ink-70: rgb(14 14 14 / 70%);
   --alpha-transparent: transparent;
 
@@ -64,10 +62,10 @@
   --color-bg-inverse-deep: var(--stone-1000);
   --color-bg-scrim: var(--alpha-ink-70);
   --color-bg-accent: var(--stone-950);
-  --color-bg-accent-subtle: var(--blue-50);
+  --color-bg-accent-subtle: var(--stone-200);
   --color-bg-transparent: var(--alpha-transparent);
   --color-bg-action-primary-default: var(--stone-950);
-  --color-bg-action-primary-hover: var(--blue-600);
+  --color-bg-action-primary-hover: var(--stone-800);
   --color-bg-action-secondary-default: var(--alpha-transparent);
   --color-bg-action-secondary-hover: var(--stone-200);
   --color-bg-action-ghost-default: var(--alpha-transparent);
@@ -85,15 +83,15 @@
 
   --color-icon-primary: var(--stone-950);
   --color-icon-on-inverse: var(--stone-100);
-  --color-icon-accent: var(--blue-600);
+  --color-icon-accent: var(--stone-950);
 
   --color-border-strong: var(--stone-950);
   --color-border-subtle: var(--stone-300);
   --color-border-inverse-subtle: var(--stone-900);
-  --color-border-accent: var(--blue-600);
+  --color-border-accent: var(--stone-950);
   --color-border-on-inverse: var(--stone-100);
 
-  --color-status-active-bg: var(--blue-600);
+  --color-status-active-bg: var(--stone-700);
   --color-status-active-text: var(--white);
   --color-status-pending-bg: var(--alpha-transparent);
   --color-status-pending-text: var(--stone-950);

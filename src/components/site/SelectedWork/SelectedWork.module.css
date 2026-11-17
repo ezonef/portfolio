@@ -15,7 +15,8 @@
 }
 @media (hover: hover) and (pointer: fine) {
   .seeAll:hover {
-    color: var(--color-text-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 .chips {
