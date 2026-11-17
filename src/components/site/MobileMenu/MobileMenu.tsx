@@ -17,11 +17,22 @@ export function MobileMenu() {
     if (!d) return;
     if (open && !d.open) d.showModal();
     if (!open && d.open) d.close();
+
+    // Lock the page behind the sheet: a modal <dialog> doesn't stop the page from scrolling
+    // (notably on iOS). Keep the scrollbar's space so the layout doesn't jump on desktop.
+    const root = document.documentElement;
+    if (open) {
+      root.style.setProperty("--scrollbar-gap", `${window.innerWidth - root.clientWidth}px`);
+      root.classList.add("scroll-locked");
+    } else {
+      root.classList.remove("scroll-locked");
+    }
+    return () => root.classList.remove("scroll-locked");
   }, [open]);
 
   return (
     <div className={styles.root}>
-      <IconButton icon="menu" size="s" label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} />
+      <IconButton icon="menu" size="s" variant="ghost" label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} />
 
       <dialog ref={ref} className={styles.sheet} aria-label="Menu" onClose={() => setOpen(false)}>
         <div className={styles.top}>

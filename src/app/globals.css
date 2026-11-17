@@ -81,3 +81,13 @@ ul {
  * Movement (transform) is only added inside `@media (prefers-reduced-motion: no-preference)`
  * in each component; colour and opacity feedback stay for everyone.
  */
+
+/* Set by MobileMenu while the sheet is open */
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
+}
+html.scroll-locked body {
+  padding-right: var(--scrollbar-gap, 0px);
+  overscroll-behavior: none;
+}

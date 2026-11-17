@@ -13,6 +13,7 @@
   background: var(--color-bg-page);
   color: var(--color-text-primary);
   overflow-y: auto;
+  overscroll-behavior: contain; /* scrolling the sheet never chains to the page */
 
   /* Slides in from the right with the iOS drawer curve. display/overlay transition
      discretely so the closing animation can play before the dialog leaves the top layer. */
