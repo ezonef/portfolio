@@ -27,8 +27,14 @@
   }
 }
 @media (max-width: 760px) {
+  /* Figma: All projects · 390 */
+  .chips {
+    padding-right: 0;
+  }
   .grid {
     grid-template-columns: 1fr;
     row-gap: 48px;
+    padding-top: 32px;
+    padding-bottom: 72px;
   }
 }

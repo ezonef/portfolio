@@ -23,6 +23,7 @@
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  scrollbar-width: none;
   padding: 4px;
   margin: -4px;
 }
@@ -77,15 +78,23 @@
   .row {
     grid-template-columns: 1fr;
   }
+  /* Figma: Home · 390 — counter and arrows in one row above the cards */
   .side {
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     padding-block: 0;
   }
   .current {
     font-size: 40px;
   }
+  /* chips and cards bleed off the right edge and scroll */
+  .chips,
+  .track {
+    margin-right: -20px;
+    padding-right: 20px;
+  }
   .slide {
-    flex-basis: 86%;
+    flex-basis: 316px;
   }
 }

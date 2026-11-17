@@ -69,11 +69,27 @@
 }
 
 @media (max-width: 760px) {
+  /* Figma: SiteFooter/Mobile */
+  .inner {
+    padding-top: 40px;
+    padding-bottom: 32px;
+  }
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
   .heading {
     font-size: 32px;
   }
   .columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     row-gap: 32px;
+    margin-top: 48px;
+  }
+  .bottom {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 48px;
   }
 }

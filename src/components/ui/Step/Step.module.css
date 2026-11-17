@@ -52,3 +52,13 @@
     transform: scale(0.97);
   }
 }
+
+/* Size=M — process page stepper */
+.m {
+  width: auto;
+  height: 76px;
+}
+.m .title {
+  font: 400 20px/1.2 var(--font-sans);
+  letter-spacing: -0.4px;
+}

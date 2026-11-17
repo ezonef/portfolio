@@ -212,3 +212,37 @@
     margin-top: 72px;
   }
 }
+
+/* Figma: Case · 390 */
+@media (max-width: 760px) {
+  .story {
+    padding-bottom: 72px;
+  }
+  .eyebrow,
+  .lead {
+    margin-bottom: 0;
+  }
+  .lead {
+    margin-top: 20px;
+  }
+  .meta {
+    margin-top: 32px;
+  }
+  .section {
+    margin-top: 56px;
+  }
+  .flow {
+    margin-top: 56px;
+  }
+  .decision {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .next {
+    margin-top: 56px;
+  }
+  /* the steps are the controls on a phone; arrows hide */
+  .player > button[aria-label] {
+    display: none;
+  }
+}

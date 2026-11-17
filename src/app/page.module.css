@@ -28,7 +28,11 @@
 
 @media (max-width: 760px) {
   .hero {
+    gap: 20px;
     padding-top: 56px;
     padding-bottom: 40px;
+  }
+  .actions {
+    margin-top: 4px;
   }
 }

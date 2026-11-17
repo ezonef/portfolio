@@ -1,0 +1,289 @@
+/* Figma: My design process · 1440 — Hero: padding 112/72, gap 28 */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 112px;
+  padding-bottom: 72px;
+  color: var(--color-text-secondary);
+}
+.title {
+  max-width: 1000px;
+  color: var(--color-text-primary);
+}
+.lead {
+  max-width: 720px;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--color-border-strong);
+}
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-block: 20px;
+}
+.fact dt {
+  color: var(--color-text-tertiary);
+}
+.fact dd {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+/* Stages — head 300 · body · artifact 360, gap 48 */
+.stages {
+  padding-top: 96px;
+  padding-bottom: 40px;
+}
+.stage {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr) 360px;
+  gap: 48px;
+  padding-block: 48px;
+  border-top: 1px solid var(--color-border-subtle);
+  scroll-margin-top: 72px;
+  color: var(--color-text-secondary);
+}
+.stage:last-child {
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.stageHead {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--color-text-primary);
+}
+.length {
+  color: var(--color-text-secondary);
+}
+.stageBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.lists {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  color: var(--color-text-primary);
+}
+.lists > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lists :global(.mono-label) {
+  color: var(--color-text-tertiary);
+}
+.artifact {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 240px;
+  margin: 0;
+  border: 1px dashed var(--color-border-subtle);
+  color: var(--color-text-tertiary);
+  overflow: hidden;
+}
+.artifact img {
+  object-fit: cover;
+}
+
+/* Principles — 4 cards, last one inverse */
+.principles {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-block: 96px;
+}
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  color: var(--color-text-secondary);
+}
+.sectionHead h2 {
+  color: var(--color-text-primary);
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 240px;
+  padding: 24px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
+}
+.card h3 {
+  color: var(--color-text-primary);
+}
+.card:last-child {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-on-inverse-muted);
+}
+.card:last-child h3 {
+  color: var(--color-text-on-inverse);
+}
+
+/* Working together — head 300 + rows */
+.collab {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 48px;
+  padding-bottom: 96px;
+}
+.collabHead {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--color-text-secondary);
+}
+.collabHead h2 {
+  color: var(--color-text-primary);
+}
+.rows {
+  border-bottom: 1px solid var(--color-border-strong);
+}
+.row {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 24px;
+  padding-block: 20px;
+  border-top: 1px solid var(--color-border-strong);
+}
+.row dt {
+  color: var(--color-text-secondary);
+}
+.row dd {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 1024px) {
+  .stage {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .artifact {
+    grid-column: 1 / -1;
+  }
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Figma: My design process · 390 */
+@media (max-width: 760px) {
+  .hero {
+    gap: 20px;
+    padding-top: 56px;
+    padding-bottom: 32px;
+  }
+  .title {
+    font-size: 40px;
+    letter-spacing: -1.2px;
+  }
+  .lead {
+    font: 400 16px/1.6 var(--font-sans);
+  }
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+  .fact dd {
+    font: 500 20px/1.2 var(--font-sans);
+    letter-spacing: -0.4px;
+  }
+  .stages {
+    padding-top: 24px;
+    padding-bottom: 0;
+  }
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-block: 32px;
+  }
+  .stageHead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    row-gap: 6px;
+  }
+  .stageHead > :first-child {
+    grid-column: 1 / -1;
+  }
+  .stageHead h2 {
+    font-size: 32px;
+  }
+  .stageBody {
+    gap: 16px;
+  }
+  .stageBody > p {
+    font: 400 16px/1.6 var(--font-sans);
+  }
+  .lists {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .artifact {
+    height: 200px;
+  }
+  .principles {
+    gap: 12px;
+    padding-block: 56px 0;
+  }
+  .sectionHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .sectionHead :global(.mono-s) {
+    font-size: 11px;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .card {
+    min-height: 0;
+    gap: 8px;
+    padding: 16px;
+  }
+  .card h3 {
+    font: 500 20px/1.2 var(--font-sans);
+    letter-spacing: -0.4px;
+  }
+  .collab {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 56px;
+    padding-bottom: 72px;
+  }
+  .rows {
+    margin-top: 12px;
+    border-bottom-color: var(--color-border-subtle);
+  }
+  .row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding-block: 16px;
+  }
+  .row dt {
+    font-size: 11px;
+  }
+  .row dd {
+    font: 400 15px/1.5 var(--font-sans);
+  }
+}
