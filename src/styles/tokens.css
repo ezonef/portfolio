@@ -63,7 +63,7 @@
   --color-bg-inverse: var(--stone-950);
   --color-bg-inverse-deep: var(--stone-1000);
   --color-bg-scrim: var(--alpha-ink-70);
-  --color-bg-accent: var(--blue-600);
+  --color-bg-accent: var(--stone-950);
   --color-bg-accent-subtle: var(--blue-50);
   --color-bg-transparent: var(--alpha-transparent);
   --color-bg-action-primary-default: var(--stone-950);
@@ -199,7 +199,7 @@
   --component-tag-padding-y: var(--spacing-tag-y);
 
   /* ---------- component: nav-link ---------- */
-  --component-nav-link-text-default: var(--color-text-secondary);
+  --component-nav-link-text-default: var(--color-text-tertiary);
   --component-nav-link-text-hover: var(--color-text-accent);
   --component-nav-link-text-active: var(--color-text-accent);
   --component-nav-link-icon-default: var(--color-icon-primary);
@@ -208,7 +208,7 @@
 
   /* ---------- component: menu-item ---------- */
   --component-menu-item-bg-default: var(--color-bg-transparent);
-  --component-menu-item-bg-hover: var(--color-bg-hover);
+  --component-menu-item-bg-hover: color-mix(in srgb, var(--color-bg-hover) 90%, transparent);
   --component-menu-item-bg-selected: var(--color-bg-page);
   --component-menu-item-border-selected: var(--color-border-strong);
   --component-menu-item-tile-bg-default: var(--color-bg-surface);
@@ -263,6 +263,15 @@
   --component-site-footer-label: var(--color-text-on-inverse-muted);
   --component-site-footer-ascii: var(--color-text-tertiary);
   --component-site-footer-border: var(--color-border-inverse-subtle);
+
+  /* step (case player) */
+  --component-step-bg-default: var(--color-bg-transparent);
+  --component-step-bg-active: var(--color-bg-inverse);
+  --component-step-border: var(--color-border-strong);
+  --component-step-number-default: var(--color-text-secondary);
+  --component-step-number-active: var(--color-text-on-inverse-muted);
+  --component-step-title-default: var(--color-text-primary);
+  --component-step-title-active: var(--color-text-on-inverse);
 
   /* ---------- effects ---------- */
   /* Figma effect style "sm" — soft layered shadow for menus and modals */

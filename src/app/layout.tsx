@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter_Tight, JetBrains_Mono } from "next/font/google";
-import { ProjectsModalProvider } from "@/components/site/ProjectsModal/ProjectsModalProvider";
 import "./globals.css";
 
 // next/font downloads the fonts at build time and serves them from our own domain.
@@ -17,7 +16,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "[NAME] — Product designer",
+  title: "Mykyta Sharapaniuk — Product designer",
   description: "Design systems, admin panels and iOS apps. Complex products, made simple to use.",
 };
 
@@ -25,7 +24,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <ProjectsModalProvider>{children}</ProjectsModalProvider>
+        {children}
       </body>
     </html>
   );

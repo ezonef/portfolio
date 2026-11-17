@@ -43,8 +43,16 @@
   font: 400 13px/2 var(--font-mono);
   color: var(--component-site-footer-link);
 }
-a.link:hover {
+a.link:hover .name,
+a.link:not(.external):hover {
   text-decoration: underline;
+}
+/* Figma: ELSEWHERE — name in an 82px column, arrow after it */
+.external {
+  display: flex;
+}
+.name {
+  width: 82px;
 }
 .bottom {
   display: flex;

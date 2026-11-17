@@ -1,0 +1,36 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 96px;
+  padding-bottom: 48px;
+  color: var(--color-text-secondary);
+}
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+.title {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  color: var(--color-text-primary);
+}
+.count {
+  color: var(--color-text-secondary);
+  letter-spacing: 0;
+}
+.intro {
+  max-width: 400px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding-top: 56px;
+    padding-bottom: 32px;
+  }
+}

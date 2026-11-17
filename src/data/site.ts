@@ -2,13 +2,13 @@ import type { IconName } from "@/components/ui/Icon/Icon";
 
 // Replace the [PLACEHOLDERS] with real values — everything on the site reads from here.
 export const site = {
-  name: "[NAME]",
+  name: "Sharapaniuk Mykyta",
   fullName: "Mykyta Sharapaniuk",
   role: "Product designer",
   location: "Warsaw, PL",
   timezone: "UTC+1",
   status: "Open to work · Warsaw",
-  email: "[EMAIL]",
+  email: "sarapanuknikita66@gmail.com",
   languages: "EN · PL · UA · RU",
 };
 
@@ -23,7 +23,7 @@ export type ContactLink = {
 
 export const contactWrite: ContactLink[] = [
   { title: "Email", caption: site.email, meta: "copy", icon: "mail", href: `mailto:${site.email}` },
-  { title: "Telegram", caption: "@[handle]", meta: "copy", icon: "send", href: "https://t.me/[handle]", external: true },
+  { title: "Telegram", caption: "@amaterasugrenada", meta: "copy", icon: "send", href: "https://t.me/amaterasugrenada", external: true },
   { title: "LinkedIn", caption: "Message or connect", meta: "↗", icon: "link", href: "https://linkedin.com/in/[handle]", external: true },
   { title: "Book a call", caption: "30 min · Google Meet", meta: "↗", icon: "calendar", href: "https://cal.com/[handle]", external: true },
 ];

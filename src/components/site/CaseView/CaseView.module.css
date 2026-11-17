@@ -1,0 +1,210 @@
+/* Figma: Template/Case → Body — story 616 + gap 64 + screen panel (fills the rest) */
+.body {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+  padding-left: 40px;
+}
+
+.story {
+  flex: 0 0 616px;
+  display: flex;
+  flex-direction: column;
+  padding-block: 72px 96px;
+  color: var(--color-text-secondary);
+}
+.eyebrow {
+  margin-bottom: 20px;
+}
+.title {
+  color: var(--color-text-primary);
+}
+.lead {
+  margin-top: 24px;
+}
+.meta {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border-strong);
+}
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cell dd {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+.section {
+  margin-top: 72px;
+  margin-bottom: 24px;
+  color: var(--color-text-primary);
+}
+.problem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+.problem :global(.mono-label),
+.decision :global(.mono-label),
+.cell dt {
+  color: var(--color-text-tertiary);
+}
+
+/* Flow steps — Figma: top border subtle, padding 24, head gap 16 */
+.flow {
+  margin-top: 160px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.flowStep {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-block: 24px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.flowHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  color: var(--color-text-primary);
+}
+.flowNumber {
+  color: var(--color-text-secondary);
+}
+.inline {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.inline:hover {
+  color: var(--color-icon-accent);
+}
+
+/* Key decisions — rows with a top border, two columns */
+.decisions {
+  display: flex;
+  flex-direction: column;
+  margin-top: -16px;
+}
+.decision {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding-block: 16px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.decision > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chose {
+  color: var(--color-text-primary);
+}
+
+.outcome {
+  max-width: 616px;
+}
+
+.next {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 72px;
+  padding-block: 24px;
+  border-block: 1px solid var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.next:hover :global(.heading-h3) {
+  color: var(--color-icon-accent);
+}
+
+/* Screen panel — sticks under the case nav while the story scrolls */
+.panel {
+  flex: 1 1 0;
+  min-width: 0;
+  position: sticky;
+  top: 56px;
+}
+.stage {
+  position: relative;
+  aspect-ratio: 1200 / 809;
+  background: var(--color-bg-muted);
+  overflow: hidden;
+}
+.screen {
+  object-fit: cover;
+  animation: fade 200ms ease;
+}
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+}
+/* Hugs its content like in Figma; steps shrink a little when the panel is narrower than 1200 */
+.player {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 40px;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+.player > button:not([aria-label]) {
+  flex: 0 1 132px;
+  min-width: 88px;
+}
+.player > button[aria-label] {
+  flex-shrink: 0;
+}
+.player button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 40px;
+  color: var(--color-text-secondary);
+}
+.hint {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 1024px) {
+  .body {
+    flex-direction: column-reverse;
+    padding-left: 0;
+    gap: 0;
+  }
+  .panel {
+    position: static;
+    width: 100%;
+  }
+  .story {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 680px;
+    padding-inline: 20px;
+    padding-top: 48px;
+  }
+  .player,
+  .caption {
+    padding-inline: 20px;
+  }
+  .player {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .player > button:not([aria-label]) {
+    flex: 0 0 120px;
+  }
+  .flow {
+    margin-top: 72px;
+  }
+}

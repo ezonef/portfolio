@@ -18,9 +18,9 @@ const columns = [
   {
     label: "Elsewhere",
     links: [
-      { t: "LinkedIn ↗", h: "https://linkedin.com/in/[handle]" },
-      { t: "Behance ↗", h: "https://behance.net/[handle]" },
-      { t: "GitHub ↗", h: "https://github.com/[handle]" },
+      { t: "LinkedIn", h: "https://linkedin.com/in/[handle]" },
+      { t: "Behance", h: "https://behance.net/[handle]" },
+      { t: "GitHub", h: "https://github.com/[handle]" },
     ],
   },
   { label: "Based", text: [site.location, site.timezone] },
@@ -50,8 +50,9 @@ export function SiteFooter() {
               <p className={`mono-label ${styles.label}`}>{col.label}</p>
               {col.links?.map((l) =>
                 l.h.startsWith("http") ? (
-                  <a key={l.t} href={l.h} target="_blank" rel="noreferrer" className={styles.link}>
-                    {l.t}
+                  <a key={l.t} href={l.h} target="_blank" rel="noreferrer" className={`${styles.link} ${styles.external}`}>
+                    <span className={styles.name}>{l.t}</span>
+                    <span aria-hidden>↗</span>
                   </a>
                 ) : (
                   <Link key={l.t} href={l.h} className={styles.link}>

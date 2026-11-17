@@ -1,11 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { Chip } from "@/components/ui/Chip/Chip";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
-import { categoryLabel, filterProjects, filters, projects, type ProjectFilter } from "@/data/projects";
-import { useProjectsModal } from "../ProjectsModal/ProjectsModalProvider";
+import { categoryLabel, filterProjects, homeFilters, projects, type ProjectFilter } from "@/data/projects";
 import styles from "./SelectedWork.module.css";
 
 /**
@@ -16,7 +16,6 @@ export function SelectedWork() {
   const [filter, setFilter] = useState<ProjectFilter>("all");
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
-  const { open } = useProjectsModal();
   const list = filterProjects(filter);
   const pad = (n: number) => String(n).padStart(2, "0");
   const last = Math.max(0, list.length - 1);
@@ -41,14 +40,21 @@ export function SelectedWork() {
         <h2 id="work-title" className="heading-h2">
           Selected work
         </h2>
-        <button type="button" className={`mono-s ${styles.seeAll}`} onClick={open}>
+        <Link href="/projects" className={`mono-s ${styles.seeAll}`}>
           See all {pad(projects.length)} →
-        </button>
+        </Link>
       </div>
 
       <div className={styles.chips} role="group" aria-label="Filter projects">
-        {filters.map((f) => (
-          <Chip key={f.id} selected={filter === f.id} count={filterProjects(f.id).length} onClick={() => choose(f.id)}>
+        {homeFilters.map((f) => (
+          <Chip
+            key={f.id}
+            appearance="soft"
+            icon={f.icon}
+            selected={filter === f.id}
+            count={filterProjects(f.id).length}
+            onClick={() => choose(f.id)}
+          >
             {f.label}
           </Chip>
         ))}
@@ -82,6 +88,7 @@ export function SelectedWork() {
                 number={p.number}
                 title={p.title}
                 description={p.description}
+                more={p.tags.length}
               />
             </div>
           ))}

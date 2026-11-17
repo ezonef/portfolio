@@ -8,7 +8,7 @@ import { contactLook, contactWrite, site } from "@/data/site";
 import styles from "./MobileMenu.module.css";
 
 /** Mobile navigation: menu button → full-screen sheet (native <dialog>). Shown only below 760px. */
-export function MobileMenu({ onOpenProjects }: { onOpenProjects: () => void }) {
+export function MobileMenu() {
   const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -25,24 +25,14 @@ export function MobileMenu({ onOpenProjects }: { onOpenProjects: () => void }) {
 
       <dialog ref={ref} className={styles.sheet} aria-label="Menu" onClose={() => setOpen(false)}>
         <div className={styles.top}>
-          <span className="mono-m-strong">
-            {site.name}
-            <span className={styles.accent}>_</span>
-          </span>
+          <span className={`mono-m-strong ${styles.logo}`}>{site.name}</span>
           <IconButton icon="x" size="s" variant="ghost" label="Close menu" onClick={() => setOpen(false)} />
         </div>
 
         <nav aria-label="Main" className={styles.nav}>
-          <button
-            type="button"
-            className="heading-h2"
-            onClick={() => {
-              setOpen(false);
-              onOpenProjects();
-            }}
-          >
+          <Link href="/projects" className="heading-h2" onClick={() => setOpen(false)}>
             Projects
-          </button>
+          </Link>
           <Link href="/process" className="heading-h2" onClick={() => setOpen(false)}>
             My design process
           </Link>

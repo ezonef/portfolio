@@ -32,7 +32,7 @@ export default function Home() {
           </div>
         </section>
 
-        <AsciiBand art={HERO_ASCII} tone="tertiary" bordered />
+        <AsciiBand art={HERO_ASCII} tone="tertiary" />
         <div className={`container mono-xs ${styles.coords}`}>
           <span>52.2297° N · 21.0122° E</span>
           <span>scroll ↓</span>

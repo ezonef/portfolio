@@ -19,11 +19,12 @@
 .card:hover .image {
   transform: scale(1.03);
 }
-/* Category + Number sit side by side, no gap (Figma: gap 0) */
+/* Figma: Cover → tags in a row, gap 6 */
 .tags {
   position: relative;
   z-index: 1;
   display: flex;
+  gap: 6px;
 }
 
 .text {
