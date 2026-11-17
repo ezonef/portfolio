@@ -11,10 +11,14 @@
   font: 400 12px/1.3 var(--font-mono);
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
 }
-.chip:hover {
-  background: var(--component-chip-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover {
+    background: var(--component-chip-bg-hover);
+  }
 }
 .chip:focus-visible {
   box-shadow: inset 0 0 0 1px var(--component-chip-border), var(--focus-ring);
@@ -32,21 +36,36 @@
   box-shadow: none;
   border-radius: var(--component-chip-soft-radius);
 }
-.soft:hover {
-  background: var(--component-chip-soft-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .soft:hover {
+    background: var(--component-chip-soft-bg-hover);
+  }
 }
 .soft:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
-.selected,
-.selected:hover {
+.selected {
   background: var(--component-chip-bg-selected);
   color: var(--component-chip-text-selected);
+}
+@media (hover: hover) and (pointer: fine) {
+  .selected:hover {
+    background: var(--component-chip-bg-selected);
+    color: var(--component-chip-text-selected);
+  }
 }
 .selected .count {
   color: var(--component-chip-count-selected);
 }
 .selected .icon {
   color: var(--component-chip-icon-selected);
+}
+
+
+/* Press feedback — subtle scale, movement only for people who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .chip:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 }

@@ -4,7 +4,9 @@
   place-items: center;
   flex-shrink: 0;
   border-radius: var(--component-icon-button-radius);
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
 }
 .m {
   width: var(--component-icon-button-size-m);
@@ -20,16 +22,20 @@
   background: var(--component-icon-button-primary-bg-default);
   color: var(--component-icon-button-primary-icon);
 }
-.primary:hover {
-  background: var(--component-icon-button-primary-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: var(--component-icon-button-primary-bg-hover);
+  }
 }
 .secondary {
   background: var(--component-icon-button-secondary-bg-default);
   color: var(--component-icon-button-secondary-icon);
   box-shadow: inset 0 0 0 1px var(--component-icon-button-secondary-border);
 }
-.secondary:hover {
-  background: var(--component-icon-button-secondary-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .secondary:hover {
+    background: var(--component-icon-button-secondary-bg-hover);
+  }
 }
 .secondary:focus-visible {
   box-shadow: inset 0 0 0 1px var(--component-icon-button-secondary-border), var(--focus-ring);
@@ -38,6 +44,16 @@
   background: var(--component-icon-button-ghost-bg-default);
   color: var(--component-icon-button-ghost-icon);
 }
-.ghost:hover {
-  background: var(--component-icon-button-ghost-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .ghost:hover {
+    background: var(--component-icon-button-ghost-bg-hover);
+  }
+}
+
+
+/* Press feedback — subtle scale, movement only for people who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .base:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 }

@@ -10,10 +10,14 @@
   background: var(--component-step-bg-default);
   box-shadow: inset 0 0 0 1px var(--component-step-border);
   text-align: left;
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
 }
-.step:hover {
-  background: var(--color-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .step:hover {
+    background: var(--color-bg-hover);
+  }
 }
 .step:focus-visible {
   box-shadow: inset 0 0 0 1px var(--component-step-border), var(--focus-ring);
@@ -26,13 +30,25 @@
   font: 400 12px/1.3 var(--font-mono);
   color: var(--component-step-title-default);
 }
-.active,
-.active:hover {
+.active {
   background: var(--component-step-bg-active);
+}
+@media (hover: hover) and (pointer: fine) {
+  .active:hover {
+    background: var(--component-step-bg-active);
+  }
 }
 .active .number {
   color: var(--component-step-number-active);
 }
 .active .title {
   color: var(--component-step-title-active);
+}
+
+
+/* Press feedback — subtle scale, movement only for people who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .step:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 }

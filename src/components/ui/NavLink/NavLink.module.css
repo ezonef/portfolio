@@ -11,11 +11,15 @@
   color: var(--component-nav-link-icon-default);
 }
 
-.link:hover {
-  color: var(--component-nav-link-text-hover);
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    color: var(--component-nav-link-text-hover);
+  }
 }
-.link:hover .caret {
-  color: var(--component-nav-link-icon-hover);
+@media (hover: hover) and (pointer: fine) {
+  .link:hover .caret {
+    color: var(--component-nav-link-icon-hover);
+  }
 }
 
 /* Figma: State=Active — no underline, caret stays down and takes the accent icon colour */

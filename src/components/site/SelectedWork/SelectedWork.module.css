@@ -13,8 +13,10 @@
 .seeAll {
   color: var(--color-text-primary);
 }
-.seeAll:hover {
-  color: var(--color-text-accent);
+@media (hover: hover) and (pointer: fine) {
+  .seeAll:hover {
+    color: var(--color-text-accent);
+  }
 }
 .chips {
   display: flex;

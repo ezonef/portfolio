@@ -62,7 +62,8 @@ export function ContactMenu() {
         Contact
       </NavButton>
 
-      <div id={menuId} className={styles.panel} hidden={!open}>
+      {/* Stays mounted so it can animate out; visibility:hidden removes it from tab order and the a11y tree */}
+      <div id={menuId} className={styles.panel} data-open={open}>
         <div className={styles.head}>
           <span className="mono-label">
             Get in touch <span className={styles.count}>{total}</span>

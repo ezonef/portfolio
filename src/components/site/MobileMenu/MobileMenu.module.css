@@ -13,6 +13,36 @@
   background: var(--color-bg-page);
   color: var(--color-text-primary);
   overflow-y: auto;
+
+  /* Slides in from the right with the iOS drawer curve. display/overlay transition
+     discretely so the closing animation can play before the dialog leaves the top layer. */
+  opacity: 0;
+  transition:
+    transform var(--duration-sheet) var(--ease-drawer),
+    opacity var(--duration-sheet) var(--ease-drawer),
+    overlay var(--duration-sheet) allow-discrete,
+    display var(--duration-sheet) allow-discrete;
+}
+.sheet[open] {
+  opacity: 1;
+}
+@starting-style {
+  .sheet[open] {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheet {
+    transform: translateX(100%);
+  }
+  .sheet[open] {
+    transform: none;
+  }
+  @starting-style {
+    .sheet[open] {
+      transform: translateX(100%);
+    }
+  }
 }
 .sheet::backdrop {
   background: var(--color-bg-scrim);
@@ -34,8 +64,10 @@
   gap: 16px;
   padding-block: 32px;
 }
-.nav > *:hover {
-  color: var(--color-text-accent);
+@media (hover: hover) and (pointer: fine) {
+  .nav > *:hover {
+    color: var(--color-text-accent);
+  }
 }
 .contacts {
   display: flex;

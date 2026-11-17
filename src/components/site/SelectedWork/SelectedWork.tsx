@@ -24,7 +24,9 @@ export function SelectedWork() {
     const track = trackRef.current;
     const card = track?.children[i] as HTMLElement | undefined;
     if (!track || !card) return;
-    track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: "smooth" });
+    // JS smooth scrolling ignores the OS setting, so check it here
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: reduce ? "auto" : "smooth" });
     setIndex(i);
   };
 

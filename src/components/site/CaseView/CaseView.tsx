@@ -85,16 +85,22 @@ export function CaseView({ study, eyebrow, next }: Props) {
       </article>
 
       <aside className={styles.panel} aria-label="Screens">
+        {/* All screens stay mounted and crossfade with a CSS transition, so rapid clicks
+            retarget from the current opacity instead of restarting the fade. */}
         <div className={styles.stage}>
-          <Image
-            key={step.screen + active}
-            src={step.screen}
-            alt={`${study.flowName}, step ${active + 1}: ${step.title}`}
-            fill
-            priority
-            sizes="(max-width: 1024px) 100vw, 60vw"
-            className={styles.screen}
-          />
+          {steps.map((s, i) => (
+            <Image
+              key={i}
+              src={s.screen}
+              alt={i === active ? `${study.flowName}, step ${i + 1}: ${s.title}` : ""}
+              aria-hidden={i !== active}
+              fill
+              priority={i === 0}
+              sizes="(max-width: 1024px) 100vw, 60vw"
+              className={styles.screen}
+              data-active={i === active}
+            />
+          ))}
         </div>
 
         <div className={styles.player}>

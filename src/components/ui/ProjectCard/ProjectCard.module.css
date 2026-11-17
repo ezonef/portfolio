@@ -14,10 +14,13 @@
 }
 .image {
   object-fit: cover;
-  transition: transform 300ms ease;
+  transition: transform var(--duration-zoom) var(--ease-out);
 }
-.card:hover .image {
-  transform: scale(1.03);
+/* Cover zoom: mouse only (touch fires false hovers) and only when motion is allowed */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card:hover .image {
+    transform: scale(1.03);
+  }
 }
 /* Figma: Cover → tags in a row, gap 6 */
 .tags {
@@ -38,8 +41,10 @@
   letter-spacing: -0.6px;
   color: var(--component-project-card-title-default);
 }
-.card:hover .title {
-  color: var(--component-project-card-title-hover);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .title {
+    color: var(--component-project-card-title-hover);
+  }
 }
 .description {
   font: 400 15px/1.5 var(--font-sans);

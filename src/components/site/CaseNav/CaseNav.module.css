@@ -18,10 +18,12 @@
   font-weight: 400;
   color: var(--color-text-tertiary);
 }
-.muted:hover,
-.links a:hover,
-.logo:hover {
-  color: var(--color-icon-accent);
+@media (hover: hover) and (pointer: fine) {
+  .muted:hover,
+  .links a:hover,
+  .logo:hover {
+    color: var(--color-icon-accent);
+  }
 }
 .links {
   display: flex;

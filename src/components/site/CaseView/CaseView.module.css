@@ -79,8 +79,10 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.inline:hover {
-  color: var(--color-icon-accent);
+@media (hover: hover) and (pointer: fine) {
+  .inline:hover {
+    color: var(--color-icon-accent);
+  }
 }
 
 /* Key decisions — rows with a top border, two columns */
@@ -118,8 +120,10 @@
   border-block: 1px solid var(--color-border-strong);
   color: var(--color-text-primary);
 }
-.next:hover :global(.heading-h3) {
-  color: var(--color-icon-accent);
+@media (hover: hover) and (pointer: fine) {
+  .next:hover :global(.heading-h3) {
+    color: var(--color-icon-accent);
+  }
 }
 
 /* Screen panel — sticks under the case nav while the story scrolls */
@@ -137,12 +141,11 @@
 }
 .screen {
   object-fit: cover;
-  animation: fade 200ms ease;
+  opacity: 0;
+  transition: opacity var(--duration-screen) var(--ease-out);
 }
-@keyframes fade {
-  from {
-    opacity: 0.4;
-  }
+.screen[data-active="true"] {
+  opacity: 1;
 }
 /* Hugs its content like in Figma; steps shrink a little when the panel is narrower than 1200 */
 .player {

@@ -76,9 +76,8 @@ ul {
   white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
-  }
-}
+/*
+ * Reduced motion = fewer, gentler animations, not zero.
+ * Movement (transform) is only added inside `@media (prefers-reduced-motion: no-preference)`
+ * in each component; colour and opacity feedback stay for everyone.
+ */

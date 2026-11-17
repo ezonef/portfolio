@@ -13,6 +13,32 @@
   background: var(--color-bg-raised);
   box-shadow: var(--shadow-popover);
   z-index: 30;
+
+  /* Closed: invisible. Exit is quicker than entry; visibility flips after the fade ends. */
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-popover-out) var(--ease-out),
+    transform var(--duration-popover-out) var(--ease-out),
+    visibility 0s linear var(--duration-popover-out);
+}
+.panel[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--duration-popover-in) var(--ease-out),
+    transform var(--duration-popover-in) var(--ease-out),
+    visibility 0s;
+}
+/* Grows out of the "Contact" trigger (369px panel offset + half the trigger), never from scale(0) */
+@media (prefers-reduced-motion: no-preference) {
+  .panel {
+    transform: scale(0.97);
+    transform-origin: 407px 0;
+  }
+  .panel[data-open="true"] {
+    transform: none;
+  }
 }
 /* invisible bridge so the menu doesn't close while the pointer crosses the gap */
 .panel::before {
@@ -82,6 +108,7 @@
     width: auto;
     max-height: calc(100dvh - 80px);
     overflow-y: auto;
+    transform-origin: top center;
   }
   .columns {
     grid-template-columns: 1fr;

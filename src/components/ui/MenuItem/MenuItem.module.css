@@ -5,10 +5,12 @@
   padding: var(--component-menu-item-padding-y) var(--component-menu-item-padding-x);
   border-radius: var(--radius-control);
   background: var(--component-menu-item-bg-default);
-  transition: background-color 120ms ease;
+  transition: background-color var(--duration-hover) ease;
 }
-.item:hover {
-  background: var(--component-menu-item-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .item:hover {
+    background: var(--component-menu-item-bg-hover);
+  }
 }
 
 .tile {

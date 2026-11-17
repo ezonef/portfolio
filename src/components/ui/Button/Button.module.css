@@ -7,7 +7,9 @@
   border-radius: var(--component-button-radius);
   font: 400 13px/1.3 var(--font-mono);
   white-space: nowrap;
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
 }
 
 .m {
@@ -25,8 +27,10 @@
   background: var(--component-button-primary-bg-default);
   color: var(--component-button-primary-text);
 }
-.primary:hover {
-  background: var(--component-button-primary-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .primary:hover {
+    background: var(--component-button-primary-bg-hover);
+  }
 }
 
 .secondary {
@@ -34,27 +38,41 @@
   color: var(--component-button-secondary-text);
   box-shadow: inset 0 0 0 1px var(--component-button-secondary-border);
 }
-.secondary:hover {
-  background: var(--component-button-secondary-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .secondary:hover {
+    background: var(--component-button-secondary-bg-hover);
+  }
 }
 
 .ghost {
   background: var(--component-button-ghost-bg-default);
   color: var(--component-button-ghost-text);
 }
-.ghost:hover {
-  background: var(--component-button-ghost-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .ghost:hover {
+    background: var(--component-button-ghost-bg-hover);
+  }
 }
 
 .inverse {
   background: var(--component-button-inverse-bg-default);
   color: var(--component-button-inverse-text);
 }
-.inverse:hover {
-  background: var(--component-button-inverse-bg-hover);
+@media (hover: hover) and (pointer: fine) {
+  .inverse:hover {
+    background: var(--component-button-inverse-bg-hover);
+  }
 }
 
 /* keep the inset border visible together with the focus ring */
 .secondary:focus-visible {
   box-shadow: inset 0 0 0 1px var(--component-button-secondary-border), var(--focus-ring);
+}
+
+
+/* Press feedback — subtle scale, movement only for people who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .base:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 }
