@@ -1,3 +1,4 @@
+import casesData from "@/content/cases.json";
 import { projects, type Project } from "./projects";
 
 /**
@@ -27,7 +28,8 @@ export type CaseStudy = {
   outcome: string;
 };
 
-const template: CaseStudy = {
+/** Starting point for every new case (the admin copies it). */
+export const caseTemplate: CaseStudy = {
   headline: "[Project] — an admin panel people stop fighting with.",
   lead: "Description",
   role: "Product Designer",
@@ -68,13 +70,11 @@ const template: CaseStudy = {
   outcome: "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]",
 };
 
-/** Per-project overrides. Fill these in as the real cases get written. */
-const cases: Partial<Record<string, Partial<CaseStudy>>> = {
-  "admin-panel": {},
-};
+/** Per-project content, edited through the local admin — stored in src/content/cases.json. */
+const cases = casesData as Partial<Record<string, Partial<CaseStudy>>>;
 
 export function getCase(project: Project): CaseStudy {
-  return { ...template, ...cases[project.slug] };
+  return { ...caseTemplate, ...cases[project.slug] };
 }
 
 /** Next project in the list (wraps around to the first). */
