@@ -46,7 +46,11 @@
 .status[data-kind="error"] {
   color: var(--color-text-primary);
 }
-.status[data-kind="error"]::before {
+.status[data-kind="warn"] {
+  color: var(--color-text-primary);
+}
+.status[data-kind="error"]::before,
+.status[data-kind="warn"]::before {
   content: "✕ ";
 }
 .kbd {
@@ -86,6 +90,95 @@
   flex-direction: column;
   box-shadow: inset 0 1px 0 var(--color-border-subtle);
 }
+/* Row = select button + hover actions on top of it */
+.item {
+  position: relative;
+}
+.item[data-hidden] .row {
+  background: var(--color-bg-muted);
+}
+.item[data-hidden] .rowTitle {
+  color: var(--color-text-tertiary);
+}
+/* One line, always — the row keeps its height when the hover actions squeeze it */
+.rowMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  white-space: nowrap;
+}
+.rowMeta > * {
+  flex-shrink: 0;
+}
+.rowMeta > .rowMetaText {
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowActions {
+  position: absolute;
+  top: 50%;
+  right: var(--space-8);
+  display: flex;
+  gap: var(--space-2);
+  translate: 0 -50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-hover) ease;
+}
+.item:hover .rowActions,
+.item:focus-within .rowActions {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Touch screens have no hover — keep the actions visible */
+@media (hover: none) {
+  .rowActions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+.rowAction {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-control);
+  color: var(--color-icon-primary);
+  background: var(--color-bg-page);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  transition: background-color var(--duration-hover) ease, transform var(--duration-press) var(--ease-out);
+}
+.item[data-hidden] .rowAction {
+  background: var(--color-bg-muted);
+}
+.item[data-current] .rowAction {
+  background: var(--color-bg-inverse);
+  color: var(--color-icon-on-inverse);
+  box-shadow: inset 0 0 0 1px var(--color-border-inverse-subtle);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rowAction:hover {
+    background: var(--color-bg-surface);
+  }
+  .item[data-current] .rowAction:hover {
+    background: var(--color-bg-action-primary-hover);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rowAction:active {
+    transform: scale(0.94);
+  }
+}
+/* The row never changes size on hover: text always keeps room for the actions
+   and stays on one line (title and meta both end in "…"). */
+.rowText {
+  padding-right: 72px;
+}
+
 .row {
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr);
@@ -112,6 +205,13 @@
   flex-direction: column;
   gap: var(--space-4);
   min-width: 0;
+}
+.hiddenNote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+  color: var(--color-text-secondary);
 }
 .rowTitle {
   overflow: hidden;
@@ -140,8 +240,40 @@
   justify-content: space-between;
   gap: var(--space-24);
 }
-.editorHead h1 {
+.editorHead > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+/* Editable title: no box, no fill — states are a 1px bottom border only */
+.titleWrap {
+  margin: 0;
+}
+.titleInput {
+  display: block;
+  width: 100%;
+  padding: 0 0 var(--space-4);
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-text-primary);
+  resize: none;
+  overflow: hidden;
   overflow-wrap: anywhere;
+  caret-color: var(--component-search-field-caret);
+  box-shadow: inset 0 -1px 0 transparent;
+  transition: box-shadow var(--duration-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .titleInput:hover {
+    box-shadow: inset 0 -1px 0 var(--color-border-subtle);
+  }
+}
+.titleInput:focus-visible {
+  box-shadow: inset 0 -1px 0 var(--color-border-strong);
+}
+.titleInput::placeholder {
+  color: var(--color-text-tertiary);
 }
 .eyebrow {
   margin-bottom: var(--space-16);
@@ -149,6 +281,8 @@
 }
 .headActions {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: var(--space-4);
   flex-shrink: 0;
 }
@@ -241,61 +375,66 @@
   color: var(--component-search-field-placeholder);
 }
 
+.textarea {
+  min-height: var(--size-control-m);
+  padding-block: 11px;
+  resize: none;
+  overflow: hidden;
+}
+
+/* 1 — Card / Case page: two big Steps, like the process page */
+.viewSwitch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+.viewSwitch > button {
+  width: 100%;
+}
+
+/* 2 — Intro & outcome | screens + "+": one horizontal row of the case player's Steps, scrolls sideways when long.
+   The bottom padding is room for the hover menu under a tab; the negative margin keeps the layout as it was. */
+.caseTabs {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  gap: var(--space-6);
+  margin-top: calc(var(--space-32) * -1);
+  margin-bottom: -44px;
+  padding-bottom: 44px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  pointer-events: none;
+}
+.caseTabs > * {
+  pointer-events: auto;
+}
+.tabGroup > button:not(.addTab),
+.tabItem > button {
+  flex: 0 0 132px;
+  width: 132px;
+}
+.addTab {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  align-self: stretch;
+  min-height: 40px;
+  color: var(--color-text-primary);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  transition: background-color var(--duration-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .addTab:hover {
+    background: var(--color-bg-hover);
+  }
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-8);
-}
-
-/* steps */
-.steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.step {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-  padding: var(--space-16) var(--space-20) var(--space-20);
-  background: var(--color-bg-raised);
-  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
-}
-.stepHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--color-text-secondary);
-}
-.stepBody {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: var(--space-20);
-}
-.stepFields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-16);
-  align-content: start;
-}
-
-/* decisions */
-.decisions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-.decision {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-  align-items: end;
-  gap: var(--space-16);
-}
-.decisionDelete {
-  margin-bottom: var(--space-4);
 }
 
 .empty {
@@ -319,9 +458,6 @@
     position: static;
     max-height: none;
   }
-  .stepBody {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 @media (max-width: 640px) {
   .barInner {
@@ -329,20 +465,297 @@
     flex-wrap: wrap;
     padding-block: var(--space-12);
   }
-  .grid,
-  .stepFields {
+  .grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .decision {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-  .decision > :first-child {
-    grid-column: 1 / -1;
   }
   .sectionHead {
     flex-direction: column;
   }
   .note {
     text-align: left;
+  }
+}
+
+/* Long screen titles stay on one line inside a tab */
+.tabGroup > button > span:last-child,
+.tabItem > button > span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Intro · Outcome | screens */
+.tabsDivider {
+  flex-shrink: 0;
+  width: 1px;
+  height: 60px;
+  margin-inline: var(--space-6);
+  background: var(--color-border-strong);
+}
+
+.tabGroup {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  gap: var(--space-6);
+}
+.addTab {
+  height: 60px;
+}
+
+/* Toggle switch — 36×20 track, ink when on; the thumb slides */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-10);
+  align-self: flex-start;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.track {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--color-bg-muted);
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  transition: background-color var(--duration-hover) ease;
+}
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-text-primary);
+  transition: transform 180ms var(--ease-out), background-color var(--duration-hover) ease;
+}
+.switch input:checked + .track {
+  background: var(--color-bg-inverse);
+}
+.switch input:checked + .track .thumb {
+  background: var(--color-bg-surface);
+  transform: translateX(16px);
+}
+.switch input:focus-visible + .track {
+  box-shadow: inset 0 0 0 1px var(--color-border-strong), var(--focus-ring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .switch:hover input:not(:checked) + .track {
+    background: var(--color-bg-hover);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: background-color var(--duration-hover) ease;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  min-width: 0;
+}
+
+/* ---------- screen tab: draggable, hover menu underneath ---------- */
+.tabItem {
+  position: relative;
+  flex-shrink: 0;
+  cursor: grab;
+}
+.tabItem[data-hidden] > button {
+  opacity: 0.5;
+}
+.tabMenu {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 0;
+  display: flex;
+  gap: var(--space-2);
+  /* transparent padding bridges the gap, so the pointer can travel from tab to menu */
+  padding-top: var(--space-4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-hover) ease;
+}
+.tabItem:hover .tabMenu,
+.tabItem:focus-within .tabMenu {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (hover: none) {
+  .tabItem .tabMenu { opacity: 1; pointer-events: auto; }
+}
+.tabMenuBtn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  color: var(--color-icon-primary);
+  transition: background-color var(--duration-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tabMenuBtn:hover {
+    background: var(--color-bg-hover);
+  }
+}
+
+/* ---------- drag and drop ---------- */
+.item[data-dragging],
+.tabItem[data-dragging] {
+  opacity: 0.4;
+}
+.item[data-drop]::before,
+.tabItem[data-drop]::before {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  background: var(--color-border-strong);
+  pointer-events: none;
+}
+.item[data-drop]::before {
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+.item[data-drop="before"]::before { top: -1px; }
+.item[data-drop="after"]::before { bottom: -1px; }
+.tabItem[data-drop]::before {
+  top: 0;
+  width: 2px;
+  height: 60px;
+}
+.tabItem[data-drop="before"]::before { left: -4px; }
+.tabItem[data-drop="after"]::before { right: -4px; }
+.item {
+  cursor: grab;
+}
+
+/* ---------- drafts ---------- */
+.draftMark {
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px currentColor;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+/* ---------- save bar: bottom of the window ---------- */
+.app[data-bar] {
+  --admin-bar-height: 64px;
+  padding-bottom: var(--admin-bar-height);
+}
+.saveBar {
+  position: fixed;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--component-site-header-bg);
+  animation: bar-in var(--duration-popover-in) var(--ease-out);
+}
+@keyframes bar-in {
+  from { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saveBar { animation: none; }
+}
+.saveInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  max-width: 1440px;
+  height: 64px;
+  margin-inline: auto;
+  padding-inline: var(--space-40);
+}
+.saveActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+@media (max-width: 960px) {
+  .saveInner {
+    padding-inline: var(--space-20);
+  }
+}
+
+/* Fixed row height — nothing inside can grow it (Safari included) */
+.row {
+  height: 68px;
+  overflow: hidden;
+}
+.rowText {
+  overflow: hidden;
+}
+.rowMeta {
+  height: 16px;
+  overflow: hidden;
+}
+
+/* Selected always looks selected — hidden and draft cases too: black fill, light text.
+   (Hidden still shows in the meta line with the crossed-out eye.) */
+.item[data-hidden][data-current] .row {
+  background: var(--component-step-bg-active);
+  color: var(--component-step-number-active);
+}
+.item[data-hidden][data-current] .rowTitle {
+  color: var(--component-step-title-active);
+}
+.item[data-hidden][data-current] .rowAction {
+  background: var(--color-bg-inverse);
+  color: var(--color-icon-on-inverse);
+  box-shadow: inset 0 0 0 1px var(--color-border-inverse-subtle);
+}
+@media (hover: hover) and (pointer: fine) {
+  .item[data-hidden][data-current] .rowAction:hover {
+    background: var(--color-bg-action-primary-hover);
+  }
+}
+
+/* ---------- header nav: Cases · Changelog ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-24);
+  margin-right: auto;
+  margin-left: var(--space-40);
+}
+/* Waiting-for-approval count next to "Changelog" — plain text, like "Cases (03)" */
+.navCount {
+  margin-left: var(--space-4);
+  color: var(--color-text-tertiary);
+}
+.single {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: var(--space-40) var(--space-40) var(--space-128);
+}
+@media (max-width: 960px) {
+  .single {
+    padding-inline: var(--space-20);
+  }
+  .nav {
+    margin-left: var(--space-16);
   }
 }

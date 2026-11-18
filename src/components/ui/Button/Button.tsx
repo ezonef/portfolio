@@ -2,7 +2,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { Icon, type IconName } from "../Icon/Icon";
 import styles from "./Button.module.css";
 
-export type ButtonType = "primary" | "secondary" | "ghost" | "inverse";
+export type ButtonType = "primary" | "secondary" | "ghost" | "inverse" | "soft";
 export type ButtonSize = "m" | "s";
 
 type Common = {

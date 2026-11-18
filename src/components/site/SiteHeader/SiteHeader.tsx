@@ -3,9 +3,10 @@ import { NavLink } from "@/components/ui/NavLink/NavLink";
 import { site } from "@/data/site";
 import { ContactMenu } from "../ContactMenu/ContactMenu";
 import { MobileMenu } from "../MobileMenu/MobileMenu";
+import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import styles from "./SiteHeader.module.css";
 
-type Page = "home" | "projects" | "process";
+type Page = "home" | "projects" | "process" | "changelog";
 
 /** SiteHeader pattern: logo, nav (Contact opens the menu), status. */
 export function SiteHeader({ current = "home" }: { current?: Page }) {
@@ -23,14 +24,20 @@ export function SiteHeader({ current = "home" }: { current?: Page }) {
           <NavLink href="/process" active={current === "process"}>
             My design process
           </NavLink>
+          <NavLink href="/changelog" active={current === "changelog"}>
+            Changelog
+          </NavLink>
           <NavLink href="/cv.pdf">CV.pdf</NavLink>
           <ContactMenu />
         </nav>
 
-        <p className={styles.status}>
-          <span className={styles.dot} aria-hidden />
-          {site.status}
-        </p>
+        <div className={styles.end}>
+          <p className={styles.status}>
+            <span className={styles.dot} aria-hidden />
+            {site.status}
+          </p>
+          <ThemeToggle />
+        </div>
 
         <MobileMenu />
       </div>

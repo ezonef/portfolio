@@ -22,6 +22,12 @@
   --stone-900: #2a2a28;
   --stone-950: #111111;
   --stone-1000: #0e0e0e;
+  /* dark-theme surfaces */
+  --stone-400: #b3b2ab;
+  --stone-850: #242422;
+  --stone-925: #1b1b19;
+  --stone-975: #141413;
+  --stone-1050: #0a0a09;
   --alpha-ink-70: rgb(14 14 14 / 70%);
   --alpha-transparent: transparent;
 
@@ -72,6 +78,8 @@
   --color-bg-action-ghost-hover: var(--stone-200);
   --color-bg-action-inverse-default: var(--stone-100);
   --color-bg-action-inverse-hover: var(--white);
+  --color-bg-action-soft-default: var(--stone-200);
+  --color-bg-action-soft-hover: var(--stone-250);
 
   --color-text-primary: var(--stone-950);
   --color-text-secondary: var(--stone-750);
@@ -144,6 +152,10 @@
   --component-button-inverse-bg-hover: var(--color-bg-action-inverse-hover);
   --component-button-inverse-text: var(--color-text-primary);
   --component-button-inverse-icon: var(--color-icon-primary);
+  /* Soft: gray fill, no border. Dark surfaces (toast) override the two bg tokens. */
+  --component-button-soft-bg-default: var(--color-bg-action-soft-default);
+  --component-button-soft-bg-hover: var(--color-bg-action-soft-hover);
+  --component-button-soft-text: var(--color-text-primary);
   --component-button-height-m: var(--size-control-m);
   --component-button-height-s: var(--size-control-s);
   --component-button-padding-x-m: var(--spacing-control-m-x);
@@ -293,4 +305,137 @@
   --duration-screen: 250ms; /* case screen crossfade */
   --duration-zoom: 300ms; /* cover zoom on card hover */
   --duration-sheet: 400ms; /* full-screen mobile menu */
+}
+
+/*
+ * Dark theme — only the semantic colours change; every component follows through its tokens.
+ * Follows the system setting; the header toggle pins a choice with data-theme on <html>.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-bg-page: var(--stone-975);
+    --color-bg-raised: var(--stone-925);
+    --color-bg-surface: var(--stone-925);
+    --color-bg-muted: var(--stone-850);
+    --color-bg-hover: var(--stone-850);
+    --color-bg-selected: var(--stone-100);
+    --color-bg-inverse: var(--stone-100);
+    --color-bg-inverse-deep: var(--stone-1050);
+    --color-bg-scrim: rgb(0 0 0 / 72%);
+    --color-bg-accent: var(--stone-100);
+    --color-bg-accent-subtle: var(--stone-850);
+    --color-bg-action-primary-default: var(--stone-100);
+    --color-bg-action-primary-hover: var(--white);
+    --color-bg-action-secondary-hover: var(--stone-850);
+    --color-bg-action-ghost-hover: var(--stone-850);
+    --color-bg-action-inverse-default: var(--stone-100);
+    --color-bg-action-inverse-hover: var(--white);
+    --color-bg-action-soft-default: var(--stone-850);
+    --color-bg-action-soft-hover: var(--stone-800);
+
+    --color-text-primary: var(--stone-100);
+    --color-text-secondary: var(--stone-400);
+    --color-text-tertiary: var(--stone-550);
+    --color-text-on-inverse: var(--stone-950);
+    --color-text-on-inverse-muted: var(--stone-700);
+    --color-text-accent: var(--stone-100);
+    --color-text-on-accent: var(--stone-950);
+
+    --color-icon-primary: var(--stone-100);
+    --color-icon-on-inverse: var(--stone-950);
+    --color-icon-accent: var(--stone-100);
+
+    --color-border-strong: var(--stone-100);
+    --color-border-subtle: var(--stone-800);
+    --color-border-inverse-subtle: var(--stone-300);
+    --color-border-accent: var(--stone-100);
+    --color-border-on-inverse: var(--stone-950);
+
+    --color-status-active-bg: var(--stone-500);
+    --color-status-active-text: var(--stone-950);
+    --color-status-pending-text: var(--stone-100);
+    --color-status-pending-border: var(--stone-100);
+    --color-status-blocked-bg: var(--stone-100);
+    --color-status-blocked-text: var(--stone-950);
+
+    /* The footer stays a dark band in both themes: deeper than the page, light text */
+    --component-site-footer-bg: var(--stone-1050);
+    --component-site-footer-heading: var(--stone-100);
+    --component-site-footer-heading-muted: var(--stone-500);
+    --component-site-footer-link: var(--stone-100);
+    --component-site-footer-label: var(--stone-500);
+    --component-site-footer-border: var(--stone-900);
+    /* Inverse button lives on the footer band — keep it light with dark text */
+    --component-button-inverse-text: var(--stone-950);
+    --component-button-inverse-icon: var(--stone-950);
+
+    --shadow-popover:
+      0 14px 32px rgb(0 0 0 / 40%),
+      0 58px 58px rgb(0 0 0 / 25%);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg-page: var(--stone-975);
+  --color-bg-raised: var(--stone-925);
+  --color-bg-surface: var(--stone-925);
+  --color-bg-muted: var(--stone-850);
+  --color-bg-hover: var(--stone-850);
+  --color-bg-selected: var(--stone-100);
+  --color-bg-inverse: var(--stone-100);
+  --color-bg-inverse-deep: var(--stone-1050);
+  --color-bg-scrim: rgb(0 0 0 / 72%);
+  --color-bg-accent: var(--stone-100);
+  --color-bg-accent-subtle: var(--stone-850);
+  --color-bg-action-primary-default: var(--stone-100);
+  --color-bg-action-primary-hover: var(--white);
+  --color-bg-action-secondary-hover: var(--stone-850);
+  --color-bg-action-ghost-hover: var(--stone-850);
+  --color-bg-action-inverse-default: var(--stone-100);
+  --color-bg-action-inverse-hover: var(--white);
+  --color-bg-action-soft-default: var(--stone-850);
+  --color-bg-action-soft-hover: var(--stone-800);
+
+  --color-text-primary: var(--stone-100);
+  --color-text-secondary: var(--stone-400);
+  --color-text-tertiary: var(--stone-550);
+  --color-text-on-inverse: var(--stone-950);
+  --color-text-on-inverse-muted: var(--stone-700);
+  --color-text-accent: var(--stone-100);
+  --color-text-on-accent: var(--stone-950);
+
+  --color-icon-primary: var(--stone-100);
+  --color-icon-on-inverse: var(--stone-950);
+  --color-icon-accent: var(--stone-100);
+
+  --color-border-strong: var(--stone-100);
+  --color-border-subtle: var(--stone-800);
+  --color-border-inverse-subtle: var(--stone-300);
+  --color-border-accent: var(--stone-100);
+  --color-border-on-inverse: var(--stone-950);
+
+  --color-status-active-bg: var(--stone-500);
+  --color-status-active-text: var(--stone-950);
+  --color-status-pending-text: var(--stone-100);
+  --color-status-pending-border: var(--stone-100);
+  --color-status-blocked-bg: var(--stone-100);
+  --color-status-blocked-text: var(--stone-950);
+
+  /* The footer stays a dark band in both themes: deeper than the page, light text */
+  --component-site-footer-bg: var(--stone-1050);
+  --component-site-footer-heading: var(--stone-100);
+  --component-site-footer-heading-muted: var(--stone-500);
+  --component-site-footer-link: var(--stone-100);
+  --component-site-footer-label: var(--stone-500);
+  --component-site-footer-border: var(--stone-900);
+  /* Inverse button lives on the footer band — keep it light with dark text */
+  --component-button-inverse-text: var(--stone-950);
+  --component-button-inverse-icon: var(--stone-950);
+
+  --shadow-popover:
+    0 14px 32px rgb(0 0 0 / 40%),
+    0 58px 58px rgb(0 0 0 / 25%);
 }

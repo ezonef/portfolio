@@ -10,10 +10,18 @@ type Props = {
   value: string;
   onChange: (src: string) => void;
   compact?: boolean;
+  /** Show the image centred on this backdrop, like the case page does */
+  backdrop?: string;
+  /** Show the image centred (contain) even without a backdrop — for screens */
+  framed?: boolean;
+  /** Adds a "Remove" button under the drop */
+  onClear?: () => void;
+  /** Text when empty */
+  emptyText?: string;
 };
 
 /** Drop, paste or pick an image — it's copied to public/images/cases/<slug>/ and the path is set. */
-export function ImageDrop({ slug, value, onChange, compact }: Props) {
+export function ImageDrop({ slug, value, onChange, compact, backdrop, framed, onClear, emptyText = "Drop, paste or click" }: Props) {
   const input = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -59,15 +67,24 @@ export function ImageDrop({ slug, value, onChange, compact }: Props) {
         onPaste={(e) => void upload(e.clipboardData.files[0])}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- local preview of a just-uploaded file */}
-        {value && <img src={value} alt="" className={styles.preview} />}
+        {backdrop && <img src={backdrop} alt="" className={styles.preview} />}
+        {/* eslint-disable-next-line @next/next/no-img-element -- local preview */}
+        {value && <img src={value} alt="" className={backdrop || framed ? styles.shot : styles.preview} />}
         <span className={`mono-s ${styles.overlay}`}>
           <Icon name="upload" />
-          {busy ? "Uploading…" : "Drop, paste or click"}
+          {busy ? "Uploading…" : emptyText}
         </span>
       </button>
-      <p className={`mono-xs ${styles.path}`} data-error={error ? true : undefined}>
-        {error ?? value}
-      </p>
+      <div className={styles.foot}>
+        <p className={`mono-xs ${styles.path}`} data-error={error ? true : undefined}>
+          {error ?? value}
+        </p>
+        {onClear && value && (
+          <button type="button" className={`mono-xs ${styles.clear}`} onClick={onClear}>
+            Remove
+          </button>
+        )}
+      </div>
       <input
         ref={input}
         type="file"

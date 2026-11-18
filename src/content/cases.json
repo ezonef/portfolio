@@ -1,1 +1,354 @@
-{}
+{
+  "design-system": {
+    "headline": "[Project] — an admin panel people stop fighting with.",
+    "lead": "Description1231231231",
+    "role": "Product Designer",
+    "story": [
+      {
+        "id": "b95d2ca2235",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "b92b336fd27",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "beabecba85d",
+        "type": "text",
+        "text": "[What hurt users or the business. Example shape: finding one record meant opening a hidden filter panel and losing the list.]"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Find",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "status chips",
+        "body": [
+          {
+            "id": "bmwmhek8w0phyl",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "title": "Review",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "side drawer",
+        "body": [
+          {
+            "id": "bcb00f4d0b8",
+            "type": "text",
+            "text": "A row opens in a [[side drawer]], so the list stays in view. The main action — [[Approve]] — sits at the bottom where the thumb and eye end up."
+          }
+        ]
+      },
+      {
+        "title": "Act",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "bulk bar",
+        "body": [
+          {
+            "id": "b13bb7e8923",
+            "type": "text",
+            "text": "Operators [[tick several rows]] and a [[bulk bar]] appears with one status change for all of them."
+          }
+        ]
+      },
+      {
+        "title": "Track",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "activity log",
+        "body": [
+          {
+            "id": "b724c582989",
+            "type": "text",
+            "text": "Every change lands in the [[activity log]] with who did it and when. Updated rows [[turn Active]] in place — no reload."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "b26bd296528",
+        "type": "h2",
+        "text": "Outcome"
+      },
+      {
+        "id": "b0384b16de8",
+        "type": "text",
+        "text": "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]"
+      }
+    ]
+  },
+  "new-case-2": {
+    "headline": "[Project] — an admin panel people stop fighting with.",
+    "lead": "Description",
+    "role": "Product Designer",
+    "story": [
+      {
+        "id": "t-context",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "t-problem-label",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "t-problem",
+        "type": "text",
+        "text": "[What hurt users or the business. Example shape: finding one record meant opening a hidden filter panel and losing the list.]"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Find",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "status chips",
+        "body": [
+          {
+            "id": "t-s1",
+            "type": "text",
+            "text": "Status filters live as [[chips above the table]], not behind a button. One click and the [[table]] keeps only matching rows."
+          }
+        ]
+      },
+      {
+        "title": "Review",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "side drawer",
+        "body": [
+          {
+            "id": "t-s2",
+            "type": "text",
+            "text": "A row opens in a [[side drawer]], so the list stays in view. The main action — [[Approve]] — sits at the bottom where the thumb and eye end up."
+          }
+        ]
+      },
+      {
+        "title": "Act",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "bulk bar",
+        "body": [
+          {
+            "id": "t-s3",
+            "type": "text",
+            "text": "Operators [[tick several rows]] and a [[bulk bar]] appears with one status change for all of them."
+          }
+        ]
+      },
+      {
+        "title": "Track",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "activity log",
+        "body": [
+          {
+            "id": "t-s4",
+            "type": "text",
+            "text": "Every change lands in the [[activity log]] with who did it and when. Updated rows [[turn Active]] in place — no reload."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "t-outcome",
+        "type": "h2",
+        "text": "Outcome"
+      },
+      {
+        "id": "t-outcome-text",
+        "type": "text",
+        "text": "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]"
+      }
+    ]
+  },
+  "new-case-3": {
+    "headline": "[Project] — an admin panel people stop fighting with.",
+    "lead": "Description",
+    "role": "Product Designer",
+    "story": [
+      {
+        "id": "t-context",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "t-problem-label",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "t-problem",
+        "type": "text",
+        "text": "[What hurt users or the business. Example shape: finding one record meant opening a hidden filter panel and losing the list.]"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Find",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "status chips",
+        "body": [
+          {
+            "id": "t-s1",
+            "type": "text",
+            "text": "Status filters live as [[chips above the table]], not behind a button. One click and the [[table]] keeps only matching rows."
+          }
+        ]
+      },
+      {
+        "title": "Review",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "side drawer",
+        "body": [
+          {
+            "id": "t-s2",
+            "type": "text",
+            "text": "A row opens in a [[side drawer]], so the list stays in view. The main action — [[Approve]] — sits at the bottom where the thumb and eye end up."
+          }
+        ]
+      },
+      {
+        "title": "Act",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "bulk bar",
+        "body": [
+          {
+            "id": "t-s3",
+            "type": "text",
+            "text": "Operators [[tick several rows]] and a [[bulk bar]] appears with one status change for all of them."
+          }
+        ]
+      },
+      {
+        "title": "Track",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "activity log",
+        "body": [
+          {
+            "id": "t-s4",
+            "type": "text",
+            "text": "Every change lands in the [[activity log]] with who did it and when. Updated rows [[turn Active]] in place — no reload."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "t-outcome",
+        "type": "h2",
+        "text": "Outcome"
+      },
+      {
+        "id": "t-outcome-text",
+        "type": "text",
+        "text": "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]"
+      }
+    ]
+  },
+  "new-case-4": {
+    "headline": "[Project] — an admin panel people stop fighting with.",
+    "lead": "Description",
+    "role": "Product Designer",
+    "story": [
+      {
+        "id": "t-context",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "t-problem-label",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "t-problem",
+        "type": "text",
+        "text": "[What hurt users or the business. Example shape: finding one record meant opening a hidden filter panel and losing the list.]"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Find",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "status chips",
+        "body": [
+          {
+            "id": "t-s1",
+            "type": "text",
+            "text": "Status filters live as [[chips above the table]], not behind a button. One click and the [[table]] keeps only matching rows."
+          }
+        ]
+      },
+      {
+        "title": "Review",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "side drawer",
+        "body": [
+          {
+            "id": "t-s2",
+            "type": "text",
+            "text": "A row opens in a [[side drawer]], so the list stays in view. The main action — [[Approve]] — sits at the bottom where the thumb and eye end up."
+          }
+        ]
+      },
+      {
+        "title": "Act",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "bulk bar",
+        "body": [
+          {
+            "id": "t-s3",
+            "type": "text",
+            "text": "Operators [[tick several rows]] and a [[bulk bar]] appears with one status change for all of them."
+          }
+        ]
+      },
+      {
+        "title": "Track",
+        "screen": "/images/cover-photo.jpg",
+        "backdrop": "",
+        "hint": "activity log",
+        "body": [
+          {
+            "id": "t-s4",
+            "type": "text",
+            "text": "Every change lands in the [[activity log]] with who did it and when. Updated rows [[turn Active]] in place — no reload."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "t-outcome",
+        "type": "h2",
+        "text": "Outcome"
+      },
+      {
+        "id": "t-outcome-text",
+        "type": "text",
+        "text": "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]"
+      }
+    ]
+  }
+}

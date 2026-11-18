@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Chip } from "@/components/ui/Chip/Chip";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
-import { categoryLabel, filterProjects, projectFilters, type ProjectFilter } from "@/data/projects";
+import { filterProjects, leadTag, projectFilters, type ProjectFilter } from "@/data/projects";
 import styles from "./ProjectsBrowser.module.css";
 
 /** Figma: All projects → Toolbar (filter chips) + Project grid. */
@@ -19,7 +19,6 @@ export function ProjectsBrowser() {
             <Chip
               key={f.id}
               appearance="soft"
-              icon={f.icon}
               selected={filter === f.id}
               count={f.id === "all" ? filterProjects("all").length : undefined}
               onClick={() => setFilter(f.id)}
@@ -36,11 +35,11 @@ export function ProjectsBrowser() {
             key={p.slug}
             href={`/projects/${p.slug}`}
             cover={p.cover}
-            category={categoryLabel[p.category]}
+            tag={leadTag(p)}
             number={p.number}
             title={p.title}
             description={p.description}
-            more={p.tags.length}
+            more={Math.max(0, p.tags.length - 1)}
           />
         ))}
         {list.length === 0 && <p className="body-m">No projects with this tag yet.</p>}

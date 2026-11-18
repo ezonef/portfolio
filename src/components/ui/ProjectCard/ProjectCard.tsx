@@ -6,23 +6,24 @@ import styles from "./ProjectCard.module.css";
 export type ProjectCardProps = {
   href: string;
   cover: string;
-  category: string;
+  /** First tag of the case */
+  tag?: string;
   number: string;
   title: string;
   /** Figma: Show description */
   description?: string;
-  /** Extra tags — shown as a "+N" tag after Category and Number */
+  /** Extra tags — shown as a "+N" tag after the first tag and Number */
   more?: number;
 };
 
-/** Figma: ProjectCard — photo cover with Category + Number + "+N" tags (Tone=Muted), title, description. */
-export function ProjectCard({ href, cover, category, number, title, description, more }: ProjectCardProps) {
+/** Figma: ProjectCard — photo cover with Tag + Number + "+N" tags (Tone=Muted), title, description. */
+export function ProjectCard({ href, cover, tag, number, title, description, more }: ProjectCardProps) {
   return (
     <Link href={href} className={styles.card}>
       <div className={styles.cover}>
         <Image src={cover} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" className={styles.image} />
         <div className={styles.tags}>
-          <Tag tone="muted">{category}</Tag>
+          {tag && <Tag tone="muted">{tag}</Tag>}
           <Tag tone="muted">{number}</Tag>
           {!!more && <Tag tone="muted">+{more}</Tag>}
         </div>

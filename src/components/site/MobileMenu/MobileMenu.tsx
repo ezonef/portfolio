@@ -47,6 +47,9 @@ export function MobileMenu() {
           <Link href="/process" className="heading-h2" onClick={() => setOpen(false)}>
             My design process
           </Link>
+          <Link href="/changelog" className="heading-h2" onClick={() => setOpen(false)}>
+            Changelog
+          </Link>
           <a href="/cv.pdf" className="heading-h2">
             CV.pdf
           </a>

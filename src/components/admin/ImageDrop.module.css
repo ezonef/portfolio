@@ -35,6 +35,16 @@
   object-fit: cover;
 }
 
+/* Screen centred on the cover, same inset as the case page */
+.shot {
+  position: absolute;
+  inset: 7%;
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgb(0 0 0 / 22%));
+}
+
 /* Hint sits on a solid pill so it reads on any screenshot */
 .overlay {
   position: relative;
@@ -48,7 +58,7 @@
   opacity: 0;
   transition: opacity var(--duration-hover) ease;
 }
-.drop:not(:has(.preview)) .overlay,
+.drop:not(:has(.preview, .shot)) .overlay,
 .drop[data-over] .overlay,
 .drop[data-busy] .overlay,
 .drop:focus-visible .overlay {
@@ -72,4 +82,26 @@
 }
 .path[data-error]::before {
   content: "✕ ";
+}
+
+.foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  min-width: 0;
+}
+.foot .path {
+  min-width: 0;
+}
+.clear {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .clear:hover {
+    color: var(--color-text-primary);
+  }
 }

@@ -19,6 +19,14 @@
 .title {
   color: var(--color-text-primary);
 }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
 .lead {
   margin-top: 24px;
 }
@@ -36,79 +44,16 @@
   margin: 0;
   color: var(--color-text-primary);
 }
-.section {
+/* Story blocks start where the old "Context" section did */
+.storyBlocks {
   margin-top: 72px;
-  margin-bottom: 24px;
-  color: var(--color-text-primary);
 }
-.problem {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 8px;
-}
-.problem :global(.mono-label),
-.decision :global(.mono-label),
 .cell dt {
   color: var(--color-text-tertiary);
 }
 
-/* Flow steps — Figma: top border subtle, padding 24, head gap 16 */
-.flow {
-  margin-top: 160px;
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-.flowStep {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-block: 24px;
-  border-top: 1px solid var(--color-border-subtle);
-}
-.flowHead {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  color: var(--color-text-primary);
-}
-.flowNumber {
-  color: var(--color-text-secondary);
-}
-.inline {
-  color: var(--color-text-primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .inline:hover {
-    text-decoration-thickness: 2px;
-  }
-}
-
-/* Key decisions — rows with a top border, two columns */
-.decisions {
-  display: flex;
-  flex-direction: column;
-  margin-top: -16px;
-}
-.decision {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding-block: 16px;
-  border-top: 1px solid var(--color-border-subtle);
-}
-.decision > div {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.chose {
-  color: var(--color-text-primary);
-}
-
-.outcome {
-  max-width: 616px;
+.outcomeBlocks {
+  margin-top: 72px;
 }
 
 .next {
@@ -140,13 +85,27 @@
   background: var(--color-bg-muted);
   overflow: hidden;
 }
-.screen {
-  object-fit: cover;
+/* One layer per screen: its own background (if any) + the screen centred on it.
+   Layers crossfade with a CSS transition, so rapid clicks retarget instead of restarting. */
+.layer {
+  position: absolute;
+  inset: 0;
   opacity: 0;
   transition: opacity var(--duration-screen) var(--ease-out);
 }
-.screen[data-active="true"] {
+.layer[data-active="true"] {
   opacity: 1;
+}
+.backdrop {
+  object-fit: cover;
+}
+.screens {
+  position: absolute;
+  inset: 7%;
+}
+.screen {
+  object-fit: contain;
+  filter: drop-shadow(0 18px 40px rgb(0 0 0 / 22%));
 }
 /* Hugs its content like in Figma; steps shrink a little when the panel is narrower than 1200 */
 .player {
@@ -178,6 +137,11 @@
 .hint {
   color: var(--color-text-primary);
 }
+/* Description of the current screen, under its caption */
+.describe {
+  max-width: 616px;
+  padding: 4px 40px 24px;
+}
 
 @media (max-width: 1024px) {
   .body {
@@ -197,7 +161,8 @@
     padding-top: 48px;
   }
   .player,
-  .caption {
+  .caption,
+  .describe {
     padding-inline: 20px;
   }
   .player {
@@ -207,9 +172,6 @@
   }
   .player > button:not([aria-label]) {
     flex: 0 0 120px;
-  }
-  .flow {
-    margin-top: 72px;
   }
 }
 
@@ -228,15 +190,9 @@
   .meta {
     margin-top: 32px;
   }
-  .section {
+  .storyBlocks,
+  .outcomeBlocks {
     margin-top: 56px;
-  }
-  .flow {
-    margin-top: 56px;
-  }
-  .decision {
-    grid-template-columns: 1fr;
-    gap: 12px;
   }
   .next {
     margin-top: 56px;

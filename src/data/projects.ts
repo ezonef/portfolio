@@ -1,58 +1,35 @@
-import type { IconName } from "@/components/ui/Icon/Icon";
 import projectsData from "@/content/projects.json";
 
-export type ProjectCategory = "admin" | "ds" | "mobile";
+export * from "./project-meta";
+import type { Project } from "./project-meta";
 
-export type Project = {
-  slug: string;
-  number: string;
-  title: string;
-  description: string;
-  company: string;
-  years: string;
-  category: ProjectCategory;
-  recent: boolean;
-  cover: string;
-  /** UI topics the case covers — used by the Onboarding / Drawer chips. [Edit to match real cases] */
-  topics: ProjectTopic[];
-  /** Extra tags — the card shows their count as "+N". [Edit to match real cases] */
-  tags: string[];
-};
+/**
+ * Edited through the local admin (npm run admin) — stored in src/content/projects.json.
+ * The site sees only published, visible cases, numbered 01, 02… in list order.
+ */
+export const projects: Project[] = (projectsData as Project[])
+  .filter((p) => !p.hidden && !p.draft)
+  .map((p, i) => ({ ...p, number: String(i + 1).padStart(2, "0") }));
 
-export type ProjectTopic = "onboarding" | "drawer";
+/** "all" or a tag. */
+export type ProjectFilter = string;
 
-export const categoryLabel: Record<ProjectCategory, string> = {
-  admin: "Admin & internal",
-  ds: "Design system",
-  mobile: "Mobile",
-};
+/** Filter chips: All + every tag used by a visible case, most used first (ties keep list order). */
+export const projectFilters: { id: ProjectFilter; label: string }[] = (() => {
+  const count = new Map<string, number>();
+  for (const p of projects) for (const t of new Set(p.tags)) count.set(t, (count.get(t) ?? 0) + 1);
+  const tags = [...count.keys()].sort((a, b) => count.get(b)! - count.get(a)!);
+  return [{ id: "all", label: "All" }, ...tags.map((t) => ({ id: t, label: t }))];
+})();
 
-/** Long form for the case eyebrow: "/ case 01 — admin & internal tools" */
-export const categoryLong: Record<ProjectCategory, string> = {
-  admin: "admin & internal tools",
-  ds: "design systems",
-  mobile: "mobile apps",
-};
-
-/** Edited through the local admin (npm run admin) — stored in src/content/projects.json. */
-export const projects = projectsData as Project[];
-
-export type ProjectFilter = "all" | ProjectCategory | ProjectTopic;
-
-// Figma: Filter chips — All + 3 categories (Home) + 2 UI topics (All projects page)
-export const projectFilters: { id: ProjectFilter; label: string; icon?: IconName; match: (p: Project) => boolean }[] = [
-  { id: "all", label: "All", match: () => true },
-  { id: "admin", label: "Admin panel", icon: "list", match: (p) => p.category === "admin" },
-  { id: "ds", label: "Design system", icon: "layout-grid", match: (p) => p.category === "ds" },
-  { id: "mobile", label: "iOS app", icon: "smartphone", match: (p) => p.category === "mobile" },
-  { id: "onboarding", label: "Onboarding", icon: "link", match: (p) => p.topics.includes("onboarding") },
-  { id: "drawer", label: "Drawer", icon: "monitor", match: (p) => p.topics.includes("drawer") },
-];
-
-/** Home shows only the first four (All + categories). */
+/** Home shows All + the three most used tags. */
 export const homeFilters = projectFilters.slice(0, 4);
 
 export function filterProjects(filter: ProjectFilter) {
-  const f = projectFilters.find((x) => x.id === filter);
-  return f ? projects.filter(f.match) : projects;
+  return filter === "all" ? projects : projects.filter((p) => p.tags.includes(filter));
 }
+
+/** Small helpers for the card and the case eyebrow. */
+export const leadTag = (p: Project) => p.tags[0];
+export const caseEyebrow = (number: string, p: Project) =>
+  `/ case ${number}${leadTag(p) ? ` — ${leadTag(p).toLowerCase()}` : ""}`;

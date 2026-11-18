@@ -1,0 +1,145 @@
+.picker {
+  position: relative;
+}
+
+/* Field: white surface like the other inputs, pills wrap inside */
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: var(--size-control-m);
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-popover);
+  background: var(--component-search-field-bg);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  cursor: text;
+  transition: box-shadow var(--duration-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .box:hover {
+    box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  }
+}
+.box:focus-within {
+  box-shadow: inset 0 0 0 2px var(--component-search-field-border-focus);
+}
+
+.input {
+  flex: 1 0 80px;
+  min-width: 80px;
+  height: 28px;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: 400 16px/1.5 var(--font-sans);
+  color: var(--color-text-primary);
+}
+.input:focus-visible {
+  box-shadow: none;
+}
+.input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* Pill — the site's muted Tag: gray fill, mono label, plus a × to remove */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--component-tag-padding-y) var(--component-tag-padding-x);
+  border-radius: var(--radius-control);
+  background: var(--component-tag-muted-bg);
+  color: var(--component-tag-text);
+  font: 400 11px/1.3 var(--font-mono);
+  white-space: nowrap;
+}
+.pill:has(.remove) {
+  padding-block: var(--space-2);
+  padding-right: var(--space-2);
+}
+
+/* Pencil shows only while you point at the tag (always on touch screens) */
+.pill .edit {
+  display: none;
+}
+.pill:hover .edit,
+.pill .edit:focus-visible {
+  display: grid;
+}
+@media (hover: none) {
+  .pill .edit { display: grid; }
+}
+.pillInput {
+  border: 0;
+  outline: 0;
+  box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  padding-block: var(--space-2);
+  min-width: 3ch;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  transition: color var(--duration-hover) ease, background-color var(--duration-hover) ease;
+}
+.remove :global(svg) {
+  width: 12px;
+  height: 12px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .remove:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-surface);
+  }
+}
+
+/* Dropdown */
+.menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + var(--space-6));
+  left: 0;
+  right: 0;
+  max-height: 280px;
+  overflow: auto;
+  padding: var(--space-6);
+  border-radius: var(--radius-popover);
+  background: var(--color-bg-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  transform-origin: top center;
+  animation: menu-in var(--duration-popover-in) var(--ease-out);
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu { animation-name: fade-in; }
+  @keyframes fade-in { from { opacity: 0; } }
+}
+.menuHint {
+  padding: var(--space-6) var(--space-8) var(--space-8);
+  color: var(--color-text-tertiary);
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--radius-control);
+  text-align: left;
+}
+.option[data-active] {
+  background: var(--color-bg-hover);
+}
+.create {
+  color: var(--color-text-secondary);
+}
+.check {
+  margin-left: auto;
+}

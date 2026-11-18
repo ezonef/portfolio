@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { Chip } from "@/components/ui/Chip/Chip";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { ProjectCard } from "@/components/ui/ProjectCard/ProjectCard";
-import { categoryLabel, filterProjects, homeFilters, projects, type ProjectFilter } from "@/data/projects";
+import { filterProjects, leadTag, homeFilters, projects, type ProjectFilter } from "@/data/projects";
 import styles from "./SelectedWork.module.css";
 
 /**
@@ -52,7 +52,6 @@ export function SelectedWork() {
           <Chip
             key={f.id}
             appearance="soft"
-            icon={f.icon}
             selected={filter === f.id}
             count={filterProjects(f.id).length}
             onClick={() => choose(f.id)}
@@ -86,11 +85,11 @@ export function SelectedWork() {
               <ProjectCard
                 href={`/projects/${p.slug}`}
                 cover={p.cover}
-                category={categoryLabel[p.category]}
+                tag={leadTag(p)}
                 number={p.number}
                 title={p.title}
                 description={p.description}
-                more={p.tags.length}
+                more={Math.max(0, p.tags.length - 1)}
               />
             </div>
           ))}

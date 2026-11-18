@@ -4,7 +4,7 @@ import { CaseNav } from "@/components/site/CaseNav/CaseNav";
 import { CaseView } from "@/components/site/CaseView/CaseView";
 import { SiteFooter } from "@/components/site/SiteFooter/SiteFooter";
 import { getCase, nextProject } from "@/data/cases";
-import { categoryLong, projects } from "@/data/projects";
+import { caseEyebrow, projects } from "@/data/projects";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -27,16 +27,15 @@ export default async function ProjectPage({ params }: Params) {
 
   const next = nextProject(project);
   const total = String(projects.length).padStart(2, "0");
+  const study = getCase(project);
+  const eyebrow = caseEyebrow(project.number, project);
+  const nextLink = { href: `/projects/${next.slug}`, number: next.number, title: next.title };
 
   return (
     <>
       <CaseNav number={project.number} total={total} nextHref={`/projects/${next.slug}`} />
       <main>
-        <CaseView
-          study={getCase(project)}
-          eyebrow={`/ case ${project.number} — ${categoryLong[project.category]}`}
-          next={{ href: `/projects/${next.slug}`, number: next.number, title: next.title }}
-        />
+        <CaseView study={study} eyebrow={eyebrow} tags={project.tags} next={nextLink} />
       </main>
       <SiteFooter />
     </>

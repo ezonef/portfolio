@@ -64,6 +64,17 @@
   }
 }
 
+/* Soft — gray fill, no border (e.g. Undo in a toast) */
+.soft {
+  background: var(--component-button-soft-bg-default);
+  color: var(--component-button-soft-text);
+}
+@media (hover: hover) and (pointer: fine) {
+  .soft:hover {
+    background: var(--component-button-soft-bg-hover);
+  }
+}
+
 /* keep the inset border visible together with the focus ring */
 .secondary:focus-visible {
   box-shadow: inset 0 0 0 1px var(--component-button-secondary-border), var(--focus-ring);
