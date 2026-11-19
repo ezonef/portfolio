@@ -32,7 +32,7 @@
       {
         "id": "bmwnjnc892jmko",
         "type": "text",
-        "text": ""
+        "text": "цйуйуйц"
       },
       {
         "id": "bmwnjncc531d23",
@@ -48,6 +48,11 @@
         "id": "bmwnjne465howb",
         "type": "text",
         "text": "авываыолдавыолд"
+      },
+      {
+        "id": "bmwnk6vlr2y7xl",
+        "type": "text",
+        "text": ""
       }
     ],
     "steps": [
@@ -58,14 +63,9 @@
         "hint": "status chips",
         "body": [
           {
-            "id": "bmwmhek8w0phyl",
-            "type": "text",
-            "text": "34234234234234423234234"
-          },
-          {
             "id": "bmwnk46c81s4xa",
             "type": "text",
-            "text": "увы"
+            "text": "увыйуцуйцуцйуйцуйц"
           }
         ]
       },
@@ -119,6 +119,11 @@
         "id": "b0384b16de8",
         "type": "text",
         "text": "[Real result only — shipped, adopted, feedback from the team, a metric if you have one.]"
+      },
+      {
+        "id": "bmwnk98l03i84a",
+        "type": "text",
+        "text": ""
       }
     ]
   },
