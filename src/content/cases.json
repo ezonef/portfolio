@@ -61,7 +61,13 @@
         "screen": "/images/cover-photo.jpg",
         "backdrop": "",
         "hint": "status chips",
-        "body": []
+        "body": [
+          {
+            "id": "bmwnl05dl0wb48",
+            "type": "text",
+            "text": "123123"
+          }
+        ]
       },
       {
         "title": "Review",
