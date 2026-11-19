@@ -59,7 +59,7 @@
       {
         "title": "Find",
         "screen": "/images/cover-photo.jpg",
-        "backdrop": "",
+        "backdrop": "#eeede8",
         "hint": "status chips",
         "body": [
           {
