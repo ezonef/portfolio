@@ -16,5 +16,14 @@
     "status": "approved",
     "kind": "published",
     "slug": "new-case-4"
+  },
+  {
+    "id": "cmwnjnh4ny4rc",
+    "date": "2026-11-19",
+    "title": "Updated: Design system — [Project]",
+    "body": [],
+    "status": "pending",
+    "kind": "updated",
+    "slug": "design-system"
   }
 ]
