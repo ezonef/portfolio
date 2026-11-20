@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { CaseUpper, Heading1, Heading2, Heading3, Image, List, ListOrdered, Minus, TextQuote, Type, type LucideIcon } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
+import { CaseUpper, GripVertical, Heading1, Heading2, Heading3, Image, List, ListOrdered, Minus, TextQuote, Type, type LucideIcon } from "lucide-react";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { TEXT_BLOCK_TYPES, blockId, type CaseBlock, type CaseBlockType, type CaseTextBlockType } from "@/data/case-types";
 import { AutoTextarea } from "./AutoTextarea";
@@ -73,12 +73,30 @@ function matchCommands(query: string, allow?: CaseBlockType[]) {
   );
 }
 
+/** Blocks as plain text with markdown marks — what ⌘C puts on the clipboard. */
+function blocksToText(list: CaseBlock[]) {
+  const mark: Partial<Record<CaseBlockType, string>> = { h1: "# ", h2: "## ", h3: "### ", bullet: "- ", numbered: "1. ", quote: "> " };
+  return list
+    .map((b) => (isText(b) ? (mark[b.type] ?? "") + b.text : b.type === "divider" ? "---" : b.caption || b.src))
+    .join("\n");
+}
+
 /**
  * Notion-style editor. Type "/" for the block menu, "/h1 Title" to make a heading in one go,
  * or markdown shortcuts (# , - , 1. , > , ---). Enter = new block, Backspace at the start = merge / unformat.
+ * Several blocks: drag across them (or from the margin), ⌘A twice, or Shift+↑/↓ at the edge of a block —
+ * then Backspace deletes, ⌘C / ⌘X copy or cut, Esc or a click clears.
  */
 export function BlockEditor({ blocks, onChange, slug, allow, emptyText = "Click to start writing — type / for commands", onDelete }: Props) {
   const refs = useRef(new Map<string, HTMLElement>());
+  const sheet = useRef<HTMLDivElement>(null);
+  /** Block selection: anchor (where it started) and the other end, as block indexes */
+  const [sel, setSel] = useState<{ from: number; to: number } | null>(null);
+  const [dragging, setDragging] = useState(false);
+  /** Moving blocks by the ⋮⋮ handle: which blocks, and the gap (0…n) they would land in */
+  const [moving, setMoving] = useState<{ lo: number; hi: number; gap: number } | null>(null);
+  const lo = sel ? Math.max(0, Math.min(sel.from, sel.to)) : -1;
+  const hi = sel ? Math.min(blocks.length - 1, Math.max(sel.from, sel.to)) : -2;
   const [focus, setFocus] = useState<{ id: string; at: number | "end" } | null>(null);
   /** `turn`: opened from the hover button to change an existing block (keeps its text) — not from typing "/". */
   const [menu, setMenu] = useState<{ id: string; active: number; turn?: boolean } | null>(null);
@@ -163,6 +181,21 @@ export function BlockEditor({ blocks, onChange, slug, allow, emptyText = "Click 
     const el = e.currentTarget;
     const start = el.selectionStart;
     const end = el.selectionEnd;
+
+    // ⌘A on a block that is already all selected → select every block
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "a" && start === 0 && end === b.text.length && blocks.length > 1) {
+      e.preventDefault();
+      return selectBlocks(0, blocks.length - 1);
+    }
+    // Shift+↑ at the start / Shift+↓ at the end → grow into a block selection
+    if (e.shiftKey && e.key === "ArrowUp" && start === 0 && end === 0 && i > 0) {
+      e.preventDefault();
+      return selectBlocks(i, i - 1);
+    }
+    if (e.shiftKey && e.key === "ArrowDown" && start === b.text.length && end === b.text.length && i < blocks.length - 1) {
+      e.preventDefault();
+      return selectBlocks(i, i + 1);
+    }
 
     if (menu?.id === b.id) {
       const items = matchCommands(menu.turn ? "" : b.text.slice(1), allow);
@@ -259,6 +292,173 @@ export function BlockEditor({ blocks, onChange, slug, allow, emptyText = "Click 
     if (near) setFocus({ id: near.id, at: "end" });
   };
 
+  const blockEls = () => Array.from(sheet.current?.querySelectorAll<HTMLElement>(":scope > [data-block]") ?? []);
+  /** Block under a screen Y — above the first = first, below the last = last */
+  const indexAt = (y: number, els = blockEls()) => {
+    if (!els.length) return -1;
+    const hit = els.findIndex((el) => y < el.getBoundingClientRect().bottom);
+    return hit === -1 ? els.length - 1 : hit;
+  };
+
+  const selectBlocks = (from: number, to: number) => {
+    (document.activeElement as HTMLElement | null)?.blur();
+    setMenu(null);
+    setSel({ from, to });
+    sheet.current?.focus({ preventScroll: true });
+  };
+
+  /**
+   * Press inside a block and drag onto another one (or start in the margin and drag) → the text
+   * selection turns into a block selection, like Notion. A plain click still just places the caret.
+   */
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    setSel(null);
+    const t = e.target as HTMLElement;
+    if (t.closest("button, input, a, label")) return;
+    const els = blockEls();
+    const anchor = indexAt(e.clientY, els);
+    if (anchor < 0) return;
+    const inText = t.tagName === "TEXTAREA";
+    const focusable = t.closest("textarea, [tabindex]");
+    if (!focusable || focusable === sheet.current) e.preventDefault(); // margin: no native text selection
+    const x0 = e.clientX;
+    const y0 = e.clientY;
+    let active = false;
+
+    const move = (ev: globalThis.PointerEvent) => {
+      const idx = indexAt(ev.clientY, els);
+      if (!active) {
+        if (inText ? idx === anchor : Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return;
+        active = true;
+        setDragging(true);
+        if (inText) (t as HTMLTextAreaElement).setSelectionRange(0, 0);
+        selectBlocks(anchor, idx);
+      }
+      window.getSelection()?.removeAllRanges();
+      setSel({ from: anchor, to: idx });
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("mousemove", move as unknown as (ev: MouseEvent) => void);
+      window.removeEventListener("mouseup", up);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+      setDragging(false);
+    };
+    // Safari can hold back pointermove while it extends a text selection — mouse events cover that
+    window.addEventListener("pointermove", move);
+    window.addEventListener("mousemove", move as unknown as (ev: MouseEvent) => void);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("mouseup", up);
+    window.addEventListener("pointercancel", up);
+  };
+
+  /**
+   * ⋮⋮ handle: drag to move the block — or all selected blocks when it belongs to the selection.
+   * A click without moving selects the block (Shift+click grows the selection).
+   */
+  const onHandleDown = (i: number, e: PointerEvent<HTMLButtonElement>) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const inSel = sel && i >= lo && i <= hi;
+    const range = inSel ? { lo, hi } : { lo: i, hi: i };
+    const els = blockEls();
+    const y0 = e.clientY;
+    let moved = false;
+    let gap = range.lo;
+
+    const gapAt = (y: number) => {
+      const idx = els.findIndex((el) => {
+        const r = el.getBoundingClientRect();
+        return y < r.top + r.height / 2;
+      });
+      return idx === -1 ? els.length : idx;
+    };
+    const onMove = (ev: globalThis.PointerEvent) => {
+      if (!moved && Math.abs(ev.clientY - y0) < 4) return;
+      if (!moved) {
+        moved = true;
+        (document.activeElement as HTMLElement | null)?.blur();
+        setMenu(null);
+        setDragging(true);
+      }
+      gap = gapAt(ev.clientY);
+      setMoving({ ...range, gap });
+    };
+    const onUp = (ev: globalThis.PointerEvent) => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      setDragging(false);
+      setMoving(null);
+      if (!moved) {
+        // click = select this block (Shift = extend from the current anchor)
+        return selectBlocks(ev.shiftKey && sel ? sel.from : i, i);
+      }
+      if (gap >= range.lo && gap <= range.hi + 1) return; // dropped where it was
+      const picked = blocks.slice(range.lo, range.hi + 1);
+      const rest = [...blocks.slice(0, range.lo), ...blocks.slice(range.hi + 1)];
+      const at = gap > range.hi ? gap - picked.length : gap;
+      onChange([...rest.slice(0, at), ...picked, ...rest.slice(at)]);
+      selectBlocks(at, at + picked.length - 1);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+  };
+
+  /** A click anywhere outside the editor clears the block selection */
+  useEffect(() => {
+    if (!sel) return;
+    const off = (ev: globalThis.PointerEvent) => {
+      if (!sheet.current?.contains(ev.target as Node)) setSel(null);
+    };
+    window.addEventListener("pointerdown", off);
+    return () => window.removeEventListener("pointerdown", off);
+  }, [sel]);
+
+  const removeSelected = () => {
+    const n = hi - lo + 1;
+    if (n === 1) return remove(lo), setSel(null);
+    onDelete?.(`${n} blocks deleted`, <Icon name="trash-2" />);
+    const rest = blocks.filter((_, j) => j < lo || j > hi);
+    onChange(rest);
+    setSel(null);
+    const near = rest[Math.max(0, lo - 1)];
+    if (near) setFocus({ id: near.id, at: "end" });
+  };
+
+  const onSheetKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!sel || e.target !== e.currentTarget) return;
+    const mod = e.metaKey || e.ctrlKey;
+    const key = e.key.toLowerCase();
+    if (e.key === "Backspace" || e.key === "Delete") {
+      e.preventDefault();
+      removeSelected();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setSel(null);
+    } else if (mod && (key === "c" || key === "x")) {
+      e.preventDefault();
+      void navigator.clipboard?.writeText(blocksToText(blocks.slice(lo, hi + 1)));
+      if (key === "x") removeSelected();
+    } else if (mod && key === "a") {
+      e.preventDefault();
+      setSel({ from: 0, to: blocks.length - 1 });
+    } else if (e.shiftKey && (e.key === "ArrowUp" || e.key === "ArrowDown")) {
+      e.preventDefault();
+      const to = Math.max(0, Math.min(blocks.length - 1, sel.to + (e.key === "ArrowUp" ? -1 : 1)));
+      setSel({ ...sel, to });
+    } else if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "Enter") {
+      e.preventDefault();
+      const b = blocks[e.key === "ArrowUp" ? lo : hi];
+      setSel(null);
+      if (b) setFocus({ id: b.id, at: e.key === "ArrowUp" ? 0 : "end" });
+    }
+  };
+
   const register = (id: string) => (el: HTMLElement | null) => {
     if (el) refs.current.set(id, el);
     else refs.current.delete(id);
@@ -267,7 +467,14 @@ export function BlockEditor({ blocks, onChange, slug, allow, emptyText = "Click 
   let listNumber = 0;
 
   return (
-    <div className={styles.sheet}>
+    <div
+      ref={sheet}
+      className={styles.sheet}
+      tabIndex={-1}
+      data-selecting={dragging || undefined}
+      onPointerDown={onPointerDown}
+      onKeyDown={onSheetKey}
+    >
       {blocks.length === 0 && (
         <button type="button" className={`body-l ${styles.start}`} onClick={() => insertAfter(-1)}>
           {emptyText}
@@ -277,8 +484,25 @@ export function BlockEditor({ blocks, onChange, slug, allow, emptyText = "Click 
         listNumber = b.type === "numbered" ? (blocks[i - 1]?.type === "numbered" ? listNumber + 1 : 1) : 0;
         const menuItems = menu?.id === b.id && isText(b) ? matchCommands(menu!.turn ? "" : b.text.slice(1), allow) : [];
         return (
-          <div key={b.id} className={styles.block} data-type={b.type} data-block>
+          <div
+            key={b.id}
+            className={styles.block}
+            data-type={b.type}
+            data-block
+            data-selected={(i >= lo && i <= hi) || undefined}
+            data-moving={(moving && i >= moving.lo && i <= moving.hi) || undefined}
+            data-drop={moving ? (moving.gap === i ? "before" : i === blocks.length - 1 && moving.gap === blocks.length ? "after" : undefined) : undefined}
+          >
             <div className={styles.gutter}>
+              <button
+                type="button"
+                className={`${styles.gutterBtn} ${styles.handle}`}
+                aria-label="Drag to move, click to select"
+                title="Drag to move · click to select"
+                onPointerDown={(e) => onHandleDown(i, e)}
+              >
+                <GripVertical size={14} strokeWidth={1.75} aria-hidden />
+              </button>
               {isText(b) && (
                 <button
                   type="button"

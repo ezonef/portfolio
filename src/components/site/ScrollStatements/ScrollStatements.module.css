@@ -1,0 +1,22 @@
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.line {
+  color: var(--color-text-primary);
+  opacity: 0.18;
+  filter: blur(5px);
+  transition:
+    opacity 500ms var(--ease-out),
+    filter 500ms var(--ease-out);
+}
+.line[data-lit] {
+  opacity: 1;
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    filter: none;
+  }
+}

@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hairline figure checks (built by the skill; sources are hairline/*.js)
+/hairline/*.html
+/hairline/*.png

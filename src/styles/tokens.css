@@ -28,6 +28,9 @@
   --stone-925: #1b1b19;
   --stone-975: #141413;
   --stone-1050: #0a0a09;
+  --green-600: #24935c;
+  --green-700: #1d7a4b;
+  --red-500: #e5484d;
   --alpha-ink-70: rgb(14 14 14 / 70%);
   --alpha-transparent: transparent;
 
@@ -66,6 +69,11 @@
   --color-bg-selected: var(--stone-950);
   --color-bg-inverse: var(--stone-950);
   --color-bg-inverse-deep: var(--stone-1000);
+  --color-bg-success: var(--green-700);
+  --color-bg-attention: var(--red-500);
+  --color-text-on-success: var(--white);
+  /* Notion-like blue wash on selected blocks in the editor */
+  --color-bg-block-selected: rgb(35 131 226 / 14%);
   --color-bg-scrim: var(--alpha-ink-70);
   --color-bg-accent: var(--stone-950);
   --color-bg-accent-subtle: var(--stone-200);
@@ -177,6 +185,17 @@
   --component-icon-button-size-m: var(--size-control-m);
   --component-icon-button-size-s: var(--size-control-s);
   --component-icon-button-radius: var(--radius-control);
+
+  /* ---------- component: ascii-band (home hero art) ---------- */
+  --component-ascii-band-tertiary: var(--color-text-tertiary);
+
+  /* ---------- component: section-nav (bottom bar on long pages) ---------- */
+  --component-section-nav-bg: var(--color-bg-muted);
+  --component-section-nav-chip-bg: var(--color-bg-selected);
+  --component-section-nav-chip-text: var(--color-text-on-inverse);
+  --component-section-nav-text: var(--color-text-secondary);
+  --component-section-nav-text-active: var(--color-text-primary);
+  --component-section-nav-badge: var(--color-bg-attention);
 
   /* ---------- component: chip ---------- */
   --component-chip-bg-default: var(--color-bg-transparent);
@@ -319,10 +338,16 @@
     --color-bg-raised: var(--stone-925);
     --color-bg-surface: var(--stone-925);
     --color-bg-muted: var(--stone-850);
+    --component-section-nav-bg: var(--stone-850);
+    --component-ascii-band-tertiary: var(--stone-850);
+    --component-section-nav-chip-bg: var(--stone-750);
+    --component-section-nav-chip-text: var(--stone-100);
     --color-bg-hover: var(--stone-850);
     --color-bg-selected: var(--stone-100);
     --color-bg-inverse: var(--stone-100);
     --color-bg-inverse-deep: var(--stone-1050);
+    --color-bg-success: var(--green-600);
+    --color-bg-block-selected: rgb(35 131 226 / 26%);
     --color-bg-scrim: rgb(0 0 0 / 72%);
     --color-bg-accent: var(--stone-100);
     --color-bg-accent-subtle: var(--stone-850);
@@ -383,10 +408,16 @@
   --color-bg-raised: var(--stone-925);
   --color-bg-surface: var(--stone-925);
   --color-bg-muted: var(--stone-850);
+  --component-ascii-band-tertiary: var(--stone-850);
+  --component-section-nav-bg: var(--stone-850);
+  --component-section-nav-chip-bg: var(--stone-750);
+  --component-section-nav-chip-text: var(--stone-100);
   --color-bg-hover: var(--stone-850);
   --color-bg-selected: var(--stone-100);
   --color-bg-inverse: var(--stone-100);
   --color-bg-inverse-deep: var(--stone-1050);
+  --color-bg-success: var(--green-600);
+  --color-bg-block-selected: rgb(35 131 226 / 26%);
   --color-bg-scrim: rgb(0 0 0 / 72%);
   --color-bg-accent: var(--stone-100);
   --color-bg-accent-subtle: var(--stone-850);

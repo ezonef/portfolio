@@ -8,25 +8,25 @@ export type ProjectCardProps = {
   cover: string;
   /** First tag of the case */
   tag?: string;
-  number: string;
   title: string;
   /** Figma: Show description */
   description?: string;
-  /** Extra tags — shown as a "+N" tag after the first tag and Number */
+  /** Extra tags — shown as a "+N" tag after the first tag */
   more?: number;
 };
 
-/** Figma: ProjectCard — photo cover with Tag + Number + "+N" tags (Tone=Muted), title, description. */
-export function ProjectCard({ href, cover, tag, number, title, description, more }: ProjectCardProps) {
+/** Figma: ProjectCard — photo cover with the case's tags (first tag + "+N", Tone=Muted), title, description. */
+export function ProjectCard({ href, cover, tag, title, description, more }: ProjectCardProps) {
   return (
     <Link href={href} className={styles.card}>
       <div className={styles.cover}>
         <Image src={cover} alt="" fill sizes="(max-width: 760px) 100vw, 33vw" className={styles.image} />
-        <div className={styles.tags}>
-          {tag && <Tag tone="muted">{tag}</Tag>}
-          <Tag tone="muted">{number}</Tag>
-          {!!more && <Tag tone="muted">+{more}</Tag>}
-        </div>
+        {tag && (
+          <div className={styles.tags}>
+            <Tag tone="muted">{tag}</Tag>
+            {!!more && <Tag tone="muted">+{more}</Tag>}
+          </div>
+        )}
       </div>
       <div className={styles.text}>
         <h3 className={styles.title}>{title}</h3>

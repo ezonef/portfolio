@@ -1,0 +1,43 @@
+.picker {
+  display: grid;
+  gap: var(--space-10);
+}
+/* Saturation left → right, brightness top → bottom, over the current hue */
+.area {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  touch-action: none;
+  cursor: crosshair;
+}
+.area::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+}
+.hue {
+  position: relative;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  touch-action: none;
+  cursor: ew-resize;
+}
+.area:focus-visible,
+.hue:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.thumb {
+  position: absolute;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / 25%), 0 2px 6px rgb(0 0 0 / 30%);
+  translate: -50% -50%;
+  pointer-events: none;
+}

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { isColor } from "@/data/case-types";
 import { adminFetch } from "./adminFetch";
 import styles from "./ImageDrop.module.css";
 
@@ -67,7 +68,7 @@ export function ImageDrop({ slug, value, onChange, compact, backdrop, framed, on
         onPaste={(e) => void upload(e.clipboardData.files[0])}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- local preview of a just-uploaded file */}
-        {backdrop && <img src={backdrop} alt="" className={styles.preview} />}
+        {backdrop && (isColor(backdrop) ? <span className={styles.preview} style={{ background: backdrop }} /> : <img src={backdrop} alt="" className={styles.preview} />)}
         {/* eslint-disable-next-line @next/next/no-img-element -- local preview */}
         {value && <img src={value} alt="" className={backdrop || framed ? styles.shot : styles.preview} />}
         <span className={`mono-s ${styles.overlay}`}>

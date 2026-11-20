@@ -1,7 +1,9 @@
 .toast {
   position: fixed;
   z-index: 50;
-  bottom: calc(var(--admin-bar-height, 0px) + var(--space-16));
+  /* One fixed spot above where the save bar sits — whether the bar is showing or not,
+     so the delete and the saved toast always appear in the same place */
+  bottom: calc(64px + var(--space-16));
   left: 50%;
   display: flex;
   align-items: center;
@@ -14,18 +16,38 @@
   color: var(--color-text-on-inverse);
   box-shadow: var(--shadow-popover);
   translate: -50% 0;
-  animation: toast-in var(--duration-popover-in) var(--ease-out);
+  transform-origin: bottom center;
+  animation: toast-in 260ms var(--ease-out);
   /* Soft button on a dark surface */
   --component-button-soft-bg-default: color-mix(in srgb, var(--color-text-on-inverse) 16%, transparent);
   --component-button-soft-bg-hover: color-mix(in srgb, var(--color-text-on-inverse) 24%, transparent);
   --component-button-soft-text: var(--color-text-on-inverse);
 }
+/* Success: solid green, white text — nothing else */
+.toast[data-tone="success"] {
+  padding: var(--space-10) var(--space-16);
+  background: var(--color-bg-success, #1d7a4b);
+  box-shadow: none;
+}
+.toast[data-tone="success"] .text {
+  color: var(--color-text-on-success, #ffffff);
+}
+/* In: rises 16px and grows from 96% — out: quicker, sinks back and fades */
 @keyframes toast-in {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+}
+.toast[data-leaving] {
+  animation: toast-out 180ms var(--ease-out) forwards;
+  pointer-events: none;
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(10px) scale(0.98); }
 }
 @media (prefers-reduced-motion: reduce) {
   .toast { animation-name: toast-fade; }
+  .toast[data-leaving] { animation-name: toast-fade-out; }
   @keyframes toast-fade { from { opacity: 0; } }
+  @keyframes toast-fade-out { to { opacity: 0; } }
 }
 /* Tertiary: the countdown */
 .timer {

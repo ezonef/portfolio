@@ -13,7 +13,6 @@ const columns = [
       { t: "Projects", h: "/#work" },
       { t: "About", h: "/#about" },
       { t: "My design process", h: "/process" },
-      { t: "Changelog", h: "/changelog" },
     ],
   },
   {

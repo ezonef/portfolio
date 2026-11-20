@@ -20,7 +20,7 @@ export default function ProjectsPage() {
               All projects <span className={`mono-m ${styles.count}`}>({String(projects.length).padStart(2, "0")})</span>
             </h1>
             <p className={`body-l ${styles.intro}`}>
-              [One line: what kinds of products these are and what connects them.]
+              Design systems, admin panels and iOS apps — products with a lot of data and a lot of states. Each case shows the problem, the decisions and why.
             </p>
           </div>
         </section>

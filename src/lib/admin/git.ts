@@ -27,14 +27,11 @@ export function commitContent(message: string): Promise<GitResult> {
     try {
       const paths = PATHS.filter((p) => existsSync(p)); // the images folder appears after the first upload
       await git(["add", "--", ...paths]);
-      let changed = false;
-      try {
-        await git(["diff", "--cached", "--quiet", "--", ...paths]);
-      } catch {
-        changed = true; // exit code 1 = there are changes to commit
-      }
-      if (changed) await git(["commit", "-m", message, "--", ...paths]);
-      committed = changed;
+      // Commit exactly the staged content files (an empty images folder would make git fail on a folder pathspec)
+      const { stdout } = await git(["diff", "--cached", "--name-only", "-z", "--", ...paths]);
+      const files = stdout.split("\0").filter(Boolean);
+      if (files.length) await git(["commit", "-m", message, "--", ...files]);
+      committed = files.length > 0;
     } catch (e) {
       return { committed: false, pushed: false, error: `Commit failed: ${short(e)}` };
     }

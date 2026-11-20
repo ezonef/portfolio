@@ -1,0 +1,72 @@
+/* The section is taller than the screen; its stage stays pinned while the dots assemble */
+.scrolly {
+  height: 300vh;
+}
+.stage {
+  position: sticky;
+  top: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  min-height: calc(100vh - 72px);
+  padding-block: 32px;
+}
+
+.chart {
+  --axes: 0;
+  --lit: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--font-mono);
+}
+.axes {
+  opacity: var(--axes);
+}
+.grid {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+.tick {
+  fill: var(--color-text-tertiary);
+  font-size: 13px;
+}
+.ai {
+  stroke: var(--color-text-primary);
+  stroke-opacity: 0.5;
+  stroke-dasharray: 4 4;
+}
+.era {
+  fill: var(--color-text-tertiary);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.eraOn {
+  fill: var(--color-text-primary);
+}
+.stageLabel {
+  fill: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+/* On the grid every dot is the same faint grey; once in place, "with AI" lights up */
+.before,
+.after {
+  fill: color-mix(in oklab, var(--color-text-primary) 30%, transparent);
+}
+.after {
+  fill: color-mix(in oklab, var(--color-text-primary) calc(30% + var(--lit) * 70%), transparent);
+}
+
+@media (max-width: 760px) {
+  .scrolly {
+    height: auto;
+  }
+  .stage {
+    position: static;
+    min-height: 0;
+  }
+}

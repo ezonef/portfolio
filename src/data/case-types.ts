@@ -18,7 +18,7 @@ export type CaseStep = {
   title: string;
   /** Screen shown in the player — sits centred on this step's backdrop */
   screen: string;
-  /** This screen's own background image ("" = plain). Not shared with the card cover or other screens. */
+  /** This screen's own background: an uploaded image path, a colour like "#1b1b19", or "" (plain). */
   backdrop: string;
   /** Right side of the caption under the screen, e.g. "status chips" */
   hint: string;
@@ -38,6 +38,9 @@ export type CaseStudy = {
   /** After the screens: the result */
   outcome: CaseBlock[];
 };
+
+/** A backdrop is either a colour ("#rrggbb") or an image path */
+export const isColor = (v: string) => /^#[0-9a-f]{6}$/i.test(v);
 
 let seq = 0;
 export const blockId = () => `b${Date.now().toString(36)}${(seq++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;

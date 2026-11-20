@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { NavButton } from "@/components/ui/NavLink/NavLink";
 import { Step } from "@/components/ui/Step/Step";
+import { ThemeToggle } from "@/components/site/ThemeToggle/ThemeToggle";
 import { Tag } from "@/components/ui/Tag/Tag";
 import { normalizeCase, type CaseBlockType, type CaseStep, type CaseStudy } from "@/data/case-types";
 import type { ChangelogEntry } from "@/data/changelog-types";
 import type { Project } from "@/data/project-meta";
 import { AutoTextarea } from "./AutoTextarea";
+import { BackdropField } from "./BackdropField";
 import { BlockEditor } from "./BlockEditor";
 import { ImageDrop } from "./ImageDrop";
 import { TagPicker } from "./TagPicker";
@@ -17,7 +19,7 @@ import { ChangelogPanel } from "./ChangelogPanel";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { UndoToast } from "./UndoToast";
 import { follow, useReorder } from "./useReorder";
-import { adminFetch } from "./adminFetch";
+import { adminFetch, savedText } from "./adminFetch";
 import styles from "./AdminApp.module.css";
 
 type Props = {
@@ -47,14 +49,6 @@ function move<T>(list: T[], from: number, to: number): T[] {
   const [item] = next.splice(from, 1);
   next.splice(to, 0, item);
   return next;
-}
-
-/** What the bar says after a save: the files are on disk either way; git tells whether the site will update. */
-function gitStatus(git: { committed: boolean; pushed: boolean; error?: string } | undefined, time: string): Status {
-  if (!git) return { kind: "saved", text: `Saved ${time}` };
-  if (git.error) return { kind: "warn", text: `Saved ${time}, but the site won't update — ${git.error}` };
-  if (git.committed) return { kind: "saved", text: `Saved ${time} · pushed, the site updates in about a minute` };
-  return { kind: "saved", text: `Saved ${time} · nothing new to push` };
 }
 
 export function AdminApp({ initialProjects, initialCases, initialChangelog, template }: Props) {
@@ -97,6 +91,10 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
   type Snapshot = { projects: Project[]; cases: Record<string, CaseStudy>; selected: number; tab: CaseTab };
   const [toast, setToast] = useState<{ id: number; text: string; icon?: ReactNode; before: Snapshot; at: number } | null>(null);
   /** Call right before a delete — the delete's own edit is the one `at` expects. */
+  // Green "saved" toast; an undo toast takes its place when both would show
+  const [notice, setNotice] = useState<{ id: number; text: string } | null>(null);
+  const showNotice = useCallback((text: string) => setNotice({ id: Date.now(), text }), []);
+
   const offerUndo = (text: string, icon?: ReactNode) =>
     setToast({ id: Date.now(), text, icon, before: { projects, cases, selected, tab }, at: version + 1 });
   useEffect(() => {
@@ -213,12 +211,16 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
         if (data.changelog) setChangelog(data.changelog);
         saved.current = clone({ projects: data.projects, cases });
         const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        setStatus(gitStatus(data.git, time));
+        if (data.git?.error) setStatus({ kind: "warn", text: `Saved ${time}, but the site won't update — ${data.git.error}` });
+        else {
+          setStatus({ kind: "idle" });
+          showNotice(savedText(data.git));
+        }
       } catch (e) {
         setStatus({ kind: "error", text: e instanceof Error ? e.message : "Save failed" });
       }
     },
-    [projects, cases],
+    [projects, cases, showNotice],
   );
 
   /** Publish = take the draft mark off and save, so it goes live. */
@@ -288,20 +290,23 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
           <p className={`mono-m ${styles.brand}`}>
             <span className={styles.dot} aria-hidden /> / admin — local only
           </p>
-          <nav className={styles.nav} aria-label="Admin sections">
-            <NavButton active={section === "cases"} aria-current={section === "cases" ? "page" : undefined} onClick={() => setSection("cases")}>
-              Cases
-            </NavButton>
-            <NavButton active={section === "changelog"} aria-current={section === "changelog" ? "page" : undefined} onClick={() => setSection("changelog")}>
-              Changelog{pendingCount > 0 && <span className={styles.navCount}>({pendingCount})</span>}
-            </NavButton>
-          </nav>
+          <div className={styles.barEnd}>
+            <nav className={styles.nav} aria-label="Admin sections">
+              <NavButton active={section === "cases"} aria-current={section === "cases" ? "page" : undefined} onClick={() => setSection("cases")}>
+                Cases
+              </NavButton>
+              <NavButton active={section === "changelog"} aria-current={section === "changelog" ? "page" : undefined} onClick={() => setSection("changelog")}>
+                Changelog{pendingCount > 0 && <span className={styles.navCount}>({pendingCount})</span>}
+              </NavButton>
+            </nav>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
       {section === "changelog" ? (
         <div className={styles.single}>
-          <ChangelogPanel entries={changelog} onChange={setChangelog} />
+          <ChangelogPanel entries={changelog} onChange={setChangelog} onSaved={showNotice} />
         </div>
       ) : (
       <div className={styles.layout}>
@@ -517,22 +522,11 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
                         </Field>
                         <div className={styles.grid}>
                           <Field label="Background" hint="Only for this screen" as="div">
-                            <ImageDrop
-                              key={`${project.slug}-bg-${i}`}
-                              compact
-                              slug={project.slug}
-                              value={st.backdrop}
-                              emptyText="Add a background"
-                              onClear={() => setStep({ backdrop: "" })}
-                              onChange={(backdrop) => setStep({ backdrop })}
-                            />
+                            <BackdropField key={`${project.slug}-bg-${i}`} slug={project.slug} value={st.backdrop} onChange={(backdrop) => setStep({ backdrop })} />
                           </Field>
                           <div className={styles.stack}>
                             <Field label="Title" hint="Tab in the player">
                               <input className={styles.input} value={st.title} placeholder="Find" onChange={(e) => setStep({ title: e.target.value })} />
-                            </Field>
-                            <Field label="Caption" hint="Under the screen">
-                              <input className={styles.input} value={st.hint} placeholder="status chips" onChange={(e) => setStep({ hint: e.target.value })} />
                             </Field>
                           </div>
                         </div>
@@ -595,6 +589,9 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
         </div>
       )}
       {toast && <UndoToast id={toast.id} icon={toast.icon} text={toast.text} onUndo={undo} onDone={() => setToast(null)} />}
+      {notice && !toast && (
+        <UndoToast id={notice.id} tone="success" duration={3000} text={notice.text} onDone={() => setNotice(null)} />
+      )}
       {confirmCancel && (
         <ConfirmDialog
           title="Discard changes?"

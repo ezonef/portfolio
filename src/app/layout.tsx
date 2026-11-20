@@ -24,10 +24,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        {/* Apply a pinned theme before the first paint, so dark pages never flash light */}
+        {/* Before the first paint: apply a pinned theme (no light flash) and mark that JS runs,
+            so entrance animations can start hidden without hiding content when JS is off */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`,
+            __html: `document.documentElement.classList.add("js");try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`,
           }}
         />
       </head>

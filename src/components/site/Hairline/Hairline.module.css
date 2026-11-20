@@ -1,0 +1,25 @@
+/* The figure's palette from the site's tokens: one ink in four weights, over the page colour.
+   Mixed from text + page, so the light and dark themes both come for free. */
+.figure {
+  position: relative;
+  margin: 0;
+  --hairline-plate: var(--color-bg-page);
+  --hairline-hi: var(--color-text-primary);
+  --hairline-edge: color-mix(in srgb, var(--color-text-primary) 42%, var(--color-bg-page));
+  --hairline-mid: color-mix(in srgb, var(--color-text-primary) 24%, var(--color-bg-page));
+  --hairline-lo: color-mix(in srgb, var(--color-text-primary) 12%, var(--color-bg-page));
+}
+.stage {
+  width: 100%;
+  cursor: crosshair;
+}
+/* What is under the pointer, like the package's corner read-out */
+.read {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}

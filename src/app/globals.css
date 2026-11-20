@@ -7,12 +7,16 @@
   box-sizing: border-box;
 }
 
+/* The canvas behind the page is the footer colour, so pulling past the bottom of the page
+   (rubber-band scroll) shows more footer instead of a light strip. The page itself stays light. */
 html {
   -webkit-text-size-adjust: 100%;
+  background: var(--component-site-footer-bg);
 }
 
 body {
   margin: 0;
+  min-height: 100dvh;
   background: var(--color-bg-page);
   color: var(--color-text-primary);
   font-family: var(--font-sans);

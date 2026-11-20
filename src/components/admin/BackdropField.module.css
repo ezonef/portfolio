@@ -1,0 +1,58 @@
+.field {
+  display: grid;
+  gap: var(--space-10);
+}
+.modes {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.modes > button {
+  flex: 0 1 132px;
+  min-width: 88px;
+}
+.chip {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-10);
+}
+.hex {
+  width: 11ch;
+  height: 32px;
+  padding: 0 var(--space-10);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--component-search-field-bg);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  color: var(--color-text-primary);
+  text-transform: lowercase;
+  outline: 0;
+}
+.hex:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--component-search-field-border-focus);
+}
+.hex[data-invalid] {
+  color: var(--color-text-tertiary);
+}
+.presets {
+  display: flex;
+  gap: var(--space-6);
+}
+.preset {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+  cursor: pointer;
+}
+.preset[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), 0 0 0 2px var(--color-bg-page), 0 0 0 3px var(--color-text-primary);
+}

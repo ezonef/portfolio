@@ -71,6 +71,21 @@
   scroll-snap-align: start;
 }
 
+/* Entrance — cards fade in one after another (see SelectedWork.tsx).
+   Hidden only when JS runs (html.js), so the cards are never lost without it. */
+:global(html.js) .track[data-reveal="waiting"] .slide {
+  opacity: 0;
+}
+.track[data-reveal="playing"] .slide {
+  animation: rise var(--rise) var(--ease-out) both;
+  animation-delay: calc(var(--i) * var(--rise) * var(--overlap));
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 760px) {
   .section {
     padding-block: 72px;

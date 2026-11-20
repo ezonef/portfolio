@@ -1,0 +1,52 @@
+.art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  --ink: color-mix(in oklab, var(--color-text-primary) 42%, transparent);
+  --soft: color-mix(in oklab, var(--color-text-primary) 20%, transparent);
+}
+.line,
+.soft,
+.dash,
+.hi {
+  fill: none;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.line {
+  stroke: var(--ink);
+}
+.soft {
+  stroke: var(--soft);
+}
+.dash {
+  stroke: var(--ink);
+  stroke-dasharray: 3 4;
+}
+.hi {
+  stroke: var(--color-text-primary);
+  stroke-width: 1.6;
+}
+.hiFill {
+  fill: var(--color-text-primary);
+}
+.label,
+.text,
+.hiText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.label {
+  fill: var(--ink);
+}
+.text {
+  fill: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
+.hiText {
+  fill: var(--color-text-primary);
+}

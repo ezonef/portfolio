@@ -20,7 +20,7 @@ export function ProjectsBrowser() {
               key={f.id}
               appearance="soft"
               selected={filter === f.id}
-              count={f.id === "all" ? filterProjects("all").length : undefined}
+              count={filterProjects(f.id).length}
               onClick={() => setFilter(f.id)}
             >
               {f.label}
@@ -36,7 +36,6 @@ export function ProjectsBrowser() {
             href={`/projects/${p.slug}`}
             cover={p.cover}
             tag={leadTag(p)}
-            number={p.number}
             title={p.title}
             description={p.description}
             more={Math.max(0, p.tags.length - 1)}

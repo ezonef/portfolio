@@ -99,6 +99,10 @@
 .backdrop {
   object-fit: cover;
 }
+.backdropColor {
+  position: absolute;
+  inset: 0;
+}
 .screens {
   position: absolute;
   inset: 7%;
@@ -114,7 +118,6 @@
   align-items: center;
   gap: 6px;
   padding: 16px 40px;
-  border-bottom: 1px solid var(--color-border-strong);
 }
 .player > button:not([aria-label]) {
   flex: 0 1 132px;
@@ -134,13 +137,130 @@
   padding: 12px 40px;
   color: var(--color-text-secondary);
 }
-.hint {
-  color: var(--color-text-primary);
+/* ---------- description card on the player ---------- */
+.stageWrap {
+  position: relative;
 }
-/* Description of the current screen, under its caption */
-.describe {
-  max-width: 616px;
-  padding: 4px 40px 24px;
+/* Sits right above its Description / Hide button, bottom-right of the player */
+.notes {
+  position: absolute;
+  right: 16px;
+  bottom: 56px;
+  z-index: 1;
+  width: min(380px, calc(100% - 32px));
+  max-height: calc(100% - 72px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 0 0;
+  /* A real border, not an inset shadow — the footer's fill would paint over an inset shadow */
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-popover);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-popover);
+  transform-origin: bottom right;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out),
+    visibility 0s linear 0s;
+}
+.notes[data-open="false"] {
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease,
+    visibility 0s linear 140ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .notes,
+  .notes[data-open="false"] {
+    transform: none;
+  }
+}
+.notesTitle,
+.notesBody {
+  padding-inline: 18px;
+}
+.notesBody {
+  padding-bottom: 16px;
+}
+.notesTitle {
+  margin-bottom: 8px;
+  color: var(--color-text-tertiary);
+}
+/* Smaller type than the story column — it's a note on the screen */
+.notesBody :global(.body-m) {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.notesBody :global(.heading-h3) {
+  font-size: 18px;
+}
+.notesBody > :first-child {
+  margin-top: 0;
+}
+
+/* Same family as the Undo button: soft pill, icon first */
+.notesToggle {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  cursor: pointer;
+  transition: background-color var(--duration-hover) ease;
+}
+.notesToggle[aria-expanded="true"] {
+  background: var(--color-bg-hover);
+}
+/* Footer like the admin's block menu: "Close  esc" under a hairline */
+.notesClose {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 18px;
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+  font: 400 15px/1 var(--font-sans);
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--duration-hover) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .notesClose:hover {
+    background: var(--color-bg-hover);
+  }
+}
+.notesKey {
+  font: inherit;
+  color: var(--color-text-tertiary);
+}
+.notesToggle :global(svg) {
+  width: 14px;
+  height: 14px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .notesToggle:hover {
+    background: var(--color-bg-hover);
+  }
+}
+.notesToggle:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 1024px) {
@@ -161,9 +281,33 @@
     padding-top: 48px;
   }
   .player,
-  .caption,
-  .describe {
+  .caption {
     padding-inline: 20px;
+  }
+  /* Phone / tablet: the card is plain text under the screen, always shown */
+  .notes,
+  .notes[data-open="false"] {
+    position: static;
+    width: auto;
+    max-height: none;
+    margin: 0;
+    padding: 20px 20px 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .notesToggle,
+  .notesClose {
+    display: none;
+  }
+  .notesTitle,
+  .notesBody {
+    padding-inline: 0;
   }
   .player {
     display: flex;

@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CaseBlocks } from "@/components/site/CaseBlocks/CaseBlocks";
+import { Icon } from "@/components/ui/Icon/Icon";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { Step } from "@/components/ui/Step/Step";
 import { Tag } from "@/components/ui/Tag/Tag";
-import type { CaseStudy } from "@/data/case-types";
+import { isColor, type CaseStudy } from "@/data/case-types";
 import styles from "./CaseView.module.css";
 
 type Props = {
@@ -30,6 +31,36 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
   const steps = study.steps;
   const step = steps[active];
   const go = (i: number) => setActive(Math.max(0, Math.min(steps.length - 1, i)));
+
+  // Description card on the player: open by default, the viewer's choice is remembered
+  const [notesOpen, setNotesOpen] = useState(true);
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("case-notes") === "closed") setNotesOpen(false);
+    } catch {}
+  }, []);
+  const toggleNotes = () => {
+    setNotesOpen((open) => {
+      try {
+        localStorage.setItem("case-notes", open ? "closed" : "open");
+      } catch {}
+      return !open;
+    });
+  };
+  const hasNotes = step.body.length > 0;
+
+  // Esc closes the open card (not while typing somewhere)
+  useEffect(() => {
+    if (!notesOpen || !hasNotes) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      const t = e.target;
+      if (t instanceof Element && t.closest("input, textarea, [contenteditable]")) return;
+      toggleNotes();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   return (
     <div className={styles.body}>
@@ -68,24 +99,55 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
       <aside className={styles.panel} aria-label="Screens">
         {/* All screens stay mounted and crossfade with a CSS transition, so rapid clicks
             retarget from the current opacity instead of restarting the fade. */}
-        <div className={styles.stage}>
-          {steps.map((s, i) => (
-            <div key={i} className={styles.layer} data-active={i === active} aria-hidden={i !== active}>
-              {s.backdrop && (
-                <Image src={s.backdrop} alt="" fill priority={i === 0} sizes="(max-width: 1024px) 100vw, 60vw" className={styles.backdrop} />
-              )}
-              <div className={styles.screens}>
-                <Image
-                  src={s.screen}
-                  alt={i === active ? `Screen ${i + 1}: ${s.title}` : ""}
-                  fill
-                  priority={i === 0}
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className={styles.screen}
-                />
+        <div className={styles.stageWrap}>
+          <div className={styles.stage}>
+            {steps.map((s, i) => (
+              <div key={i} className={styles.layer} data-active={i === active} aria-hidden={i !== active}>
+                {isColor(s.backdrop) ? (
+                  <div className={styles.backdropColor} style={{ background: s.backdrop }} />
+                ) : (
+                  s.backdrop && <Image src={s.backdrop} alt="" fill priority={i === 0} sizes="(max-width: 1024px) 100vw, 60vw" className={styles.backdrop} />
+                )}
+                <div className={styles.screens}>
+                  <Image
+                    src={s.screen}
+                    alt={i === active ? `Screen ${i + 1}: ${s.title}` : ""}
+                    fill
+                    priority={i === 0}
+                    sizes="(max-width: 1024px) 100vw, 60vw"
+                    className={styles.screen}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* What's on the current screen — a card on the player, next to what it describes.
+              Desktop: floats over the backdrop and can be hidden. Phone: sits under the screen. */}
+          {hasNotes && (
+            <>
+              <div id="screen-notes" className={styles.notes} data-open={notesOpen} aria-live="polite">
+                <p className={`mono-label ${styles.notesTitle}`}>
+                  {pad(active + 1)} · {step.title}
+                </p>
+                <CaseBlocks key={active} blocks={step.body} className={styles.notesBody} />
+                <button type="button" className={styles.notesClose} onClick={toggleNotes} tabIndex={notesOpen ? 0 : -1}>
+                  <span>Close</span>
+                  <kbd className={styles.notesKey}>esc</kbd>
+                </button>
+              </div>
+              <button
+                type="button"
+                className={`mono-s ${styles.notesToggle}`}
+                aria-expanded={notesOpen}
+                aria-controls="screen-notes"
+                onClick={toggleNotes}
+              >
+                <Icon name="circle-help" />
+                Description
+              </button>
+            </>
+          )}
         </div>
 
         <div className={styles.player}>
@@ -106,15 +168,7 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
           <span>
             {pad(active + 1)} / {pad(steps.length)} · {step.title}
           </span>
-          <span className={styles.hint}>↗ {step.hint}</span>
         </p>
-
-        {/* What's on the current screen — written per screen in the admin */}
-        {step.body.length > 0 && (
-          <div className={styles.describe} aria-live="polite">
-            <CaseBlocks key={active} blocks={step.body} />
-          </div>
-        )}
       </aside>
     </div>
   );

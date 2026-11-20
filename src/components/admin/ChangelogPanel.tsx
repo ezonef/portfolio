@@ -8,12 +8,14 @@ import { Tag } from "@/components/ui/Tag/Tag";
 import { CHANGELOG_BLOCKS, type ChangelogEntry } from "@/data/changelog-types";
 import { AutoTextarea } from "./AutoTextarea";
 import { BlockEditor } from "./BlockEditor";
-import { adminFetch } from "./adminFetch";
+import { adminFetch, savedText } from "./adminFetch";
 import styles from "./ChangelogPanel.module.css";
 
 type Props = {
   entries: ChangelogEntry[];
   onChange: (entries: ChangelogEntry[]) => void;
+  /** Called with a short "saved" line after a successful write */
+  onSaved?: (text: string) => void;
 };
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -24,7 +26,7 @@ const nice = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString("en-GB"
  * Changelog in the admin. Saving a live case proposes a line here (pending);
  * you edit it and Approve — only approved lines appear on /changelog. Every action is written right away.
  */
-export function ChangelogPanel({ entries, onChange }: Props) {
+export function ChangelogPanel({ entries, onChange, onSaved }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -43,6 +45,7 @@ export function ChangelogPanel({ entries, onChange }: Props) {
       if (!res.ok) throw new Error(data.error ?? "Could not save the changelog");
       onChange(data.entries);
       if (data.git?.error) setError(`Saved, but the site won't update — ${data.git.error}`);
+      else onSaved?.(savedText(data.git));
     } catch (e) {
       onChange(before);
       setError(e instanceof Error ? e.message : "Could not save the changelog");

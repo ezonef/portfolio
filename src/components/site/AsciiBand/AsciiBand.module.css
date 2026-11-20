@@ -24,5 +24,70 @@
   color: var(--color-text-accent);
 }
 .tertiary {
-  color: var(--color-text-tertiary);
+  /* dimmer in dark: the art is texture, not content */
+  color: var(--component-ascii-band-tertiary, var(--color-text-tertiary));
+}
+
+/* Entrance (see CipherArt): hidden until it starts, so the first paint never shows the art and then wipes it */
+:global(html.js) .cipher[data-cipher="waiting"] {
+  visibility: hidden;
+}
+
+/* Glow ring: every 10 s a ring of light opens from the centre, the same way the decrypt did.
+   A bright copy of the art (.glow) is shown only through a circular ring mask whose radius grows.
+   100% of the radius is the farthest corner, so ending past 100% + the ring width leaves nothing lit. */
+@property --ring {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -40%;
+}
+.stage {
+  position: relative;
+}
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--color-text-primary);
+  text-shadow:
+    0 0 2px var(--color-text-primary),
+    0 0 10px color-mix(in oklab, var(--color-text-primary) 70%, transparent);
+  /* Safari needs the prefixed property, and the gradient written out (not through another variable) */
+  -webkit-mask-image: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    transparent calc(var(--ring) - 34%),
+    #000 var(--ring),
+    transparent calc(var(--ring) + 20%)
+  );
+  mask-image: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    transparent calc(var(--ring) - 34%),
+    #000 var(--ring),
+    transparent calc(var(--ring) + 20%)
+  );
+  opacity: 0;
+  animation: ring 10s cubic-bezier(0.33, 0, 0.25, 1) 0.3s infinite both;
+}
+/* The layer is only visible while the ring travels, so a browser that ignores the mask
+   still shows the plain art between rings, never a bright copy of it. */
+@keyframes ring {
+  0% {
+    --ring: -40%;
+    opacity: 1;
+  }
+  /* 2.2 s across, then dark until the next one */
+  22% {
+    --ring: 160%;
+    opacity: 1;
+  }
+  23%,
+  100% {
+    --ring: 160%;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow {
+    display: none;
+  }
 }

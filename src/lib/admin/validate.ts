@@ -43,7 +43,8 @@ function checkCase(c: unknown, slug: string): string | null {
     if (!str(s?.title, 200) || !str(s?.hint, 200)) return `${name}: title or caption is too long`;
     if (s.hidden !== undefined && typeof s.hidden !== "boolean") return `${name}: hidden must be true/false`;
     if (!imagePath(s.screen)) return `${name}${s.title ? ` "${s.title}"` : ""} needs an uploaded screen`;
-    if (s.backdrop !== undefined && s.backdrop !== "" && !imagePath(s.backdrop)) return `${name}: background must be an uploaded image`;
+    if (s.backdrop !== undefined && s.backdrop !== "" && !imagePath(s.backdrop) && !/^#[0-9a-f]{6}$/i.test(String(s.backdrop)))
+      return `${name}: background must be an uploaded image or a colour like #1b1b19`;
     const e = checkBlocks(s.body, name);
     if (e) return e;
   }

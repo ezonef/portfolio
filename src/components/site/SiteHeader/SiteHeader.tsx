@@ -24,9 +24,6 @@ export function SiteHeader({ current = "home" }: { current?: Page }) {
           <NavLink href="/process" active={current === "process"}>
             My design process
           </NavLink>
-          <NavLink href="/changelog" active={current === "changelog"}>
-            Changelog
-          </NavLink>
           <NavLink href="/cv.pdf">CV.pdf</NavLink>
           <ContactMenu />
         </nav>

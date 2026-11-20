@@ -1,0 +1,25 @@
+.text {
+  display: block;
+}
+.line {
+  position: relative;
+  display: block;
+}
+/* The real text holds the layout; the cipher sits on top of it */
+.fake {
+  position: absolute;
+  inset: 0;
+  /* wraps on the same spaces as the real line, so narrow screens get the same two rows */
+  overflow-wrap: anywhere;
+  visibility: hidden;
+}
+:global(html.js) .text[data-cipher="waiting"] .real,
+.text[data-cipher="playing"] .real {
+  visibility: hidden;
+}
+:global(html.js) .text[data-cipher="waiting"] .fake {
+  visibility: hidden;
+}
+.text[data-cipher="playing"] .fake {
+  visibility: visible;
+}
