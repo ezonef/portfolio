@@ -1,0 +1,70 @@
+.field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
+  gap: var(--space-10);
+}
+.source {
+  justify-self: start;
+}
+.modes {
+  display: flex;
+  gap: var(--space-6);
+}
+.modes > button {
+  flex: 0 1 132px;
+  min-width: 88px;
+}
+/* the same box as the image drop, with the prototype live inside */
+.preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--color-bg-muted);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+}
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.inset {
+  position: absolute;
+  inset: 7%;
+}
+.inset[data-fill] {
+  inset: 0;
+}
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.editor {
+  display: grid;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+}
+.editor:focus-within {
+  box-shadow: inset 0 0 0 2px var(--component-search-field-border-focus);
+}
+.editorFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-10);
+  padding: var(--space-6) var(--space-6) var(--space-6) var(--space-12);
+  border-top: 1px solid var(--color-border-subtle);
+}
+.help {
+  color: var(--color-text-tertiary);
+}
+.error {
+  color: var(--color-bg-attention);
+}

@@ -1,11 +1,15 @@
-import { BLOCK_TYPES, TEXT_BLOCK_TYPES, type CaseBlock, type CaseStudy } from "@/data/case-types";
+import { BLOCK_TYPES, isColor, TEXT_BLOCK_TYPES, type CaseBlock, type CaseStudy } from "@/data/case-types";
 import type { Project } from "@/data/project-meta";
+import { PROTOTYPE_IDS } from "@/prototypes/registry";
 import { SLUG_RE } from "./guard";
 
 const str = (v: unknown, max = 5000): v is string => typeof v === "string" && v.length <= max;
 const strList = (v: unknown) => Array.isArray(v) && v.length <= 50 && v.every((x) => str(x, 200));
 /** Images must be files we serve from /public/images — no external URLs. */
 const imagePath = (v: unknown) => str(v, 300) && /^\/images\/[\w\-./]+$/.test(v) && !v.includes("..");
+
+/** Prototypes pasted or uploaded in the admin */
+const EMBED_RE = /^\/prototypes\/custom\/[a-z0-9-]+\/[a-z0-9-]+\/index\.html$/;
 
 function checkProject(p: unknown, i: number): string | null {
   const x = p as Record<string, unknown>;
@@ -42,8 +46,11 @@ function checkCase(c: unknown, slug: string): string | null {
     const name = `${at}, screen ${i + 1}`;
     if (!str(s?.title, 200) || !str(s?.hint, 200)) return `${name}: title or caption is too long`;
     if (s.hidden !== undefined && typeof s.hidden !== "boolean") return `${name}: hidden must be true/false`;
-    if (!imagePath(s.screen)) return `${name}${s.title ? ` "${s.title}"` : ""} needs an uploaded screen`;
-    if (s.backdrop !== undefined && s.backdrop !== "" && !imagePath(s.backdrop) && !/^#[0-9a-f]{6}$/i.test(String(s.backdrop)))
+    if (s.prototype !== undefined && !(typeof s.prototype === "string" && PROTOTYPE_IDS.includes(s.prototype)))
+      return `${name}: unknown code prototype "${String(s.prototype)}"`;
+    if (s.embed !== undefined && !(typeof s.embed === "string" && EMBED_RE.test(s.embed))) return `${name}: bad code prototype path`;
+    if (!s.prototype && !s.embed && !imagePath(s.screen)) return `${name}${s.title ? ` "${s.title}"` : ""} needs an uploaded screen`;
+    if (s.backdrop !== undefined && s.backdrop !== "" && !imagePath(s.backdrop) && !isColor(String(s.backdrop)))
       return `${name}: background must be an uploaded image or a colour like #1b1b19`;
     const e = checkBlocks(s.body, name);
     if (e) return e;
@@ -84,8 +91,8 @@ export function validateContent(body: unknown): { error: string } | { projects: 
     cases[slug] = {
       headline: s.headline, lead: s.lead, role: s.role,
       story: cleanBlocks(s.story),
-      steps: s.steps.map(({ title, screen, backdrop, hint, body, hidden }) => ({
-        title, screen, backdrop: backdrop ?? "", hint, body: cleanBlocks(body), ...(hidden ? { hidden: true } : {}),
+      steps: s.steps.map(({ title, screen, prototype, embed, backdrop, hint, body, hidden }) => ({
+        title, screen: screen ?? "", ...(embed ? { embed } : prototype ? { prototype } : {}), backdrop: backdrop ?? "", hint, body: cleanBlocks(body), ...(hidden ? { hidden: true } : {}),
       })),
       outcome: cleanBlocks(s.outcome),
     };

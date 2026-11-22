@@ -42,7 +42,6 @@ export const ai = {
  * and the time goes into discovery and definition — better decisions, and a shorter project.
  * `median` is the typical hours for a mid-size B2B feature; `spread` is how much features differ
  * (log scale: 0.3 ≈ most features within ±35% of the median, with a long tail of slow ones).
- * [Rough estimate — replace with your own numbers.]
  */
 const STAGES = ["Discover", "Define", "Ideate", "Prototype", "Test", "Deliver"];
 const BEFORE = [
@@ -71,7 +70,7 @@ export const drawingTime = {
   ],
   /** Index of the column where AI entered the workflow */
   aiFrom: STAGES.length,
-  note: "Hours per stage of a feature · one dot per feature · rough estimate",
+  note: "Hours per stage of a feature · one dot per feature",
 };
 
 export type Step = {

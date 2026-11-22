@@ -107,6 +107,10 @@
   position: absolute;
   inset: 7%;
 }
+/* a prototype that fills the screen: edge to edge, over the backdrop */
+.screens[data-fill] {
+  inset: 0;
+}
 .screen {
   object-fit: contain;
   filter: drop-shadow(0 18px 40px rgb(0 0 0 / 22%));
@@ -203,11 +207,20 @@
 }
 
 /* Same family as the Undo button: soft pill, icon first */
-.notesToggle {
+/* Buttons on the player's corner: a prototype's own (Settings), then Description */
+.tools {
   position: absolute;
   right: 16px;
   bottom: 16px;
-  z-index: 1;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toolsSlot {
+  display: contents;
+}
+.notesToggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -283,6 +296,13 @@
   .player,
   .caption {
     padding-inline: 20px;
+  }
+  .tools {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    justify-content: flex-end;
+    padding: 12px 20px 0;
   }
   /* Phone / tablet: the card is plain text under the screen, always shown */
   .notes,

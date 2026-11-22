@@ -24,11 +24,11 @@ export type ContactLink = {
 export const contactWrite: ContactLink[] = [
   { title: "Email", caption: site.email, meta: "copy", icon: "mail", href: `mailto:${site.email}` },
   { title: "Telegram", caption: "@amaterasugrenada", meta: "copy", icon: "send", href: "https://t.me/amaterasugrenada", external: true },
-  { title: "LinkedIn", caption: "Message or connect", meta: "↗", icon: "link", href: "https://linkedin.com/in/[handle]", external: true },
-  { title: "Book a call", caption: "30 min · Google Meet", meta: "↗", icon: "calendar", href: "https://cal.com/[handle]", external: true },
+  { title: "LinkedIn", caption: "Message or connect", meta: "↗", icon: "link", href: "https://www.linkedin.com/in/mykyta-sharapaniuk-1080a0339/", external: true },
 ];
 
 export const contactLook: ContactLink[] = [
-  { title: "CV.pdf", caption: "2 pages · updated 11.2026", meta: "PDF", icon: "file-text", href: "/cv.pdf", external: true },
-  { title: "Behance", caption: "Full case studies", meta: "↗", icon: "link", href: "https://behance.net/[handle]", external: true },
+  { title: "CV.pdf", caption: "3 pages · updated 11.2026", meta: "PDF", icon: "file-text", href: "/cv.pdf", external: true },
+  { title: "Behance", caption: "Full case studies", meta: "↗", icon: "link", href: "https://www.behance.net/nikitasarapamuk", external: true },
+  { title: "GitHub", caption: "github.com/ezonef", meta: "↗", icon: "link", href: "https://github.com/ezonef", external: true },
 ];

@@ -18,9 +18,9 @@ const columns = [
   {
     label: "Elsewhere",
     links: [
-      { t: "LinkedIn", h: "https://linkedin.com/in/[handle]" },
-      { t: "Behance", h: "https://behance.net/[handle]" },
-      { t: "GitHub", h: "https://github.com/[handle]" },
+      { t: "LinkedIn", h: "https://www.linkedin.com/in/mykyta-sharapaniuk-1080a0339/" },
+      { t: "Behance", h: "https://www.behance.net/nikitasarapamuk" },
+      { t: "GitHub", h: "https://github.com/ezonef" },
     ],
   },
   { label: "Based", text: [site.location, site.timezone] },

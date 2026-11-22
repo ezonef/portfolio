@@ -58,13 +58,20 @@ function useDrag(onMove: (x: number, y: number) => void) {
   return { ref, onPointerDown };
 }
 
-type Props = { value: string; onChange: (hex: string) => void };
+type Props = {
+  /** "#rrggbb" */
+  value: string;
+  onChange: (hex: string) => void;
+  /** Opacity 0…100 */
+  opacity: number;
+  onOpacity: (percent: number) => void;
+};
 
 /**
- * Colour picker drawn in the page (no system dialog): saturation × brightness square + hue strip.
+ * Colour picker drawn in the page (no system dialog): saturation × brightness square + hue and opacity strips.
  * Arrow keys nudge both (Shift = bigger steps).
  */
-export function ColorPicker({ value, onChange }: Props) {
+export function ColorPicker({ value, onChange, opacity, onOpacity }: Props) {
   const [hsv, setHsv] = useState(() => hexToHsv(value));
   // Follow outside changes (hex field, presets) without losing the hue of greys
   useEffect(() => {
@@ -82,6 +89,7 @@ export function ColorPicker({ value, onChange }: Props) {
 
   const area = useDrag((x, y) => set({ ...hsv, s: x, v: 1 - y }));
   const hue = useDrag((x) => set({ ...hsv, h: x * 360 }));
+  const alpha = useDrag((x) => onOpacity(Math.round(x * 100)));
 
   const areaKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const step = e.shiftKey ? 0.1 : 0.02;
@@ -96,6 +104,14 @@ export function ColorPicker({ value, onChange }: Props) {
     if (!d) return;
     e.preventDefault();
     set({ ...hsv, h: (hsv.h + d + 360) % 360 });
+  };
+
+  const alphaKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.shiftKey ? 10 : 1;
+    const d = e.key === "ArrowLeft" || e.key === "ArrowDown" ? -step : e.key === "ArrowRight" || e.key === "ArrowUp" ? step : 0;
+    if (!d) return;
+    e.preventDefault();
+    onOpacity(clamp(opacity + d, 0, 100));
   };
 
   return (
@@ -127,6 +143,21 @@ export function ColorPicker({ value, onChange }: Props) {
         onKeyDown={hueKey}
       >
         <span className={styles.thumb} style={{ left: `${(hsv.h / 360) * 100}%`, top: "50%", background: `hsl(${hsv.h} 100% 50%)` }} />
+      </div>
+      <div
+        {...alpha}
+        className={styles.alpha}
+        role="slider"
+        tabIndex={0}
+        aria-label="Opacity"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={opacity}
+        aria-valuetext={`${opacity}%`}
+        onKeyDown={alphaKey}
+      >
+        <span className={styles.alphaFill} style={{ background: `linear-gradient(to right, transparent, ${value})` }} />
+        <span className={styles.thumb} style={{ left: `${opacity}%`, top: "50%", background: value }} />
       </div>
     </div>
   );

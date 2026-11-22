@@ -4,11 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CaseBlocks } from "@/components/site/CaseBlocks/CaseBlocks";
+import { EmbedFrame } from "@/components/site/PrototypeFrame/EmbedFrame";
+import { PrototypeFrame } from "@/components/site/PrototypeFrame/PrototypeFrame";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { IconButton } from "@/components/ui/IconButton/IconButton";
 import { Step } from "@/components/ui/Step/Step";
 import { Tag } from "@/components/ui/Tag/Tag";
 import { isColor, type CaseStudy } from "@/data/case-types";
+import { findPrototype } from "@/prototypes/registry";
+import { PrototypeToolsSlot } from "@/prototypes/tools-slot";
 import styles from "./CaseView.module.css";
 
 type Props = {
@@ -18,6 +22,9 @@ type Props = {
   tags: string[];
   next: { href: string; number: string; title: string };
 };
+
+/** The Description card closes by itself after this long, unless it's being read */
+const NOTES_AUTO_CLOSE = 7000;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -31,6 +38,11 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
   const steps = study.steps;
   const step = steps[active];
   const go = (i: number) => setActive(Math.max(0, Math.min(steps.length - 1, i)));
+  // screens shown at least once — code prototypes mount on first view
+  const [seen, setSeen] = useState(() => new Set([0]));
+  useEffect(() => {
+    setSeen((v) => (v.has(active) ? v : new Set(v).add(active)));
+  }, [active]);
 
   // Description card on the player: open by default, the viewer's choice is remembered
   const [notesOpen, setNotesOpen] = useState(true);
@@ -39,7 +51,9 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
       if (localStorage.getItem("case-notes") === "closed") setNotesOpen(false);
     } catch {}
   }, []);
+  const [notesHeld, setNotesHeld] = useState(false);
   const toggleNotes = () => {
+    setNotesHeld(false);
     setNotesOpen((open) => {
       try {
         localStorage.setItem("case-notes", open ? "closed" : "open");
@@ -48,6 +62,14 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
     });
   };
   const hasNotes = step.body.length > 0;
+  // closes on its own; doesn't count as the viewer's choice, so it isn't remembered
+  useEffect(() => {
+    if (!notesOpen || !hasNotes || notesHeld) return;
+    const t = setTimeout(() => setNotesOpen(false), NOTES_AUTO_CLOSE);
+    return () => clearTimeout(t);
+  }, [notesOpen, hasNotes, notesHeld, active]);
+  // the active prototype can put its own button here, beside Description
+  const [toolsSlot, setToolsSlot] = useState<HTMLElement | null>(null);
 
   // Esc closes the open card (not while typing somewhere)
   useEffect(() => {
@@ -102,40 +124,40 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
         <div className={styles.stageWrap}>
           <div className={styles.stage}>
             {steps.map((s, i) => (
-              <div key={i} className={styles.layer} data-active={i === active} aria-hidden={i !== active}>
+              <div key={i} className={styles.layer} data-active={i === active} aria-hidden={i !== active} inert={i !== active}>
                 {isColor(s.backdrop) ? (
                   <div className={styles.backdropColor} style={{ background: s.backdrop }} />
                 ) : (
                   s.backdrop && <Image src={s.backdrop} alt="" fill priority={i === 0} sizes="(max-width: 1024px) 100vw, 60vw" className={styles.backdrop} />
                 )}
-                <div className={styles.screens}>
-                  <Image
-                    src={s.screen}
-                    alt={i === active ? `Screen ${i + 1}: ${s.title}` : ""}
-                    fill
-                    priority={i === 0}
-                    sizes="(max-width: 1024px) 100vw, 60vw"
-                    className={styles.screen}
-                  />
+                <div className={styles.screens} data-fill={s.embed || findPrototype(s.prototype)?.fill ? true : undefined}>
+                  {s.embed ? (
+                    seen.has(i) && <EmbedFrame src={s.embed} title={`Screen ${i + 1}: ${s.title}`} />
+                  ) : s.prototype ? (
+                    // a live prototype mounts the first time its screen is shown, then stays (keeps its state)
+                    seen.has(i) && (
+                      <PrototypeToolsSlot.Provider value={i === active ? toolsSlot : null}>
+                        <PrototypeFrame id={s.prototype} label={`Screen ${i + 1}: ${s.title}`} />
+                      </PrototypeToolsSlot.Provider>
+                    )
+                  ) : (
+                    <Image
+                      src={s.screen}
+                      alt={i === active ? `Screen ${i + 1}: ${s.title}` : ""}
+                      fill
+                      priority={i === 0}
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      className={styles.screen}
+                    />
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* What's on the current screen — a card on the player, next to what it describes.
-              Desktop: floats over the backdrop and can be hidden. Phone: sits under the screen. */}
-          {hasNotes && (
-            <>
-              <div id="screen-notes" className={styles.notes} data-open={notesOpen} aria-live="polite">
-                <p className={`mono-label ${styles.notesTitle}`}>
-                  {pad(active + 1)} · {step.title}
-                </p>
-                <CaseBlocks key={active} blocks={step.body} className={styles.notesBody} />
-                <button type="button" className={styles.notesClose} onClick={toggleNotes} tabIndex={notesOpen ? 0 : -1}>
-                  <span>Close</span>
-                  <kbd className={styles.notesKey}>esc</kbd>
-                </button>
-              </div>
+          <div className={styles.tools}>
+            <div ref={setToolsSlot} className={styles.toolsSlot} />
+            {hasNotes && (
               <button
                 type="button"
                 className={`mono-s ${styles.notesToggle}`}
@@ -146,6 +168,34 @@ export function CaseView({ study, eyebrow, tags, next }: Props) {
                 <Icon name="circle-help" />
                 Description
               </button>
+            )}
+          </div>
+
+          {/* What's on the current screen — a card on the player, next to what it describes.
+              Desktop: floats over the backdrop and can be hidden. Phone: sits under the screen. */}
+          {hasNotes && (
+            <>
+              <div
+                id="screen-notes"
+                className={styles.notes}
+                data-open={notesOpen}
+                aria-live="polite"
+                onPointerEnter={(e) => e.pointerType === "mouse" && setNotesHeld(true)}
+                onPointerLeave={(e) => e.pointerType === "mouse" && setNotesHeld(false)}
+                onFocus={() => setNotesHeld(true)}
+                onBlur={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget)) setNotesHeld(false);
+                }}
+              >
+                <p className={`mono-label ${styles.notesTitle}`}>
+                  {pad(active + 1)} · {step.title}
+                </p>
+                <CaseBlocks key={active} blocks={step.body} className={styles.notesBody} />
+                <button type="button" className={styles.notesClose} onClick={toggleNotes} tabIndex={notesOpen ? 0 : -1}>
+                  <span>Close</span>
+                  <kbd className={styles.notesKey}>esc</kbd>
+                </button>
+              </div>
             </>
           )}
         </div>

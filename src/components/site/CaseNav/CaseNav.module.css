@@ -23,7 +23,6 @@
   .muted:hover {
     color: var(--color-text-primary);
   }
-  .links a:hover,
   .logo:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -31,7 +30,13 @@
 }
 .links {
   display: flex;
-  gap: 24px;
+  align-items: center;
+  gap: var(--space-32);
+}
+.end {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 @media (max-width: 1024px) {

@@ -283,7 +283,7 @@
   --component-site-header-border: var(--color-border-subtle);
   --component-site-header-logo: var(--color-text-primary);
   --component-site-header-accent: var(--color-icon-accent);
-  --component-site-header-status-dot: var(--color-bg-accent);
+  --component-site-header-status-dot: #15803d;
   --component-site-header-status-text: var(--color-text-secondary);
   --component-site-footer-bg: var(--color-bg-inverse-deep);
   --component-site-footer-heading: var(--color-text-on-inverse);
@@ -333,6 +333,8 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
+
+    --component-site-header-status-dot: #b6ff3c;
 
     --color-bg-page: var(--stone-975);
     --color-bg-raised: var(--stone-925);
@@ -403,6 +405,8 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
+
+  --component-site-header-status-dot: #b6ff3c;
 
   --color-bg-page: var(--stone-975);
   --color-bg-raised: var(--stone-925);

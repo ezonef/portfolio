@@ -16,8 +16,12 @@ export const BLOCK_TYPES: CaseBlockType[] = [...TEXT_BLOCK_TYPES, "image", "divi
 
 export type CaseStep = {
   title: string;
-  /** Screen shown in the player — sits centred on this step's backdrop */
+  /** Screen image shown in the player — sits centred on this step's backdrop */
   screen: string;
+  /** A live prototype from src/prototypes (its id). When set, it is shown instead of the image. */
+  prototype?: string;
+  /** A pasted or uploaded HTML prototype (/prototypes/custom/…/index.html), shown in a sandboxed frame */
+  embed?: string;
   /** This screen's own background: an uploaded image path, a colour like "#1b1b19", or "" (plain). */
   backdrop: string;
   /** Right side of the caption under the screen, e.g. "status chips" */
@@ -39,8 +43,8 @@ export type CaseStudy = {
   outcome: CaseBlock[];
 };
 
-/** A backdrop is either a colour ("#rrggbb") or an image path */
-export const isColor = (v: string) => /^#[0-9a-f]{6}$/i.test(v);
+/** A backdrop is either a colour ("#rrggbb", or "#rrggbbaa" with opacity) or an image path */
+export const isColor = (v: string) => /^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(v);
 
 let seq = 0;
 export const blockId = () => `b${Date.now().toString(36)}${(seq++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;
@@ -68,6 +72,8 @@ export function normalizeCase(base: CaseStudy, saved: Record<string, unknown> = 
     title: String(st.title ?? ""),
     screen: String(st.screen ?? ""),
     backdrop: String(st.backdrop ?? ""),
+    ...(st.prototype ? { prototype: String(st.prototype) } : {}),
+    ...(st.embed ? { embed: String(st.embed) } : {}),
     hint: String(st.hint ?? ""),
     body: Array.isArray(st.body) ? (st.body as CaseBlock[]) : textBlocks(["text", String(st.text ?? "")]),
     ...(st.hidden ? { hidden: true } : {}),

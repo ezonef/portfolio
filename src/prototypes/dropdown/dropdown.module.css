@@ -1,0 +1,569 @@
+/* The dropdown lab: a photo for a screen, glass menus over it. Colours are fixed (the photo is dark in both themes). */
+.canvas {
+  --glass: rgb(26 24 20 / 72%);
+  --line: rgb(255 255 255 / 12%);
+  --ink: rgb(255 255 255 / 92%);
+  --ink-2: rgb(255 255 255 / 58%);
+  --accent: #f2c66d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 14px;
+  user-select: none;
+  -webkit-user-select: none;
+  background: #14120e;
+}
+.canvas[data-dragging] {
+  cursor: grabbing;
+}
+.photo {
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgb(0 0 0 / 35%));
+  pointer-events: none;
+}
+
+/* ---------- guides ---------- */
+.guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bound {
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed rgb(255 255 255 / 22%);
+  border-radius: 6px;
+}
+.bound span {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  color: rgb(255 255 255 / 45%);
+}
+.rule,
+.ruleH {
+  position: absolute;
+  --c: rgb(255 255 255 / 35%);
+  transition: height 60ms linear;
+}
+.rule {
+  width: 0;
+  border-left: 1px dashed var(--c);
+}
+.ruleH {
+  height: 0;
+  border-top: 1px dashed var(--c);
+}
+.rule[data-on],
+.ruleH[data-on] {
+  --c: var(--accent);
+  border-style: solid;
+}
+.rule span,
+.ruleH span {
+  position: absolute;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 55%);
+  color: var(--c);
+  white-space: nowrap;
+}
+.rule span {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.ruleH span {
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* the area the pointer may cross on its way into a submenu */
+.tri {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  pointer-events: none;
+}
+.tri polygon {
+  fill: rgb(255 255 255 / 6%);
+  stroke: rgb(255 255 255 / 40%);
+  stroke-dasharray: 4 4;
+}
+.tri polygon[data-in] {
+  fill: rgb(242 198 109 / 22%);
+  stroke: var(--accent);
+}
+
+.hint {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 45%);
+  color: var(--ink);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-out);
+}
+.hint[data-gone] {
+  opacity: 0;
+}
+
+/* ---------- the button ---------- */
+.trigger {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 12px 0 8px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 12px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 30%);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 500;
+  cursor: grab;
+  touch-action: none;
+  transition:
+    box-shadow 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+.canvas[data-dragging] .trigger {
+  cursor: grabbing;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 45%);
+  transform: scale(1.03);
+}
+.trigger[aria-expanded="true"] {
+  border-color: rgb(255 255 255 / 34%);
+}
+.trigger:focus-visible,
+.item:focus-visible,
+.toggle:focus-visible,
+.snapDot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.grip {
+  display: grid;
+  color: var(--ink-2);
+}
+.thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: url("/images/cases/dropdown/flowers.webp") 40% 40% / 260%;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 20%);
+}
+.triggerLabel {
+  white-space: nowrap;
+}
+.chevron {
+  display: grid;
+  color: var(--ink-2);
+  transform: rotate(90deg);
+  transition: transform 220ms var(--ease-out);
+}
+.chevron[data-up] {
+  transform: rotate(-90deg);
+}
+
+/* ---------- menus ---------- */
+.panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  min-width: 220px;
+  max-width: 300px;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 8%) inset,
+    0 16px 40px rgb(0 0 0 / 40%);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 25%) transparent;
+  outline: none;
+  /* the root list stays rendered while closed, so it can be measured: it fades and scales from its anchor */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+  transition:
+    opacity 120ms var(--ease-out),
+    transform 160ms var(--ease-out),
+    visibility 0s 160ms;
+}
+.panel[data-open] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 140ms var(--ease-out),
+    transform 180ms var(--ease-out),
+    visibility 0s;
+}
+.panel[data-sub] {
+  animation: sub-in 160ms var(--ease-out);
+}
+@keyframes sub-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+/* a list that scrolls keeps its scrollbar visible, so it's clear there is more
+   (no fade mask: a mask switches off the blur behind the glass) */
+.panel[data-scrolls] {
+  scrollbar-gutter: stable;
+}
+
+.sep {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--line);
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  outline: none;
+}
+.item[data-hl] {
+  background: rgb(255 255 255 / 13%);
+}
+.item[data-danger] {
+  color: #ff9c8f;
+}
+.item[data-danger][data-hl] {
+  background: rgb(255 92 72 / 20%);
+}
+.item[aria-disabled] {
+  opacity: 0.38;
+}
+.icon {
+  display: grid;
+  flex: none;
+  color: var(--ink-2);
+}
+.item[data-danger] .icon {
+  color: inherit;
+}
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kbd {
+  flex: none;
+  color: var(--ink-2);
+  font-family: inherit;
+}
+.more {
+  display: grid;
+  flex: none;
+  color: var(--ink-2);
+  transition: transform 200ms var(--ease-out);
+}
+/* the arrow points the way the submenu will open */
+.more[data-left] {
+  transform: scaleX(-1);
+}
+
+/* ---------- search in a long list ---------- */
+/* pinned to the top of the scrolling list; no fill of its own, so it matches the panel (clipRows cuts the rows at its edge) */
+.search {
+  position: sticky;
+  top: -6px;
+  z-index: 1;
+  margin: -6px -6px 6px;
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--line);
+}
+/* built like a menu row: same height, same icon column, same text */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  cursor: text;
+}
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+}
+/* focus shows as the caret in a menu row, not as a box around it */
+.input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.input::placeholder {
+  color: var(--ink-2);
+}
+.spinner {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgb(255 255 255 / 25%);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* the 1-second pause, drawn: it starts over with every keystroke */
+.wait {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  overflow: hidden;
+}
+.waitBar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  animation: wait 1000ms linear forwards;
+}
+@keyframes wait {
+  from {
+    transform: scaleX(0);
+  }
+}
+.searchMeta {
+  flex: none;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.empty {
+  padding: 10px;
+  color: var(--ink-2);
+}
+.mark {
+  border-radius: 2px;
+  background: rgb(242 198 109 / 30%);
+  color: inherit;
+}
+
+/* ---------- readout ---------- */
+/* Same button as the player's Description; the card opens above it, in the site's colours */
+.settings {
+  --line: var(--color-border-subtle);
+  --ink: var(--color-text-primary);
+  --ink-2: var(--color-text-secondary);
+  --accent: var(--color-text-primary);
+  position: relative;
+  display: inline-flex;
+  color: var(--ink);
+}
+.localTools {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 70;
+}
+.settingsButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  cursor: pointer;
+  transition: background-color var(--duration-hover) ease;
+}
+.settingsButton svg {
+  width: 14px;
+  height: 14px;
+}
+.settingsButton[aria-expanded="true"] {
+  background: var(--color-bg-hover);
+}
+@media (hover: hover) and (pointer: fine) {
+  .settingsButton:hover {
+    background: var(--color-bg-hover);
+  }
+}
+.settingsButton:active {
+  transform: scale(0.97);
+}
+.settingsButton:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+.settingsCard {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  width: 176px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--color-bg-surface);
+  box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  transform-origin: right bottom;
+  animation: settings-in 160ms var(--ease-out);
+}
+@keyframes settings-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+.toggles {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  /* the rows' hover area reaches past the grid, so their checkboxes line up with its edge */
+  margin: 10px -8px 0;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.box {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--ink-2);
+  border-radius: 3px;
+}
+.toggle[aria-pressed="true"] .box {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+/* the nine spots: full width, each cell shaped like the screen it stands for */
+.snap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.snapDot {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 4px;
+  background: var(--color-bg-muted);
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .snapDot:hover {
+    border-color: var(--color-border-strong);
+  }
+  .toggle:hover {
+    background: var(--color-bg-hover);
+  }
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 80;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgb(250 248 242 / 94%);
+  color: #1a1814;
+  white-space: nowrap;
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  pointer-events: none;
+}
+.toast[data-on] {
+  animation: toast 2600ms var(--ease-out) forwards;
+}
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+  8%,
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel[data-open] {
+    transform: none;
+    transition: opacity 100ms linear, visibility 0s;
+  }
+  .panel[data-sub] {
+    animation: none;
+  }
+  .chevron,
+  .more,
+  .trigger,
+  .settingsButton,
+  .settingsCard {
+    animation: none;
+    transition: none;
+  }
+}

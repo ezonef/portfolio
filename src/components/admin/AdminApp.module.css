@@ -36,7 +36,7 @@
 .dot {
   width: 8px;
   height: 8px;
-  background: var(--component-site-header-status-dot);
+  background: var(--color-bg-accent);
 }
 .barActions {
   display: flex;
@@ -239,6 +239,32 @@
   gap: var(--space-56);
   min-width: 0;
 }
+/* Title, Card / Case and the screen tabs: pinned under the top bar.
+   The padding is cancelled by the margins, so the layout doesn't shift. */
+.editorTop {
+  position: sticky;
+  top: 72px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  margin-block: calc(var(--space-24) * -1) calc(var(--space-16) * -1);
+  padding-block: var(--space-24) var(--space-16);
+  background: var(--color-bg-page);
+}
+/* a focused field never ends up hidden under the pinned head */
+:global(html):has(.editorTop) {
+  scroll-padding-top: 400px;
+}
+/* on a short window the head would cover the form */
+@media (max-height: 640px) {
+  .editorTop {
+    position: static;
+  }
+  :global(html):has(.editorTop) {
+    scroll-padding-top: 0;
+  }
+}
 .editorHead {
   display: flex;
   align-items: flex-end;
@@ -404,7 +430,6 @@
   flex-flow: row nowrap;
   align-items: flex-start;
   gap: var(--space-6);
-  margin-top: calc(var(--space-32) * -1);
   margin-bottom: -44px;
   padding-bottom: 44px;
   overflow-x: auto;
@@ -465,6 +490,13 @@
   }
 }
 @media (max-width: 640px) {
+  /* the top bar wraps here and gets tall, so it scrolls away and the switch takes the top */
+  .bar {
+    position: static;
+  }
+  .editorTop {
+    top: 0;
+  }
   .barInner {
     height: auto;
     flex-wrap: wrap;

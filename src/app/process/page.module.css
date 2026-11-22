@@ -327,8 +327,18 @@
   align-items: center;
   min-height: 70vh;
 }
+/* the button sits 3× further from the text than the text sits from the title */
+.collab {
+  --collab-gap: 16px;
+}
+.collabCta {
+  margin-top: calc(var(--collab-gap) * 3);
+}
 .collab .sectionTitle {
-  margin-bottom: 16px;
+  margin-bottom: var(--collab-gap);
+}
+.collabText {
+  color: var(--color-text-secondary);
 }
 .rows {
   margin: 0;

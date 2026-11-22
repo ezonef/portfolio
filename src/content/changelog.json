@@ -1,32 +1,5 @@
 [
   {
-    "id": "cmwmkisct16dw",
-    "date": "2026-11-18",
-    "title": "New case: New case123123321",
-    "body": [],
-    "status": "approved",
-    "kind": "published",
-    "slug": "new-case-3"
-  },
-  {
-    "id": "cmwmkj10b3480",
-    "date": "2026-11-18",
-    "title": "New case: New case",
-    "body": [],
-    "status": "approved",
-    "kind": "published",
-    "slug": "new-case-4"
-  },
-  {
-    "id": "cmwnjnh4ny4rc",
-    "date": "2026-11-19",
-    "title": "Updated: Design system — [Project]",
-    "body": [],
-    "status": "pending",
-    "kind": "updated",
-    "slug": "design-system"
-  },
-  {
     "id": "cmwrtoymzb0y5",
     "date": "2026-11-22",
     "title": "Updated: Dropdown that finds room",

@@ -4,8 +4,8 @@ import { promisify } from "node:util";
 
 const run = promisify(execFile);
 
-/** Only what the admin writes: case texts and uploaded case images. Code is never committed from here. */
-const PATHS = ["src/content", "public/images/cases"];
+/** Only what the admin writes: case texts, uploaded images and pasted/uploaded prototypes. Site code is never committed from here. */
+const PATHS = ["src/content", "public/images/cases", "public/prototypes/custom"];
 
 export type GitResult = { committed: boolean; pushed: boolean; error?: string };
 

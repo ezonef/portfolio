@@ -14,6 +14,7 @@ import { AutoTextarea } from "./AutoTextarea";
 import { BackdropField } from "./BackdropField";
 import { BlockEditor } from "./BlockEditor";
 import { ImageDrop } from "./ImageDrop";
+import { ScreenField } from "./ScreenField";
 import { TagPicker } from "./TagPicker";
 import { ChangelogPanel } from "./ChangelogPanel";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -370,6 +371,8 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
 
         {project && study ? (
           <main className={styles.editor}>
+            {/* The whole head stays pinned under the top bar while the form scrolls */}
+            <div className={styles.editorTop}>
             <div className={styles.editorHead}>
               <div>
                 <p className={`mono-m ${styles.eyebrow}`}>
@@ -410,6 +413,44 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
               <Step size="m" number="02" title="Case page" active={view === "case"} onClick={() => setView("case")} />
             </div>
 
+            {view === "case" && (
+              <>
+                {/* 2 — the text around the screens | the screens themselves */}
+                <div className={styles.caseTabs} role="group" aria-label="Case page parts">
+                  <div className={styles.tabGroup}>
+                  <Step number="—" title="Intro & outcome" active={tab === "intro"} onClick={() => setTab("intro")} />
+                  </div>
+                  <span className={styles.tabsDivider} role="separator" aria-orientation="vertical" />
+                  <div className={styles.tabGroup}>
+                  {study.steps.map((st, i) => (
+                    <div key={i} className={styles.tabItem} data-hidden={st.hidden || undefined} title="Drag to reorder" {...screenDrag(i)}>
+                      <Step number={st.hidden ? `${pad(i + 1)} · hidden` : pad(i + 1)} title={st.title || "Untitled"} active={tab === i} onClick={() => setTab(i)} />
+                      {/* Hover menu under the tab */}
+                      <div className={styles.tabMenu}>
+                        <button
+                          type="button"
+                          className={styles.tabMenuBtn}
+                          aria-label={st.hidden ? `Show screen ${pad(i + 1)} on the site` : `Hide screen ${pad(i + 1)} from the site`}
+                          title={st.hidden ? "Show on site" : "Hide from site"}
+                          onClick={() => toggleScreen(i)}
+                        >
+                          <Icon name={st.hidden ? "eye" : "eye-off"} size={14} />
+                        </button>
+                        <button type="button" className={styles.tabMenuBtn} aria-label={`Delete screen ${pad(i + 1)}`} title="Delete" onClick={() => removeScreen(i)}>
+                          <Icon name="trash-2" size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button type="button" className={styles.addTab} onClick={addScreen} aria-label="Add screen" title="Add screen">
+                    <Icon name="plus" />
+                  </button>
+                  </div>
+                </div>
+              </>
+            )}
+            </div>
+
             {view === "card" ? (
               <Section title="Card" note="What the project card on Home and All projects shows.">
                 <div className={styles.grid}>
@@ -445,39 +486,6 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
               </Section>
             ) : (
               <>
-                {/* 2 — the text around the screens | the screens themselves */}
-                <div className={styles.caseTabs} role="group" aria-label="Case page parts">
-                  <div className={styles.tabGroup}>
-                  <Step number="—" title="Intro & outcome" active={tab === "intro"} onClick={() => setTab("intro")} />
-                  </div>
-                  <span className={styles.tabsDivider} role="separator" aria-orientation="vertical" />
-                  <div className={styles.tabGroup}>
-                  {study.steps.map((st, i) => (
-                    <div key={i} className={styles.tabItem} data-hidden={st.hidden || undefined} title="Drag to reorder" {...screenDrag(i)}>
-                      <Step number={st.hidden ? `${pad(i + 1)} · hidden` : pad(i + 1)} title={st.title || "Untitled"} active={tab === i} onClick={() => setTab(i)} />
-                      {/* Hover menu under the tab */}
-                      <div className={styles.tabMenu}>
-                        <button
-                          type="button"
-                          className={styles.tabMenuBtn}
-                          aria-label={st.hidden ? `Show screen ${pad(i + 1)} on the site` : `Hide screen ${pad(i + 1)} from the site`}
-                          title={st.hidden ? "Show on site" : "Hide from site"}
-                          onClick={() => toggleScreen(i)}
-                        >
-                          <Icon name={st.hidden ? "eye" : "eye-off"} size={14} />
-                        </button>
-                        <button type="button" className={styles.tabMenuBtn} aria-label={`Delete screen ${pad(i + 1)}`} title="Delete" onClick={() => removeScreen(i)}>
-                          <Icon name="trash-2" size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  <button type="button" className={styles.addTab} onClick={addScreen} aria-label="Add screen" title="Add screen">
-                    <Icon name="plus" />
-                  </button>
-                  </div>
-                </div>
-
                 {tab === "intro" && (
                   <>
                     <Section title="Intro" note="Top of the case page.">
@@ -517,8 +525,16 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
                             </p>
                           )}
                         </div>
-                        <Field label="Screen" hint="Shown on this screen's background" as="div">
-                          <ImageDrop key={`${project.slug}-shot-${i}`} slug={project.slug} value={st.screen} backdrop={st.backdrop} framed onChange={(screen) => setStep({ screen })} />
+                        <Field label="Screen" hint="An image, or a live prototype in code" as="div">
+                          <ScreenField
+                            key={`${project.slug}-shot-${i}`}
+                            slug={project.slug}
+                            screen={st.screen}
+                            prototype={st.prototype}
+                            embed={st.embed}
+                            backdrop={st.backdrop}
+                            onChange={(patch) => setStep(patch)}
+                          />
                         </Field>
                         <div className={styles.grid}>
                           <Field label="Background" hint="Only for this screen" as="div">

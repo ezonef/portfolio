@@ -1,0 +1,132 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 40px 48px;
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-size: 15px;
+}
+.top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.top :global(.mono-xs) {
+  margin-bottom: 6px;
+  color: var(--color-text-tertiary);
+}
+.search {
+  width: 380px;
+}
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 28px 0 16px;
+}
+.filters {
+  display: flex;
+  gap: 8px;
+}
+.picked {
+  color: var(--color-text-tertiary);
+  opacity: 0;
+  transition: opacity 160ms var(--ease-out);
+}
+.picked[data-on] {
+  opacity: 1;
+}
+.tableWrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.table th {
+  position: sticky;
+  top: 0;
+  padding: 12px 16px;
+  background: var(--color-bg-muted);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 13px;
+}
+.table td {
+  padding: 14px 16px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.table tbody tr {
+  cursor: pointer;
+  transition: background-color 120ms var(--ease-out);
+}
+@media (hover: hover) {
+  .table tbody tr:hover {
+    background: var(--color-bg-hover);
+  }
+}
+.table tbody tr[data-picked] {
+  background: var(--color-bg-block-selected);
+}
+.check {
+  width: 44px;
+}
+.check input {
+  accent-color: var(--color-text-primary);
+}
+.client {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.status[data-status="Active"] {
+  background: var(--color-status-active-bg);
+  color: var(--color-status-active-text);
+}
+.status[data-status="Pending"] {
+  background: var(--color-status-pending-bg);
+  color: var(--color-status-pending-text);
+}
+.status[data-status="Blocked"] {
+  background: var(--color-status-blocked-bg);
+  color: var(--color-status-blocked-text);
+}
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 72px 24px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+.empty :global(.heading-h3) {
+  color: var(--color-text-primary);
+}
+.reset {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}

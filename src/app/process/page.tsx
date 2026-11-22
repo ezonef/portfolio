@@ -6,6 +6,7 @@ import { SectionNav } from "@/components/site/SectionNav/SectionNav";
 import { SkillArt } from "@/components/site/SkillArt/SkillArt";
 import { SiteFooter } from "@/components/site/SiteFooter/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader/SiteHeader";
+import { Button } from "@/components/ui/Button/Button";
 import {
   ai,
   collaboration,
@@ -190,7 +191,10 @@ export default function ProcessPage() {
               <h2 id="collab-title" className={`heading-h2 ${styles.sectionTitle}`}>
                 Working together
               </h2>
-              <p className="body-m">{collaborationIntro}</p>
+              <p className={`body-m ${styles.collabText}`}>{collaborationIntro}</p>
+              <Button href="/projects" icon="arrow-right" className={styles.collabCta}>
+                View my projects
+              </Button>
             </div>
             <dl className={styles.rows}>
               {collaboration.map((r) => (

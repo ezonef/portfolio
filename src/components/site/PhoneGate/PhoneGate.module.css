@@ -1,0 +1,69 @@
+/* Hidden everywhere except a phone that hasn't chosen the desktop layout.
+   html.js: without JavaScript the button can't work, so the site stays visible. */
+.gate {
+  display: none;
+}
+@media (hover: none) and (pointer: coarse) and (max-width: 760px), (hover: none) and (pointer: coarse) and (max-height: 500px) {
+  :global(html.js:not([data-view="desktop"]) body) > :not(.gate) {
+    display: none;
+  }
+  :global(html.js:not([data-view="desktop"])) .gate {
+    display: flex;
+  }
+}
+.gate {
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: var(--space-20);
+  padding-bottom: max(var(--space-20), env(safe-area-inset-bottom));
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+}
+.name {
+  text-transform: uppercase;
+  color: var(--component-site-header-logo);
+}
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--space-24);
+  text-align: center;
+}
+.figure {
+  width: min(300px, 100%);
+  aspect-ratio: 400 / 320;
+  margin-bottom: var(--space-16);
+}
+/* the figure's corner read-out only makes sense with a pointer */
+.figure figure > span {
+  display: none;
+}
+.eyebrow {
+  margin: 0 0 var(--space-12);
+  color: var(--color-text-secondary);
+}
+.title {
+  max-width: 320px;
+  margin: 0;
+  text-wrap: balance;
+}
+.text {
+  max-width: 340px;
+  margin: var(--space-12) 0 var(--space-24);
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+/* phone on its side: figure beside nothing, just smaller */
+@media (max-height: 500px) {
+  .figure {
+    width: 150px;
+    margin-bottom: var(--space-4);
+  }
+  .text {
+    max-width: 520px;
+    margin-bottom: var(--space-12);
+  }
+}

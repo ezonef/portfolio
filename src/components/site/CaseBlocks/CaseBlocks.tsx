@@ -32,7 +32,7 @@ export function CaseBlocks({ blocks, onLink, className }: Props) {
           case "h2": return <h2 key={b.id} className={`heading-h2 ${styles.h2}`}>{t(b.text)}</h2>;
           case "h3": return <h3 key={b.id} className={`heading-h3 ${styles.h3}`}>{t(b.text)}</h3>;
           case "label": return <p key={b.id} className={`mono-label ${styles.label}`}>{b.text}</p>;
-          case "quote": return <blockquote key={b.id} className={`heading-h4 ${styles.quote}`}>{t(b.text)}</blockquote>;
+          case "quote": return <blockquote key={b.id} className={`body-m ${styles.quote}`}>{t(b.text)}</blockquote>;
           case "divider": return <hr key={b.id} className={styles.divider} />;
           case "image":
             return (
