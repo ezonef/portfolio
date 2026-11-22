@@ -1,20 +1,10 @@
 import type { Metadata } from "next";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { PhoneGate } from "@/components/site/PhoneGate/PhoneGate";
+import "@/styles/fonts.css";
 import "./globals.css";
 
-// next/font downloads the fonts at build time and serves them from our own domain.
-const sans = Inter_Tight({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
-  variable: "--font-sans",
-});
-
-const mono = JetBrains_Mono({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-});
+/** The faces every page needs first */
+const PRELOAD_FONTS = ["inter-tight-latin-400-normal", "jetbrains-mono-latin-400-normal"];
 
 export const metadata: Metadata = {
   title: "Mykyta Sharapaniuk — Product designer",
@@ -23,8 +13,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {PRELOAD_FONTS.map((f) => (
+          <link key={f} rel="preload" href={`/fonts/${f}.woff2`} as="font" type="font/woff2" crossOrigin="anonymous" />
+        ))}
         {/* Before the first paint: apply a pinned theme (no light flash), the desktop layout if a phone chose it,
             and mark that JS runs, so entrance animations can start hidden without hiding content when JS is off */}
         <script

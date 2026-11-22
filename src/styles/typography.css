@@ -1,7 +1,7 @@
 /*
  * Text styles — mirror of the Figma text styles.
  * Use the class that matches the Figma style name: "Heading/H2" → .heading-h2.
- * Fonts come from next/font in app/layout.tsx (--font-sans, --font-mono).
+ * Fonts are self-hosted in styles/fonts.css (--font-sans, --font-mono).
  */
 .display-xl { font: 500 96px/1 var(--font-sans); letter-spacing: -3.5px; }
 .display-l  { font: 500 80px/1 var(--font-sans); letter-spacing: -3px; }
