@@ -14,6 +14,14 @@ type Common = {
 type NavLinkProps = Common & { href: string };
 
 export function NavLink({ href, active, caret, children }: NavLinkProps) {
+  // a file (CV.pdf) isn't a route: the router can't prefetch or open it
+  if (/\.[a-z0-9]+$/i.test(href)) {
+    return (
+      <a href={href} className={cls(active)}>
+        {children}
+      </a>
+    );
+  }
   return (
     <Link href={href} aria-current={active ? "page" : undefined} className={cls(active)}>
       {children}

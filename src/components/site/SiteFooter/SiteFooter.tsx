@@ -54,6 +54,10 @@ export function SiteFooter() {
                     <span className={styles.name}>{l.t}</span>
                     <span aria-hidden>↗</span>
                   </a>
+                ) : l.h.endsWith(".pdf") ? (
+                  <a key={l.t} href={l.h} className={styles.link}>
+                    {l.t}
+                  </a>
                 ) : (
                   <Link key={l.t} href={l.h} className={styles.link}>
                     {l.t}
