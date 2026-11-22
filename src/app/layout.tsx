@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { PhoneGate } from "@/components/site/PhoneGate/PhoneGate";
 import "@/styles/fonts.css";
@@ -29,6 +30,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <PhoneGate />
         {children}
+        {/* Cookieless visitor stats; reports only from the Vercel deployment */}
+        <Analytics />
       </body>
     </html>
   );
