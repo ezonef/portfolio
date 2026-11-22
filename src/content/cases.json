@@ -1,1 +1,483 @@
-{}
+{
+  "spike-design-system": {
+    "headline": "One system for a product that does everything.",
+    "lead": "The design system behind Spike, a media buying ecosystem: how files are organised, how a component is built once, and how one token change reaches every screen.",
+    "role": "Design Lead · architecture, components, tokens",
+    "story": [
+      {
+        "id": "ds001",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "ds002",
+        "type": "text",
+        "text": "Spike is an ecosystem for a media buying company. Tasks, analytics, budgets, automations, documents and hiring live in one product, on desktop, tablet and mobile. A product this wide can’t be held together screen by screen, so the system came first."
+      },
+      {
+        "id": "ds003",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "ds004",
+        "type": "bullet",
+        "text": "The product had many modules and platforms, with no agreed place for what is shared and what is local."
+      },
+      {
+        "id": "ds005",
+        "type": "bullet",
+        "text": "Without clear statuses it’s hard to tell which file is being worked on, which is ready for dev and which is live."
+      },
+      {
+        "id": "ds006",
+        "type": "bullet",
+        "text": "A component redrawn per size and state means one decision has to be repeated everywhere."
+      },
+      {
+        "id": "ds007",
+        "type": "bullet",
+        "text": "Design and front end need to call the same thing by the same name."
+      },
+      {
+        "id": "ds008",
+        "type": "quote",
+        "text": "Define geometry once. Change appearance through variants and tokens."
+      },
+      {
+        "id": "ds009",
+        "type": "h2",
+        "text": "Three decisions"
+      },
+      {
+        "id": "ds010",
+        "type": "numbered",
+        "text": "Files: libraries are layered from desktop to platform, shared modules, local and module, so each level inherits only what it needs."
+      },
+      {
+        "id": "ds011",
+        "type": "numbered",
+        "text": "Components: a private primitive owns geometry and content; the public component adds Type, Size and State."
+      },
+      {
+        "id": "ds012",
+        "type": "numbered",
+        "text": "Tokens: meaning lives in the token, the value lives in the palette, and the same name goes from Figma to CSS."
+      }
+    ],
+    "steps": [
+      {
+        "title": "File architecture",
+        "screen": "",
+        "prototype": "spike-files",
+        "backdrop": "#14120e",
+        "hint": "space to stop",
+        "body": [
+          {
+            "id": "ds013",
+            "type": "text",
+            "text": "Five libraries, each inheriting from the one above. Pick a plan, jump to any moment on the timeline, or press Space to stop."
+          },
+          {
+            "id": "ds014",
+            "type": "label",
+            "text": "Two setups"
+          },
+          {
+            "id": "ds015",
+            "type": "text",
+            "text": "On PRO there are no branches, so status folders and versioned files do the job, with a changelog of what changed, when and in which version."
+          },
+          {
+            "id": "ds016",
+            "type": "text",
+            "text": "On ORG there is one main file. Changes live in branches, don’t affect main until merged, and libraries publish from main."
+          },
+          {
+            "id": "ds017",
+            "type": "text",
+            "text": "Switch between PRO and ORG to compare how one change ships."
+          }
+        ]
+      },
+      {
+        "title": "Component anatomy",
+        "screen": "",
+        "prototype": "spike-anatomy",
+        "backdrop": "#14120e",
+        "hint": "build a button",
+        "body": [
+          {
+            "id": "ds018",
+            "type": "text",
+            "text": "_Button holds the geometry: padding, gap, radius, and five parts. Label is required; the slots and icons are booleans."
+          },
+          {
+            "id": "ds019",
+            "type": "text",
+            "text": "The public Button is a wrapper. It inherits the label, inner content and geometry, and only receives colour. It doesn’t duplicate the surface."
+          },
+          {
+            "id": "ds020",
+            "type": "label",
+            "text": "Try it"
+          },
+          {
+            "id": "ds021",
+            "type": "text",
+            "text": "Switch Type, Size and State, turn parts on and off, or clear the label. The red areas are spacing, the blue outlines are content; both can be turned off in Settings."
+          }
+        ]
+      },
+      {
+        "title": "Tokens",
+        "screen": "",
+        "prototype": "spike-tokens",
+        "backdrop": "#14120e",
+        "hint": "rebind and watch",
+        "body": [
+          {
+            "id": "ds022",
+            "type": "text",
+            "text": "A component never references a colour. color/button/primary/hover points at primitive/800, which holds #173F9C. In CSS the same name becomes var(--color-button-primary-hover)."
+          },
+          {
+            "id": "ds023",
+            "type": "text",
+            "text": "Rebind one token or swap the palette and the whole screen follows, with no component touched."
+          },
+          {
+            "id": "ds024",
+            "type": "label",
+            "text": "Same component, different task"
+          },
+          {
+            "id": "ds025",
+            "type": "text",
+            "text": "Table and Document share one layout: navigation, toolbar and tokens stay, only the content slot changes."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "ds026",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "ds027",
+        "type": "bullet",
+        "text": "Designers know where a component belongs and which file is current."
+      },
+      {
+        "id": "ds028",
+        "type": "bullet",
+        "text": "Developers get one name per decision, from the Figma variable to the CSS variable."
+      },
+      {
+        "id": "ds029",
+        "type": "bullet",
+        "text": "A new module is assembled from existing layers instead of starting from a blank file."
+      },
+      {
+        "id": "ds030",
+        "type": "bullet",
+        "text": "One system covers desktop, tablet and mobile."
+      },
+      {
+        "id": "ds031",
+        "type": "label",
+        "text": "Result"
+      },
+      {
+        "id": "ds032",
+        "type": "text",
+        "text": "[Add the real result: what shipped, how many modules use the system, and what changed for the team.]"
+      }
+    ]
+  },
+  "dropdown": {
+    "headline": "A dropdown that always finds room.",
+    "lead": "One component, every spot on the screen. The menu reads the space around its button and decides where to open — down or up, left- or right-aligned, or capped and scrolling. Folders open as popovers that turn back at the edge.",
+    "role": "Product Designer · interaction rules, component spec, prototype in code",
+    "story": [
+      {
+        "id": "dd001",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "dd002",
+        "type": "text",
+        "text": "In B2B products the dropdown is everywhere: row actions at the bottom of a table, filters in a sidebar, a “Move to” menu three folders deep. It is usually specced as one picture — a list hanging under a button — and that picture is right only in the middle of the screen."
+      },
+      {
+        "id": "dd003",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "dd004",
+        "type": "bullet",
+        "text": "Row actions on the last rows of a table open below the fold. The user scrolls, the menu scrolls away with the page, and Delete is out of reach."
+      },
+      {
+        "id": "dd005",
+        "type": "bullet",
+        "text": "Menus near the right edge get cut off — the shortcuts and the ends of long names go first."
+      },
+      {
+        "id": "dd006",
+        "type": "bullet",
+        "text": "Nested menus close when the pointer moves diagonally into them: it crosses a neighbouring row on the way and the submenu switches."
+      },
+      {
+        "id": "dd007",
+        "type": "bullet",
+        "text": "Three levels deep near the edge, submenus leave the screen entirely."
+      },
+      {
+        "id": "dd008",
+        "type": "bullet",
+        "text": "Each team patches it its own way, so one product ends up with three different menus."
+      },
+      {
+        "id": "dd009",
+        "type": "quote",
+        "text": "A dropdown is not a list. It is a list plus the rules about where it is allowed to be."
+      },
+      {
+        "id": "dd010",
+        "type": "h2",
+        "text": "Why it’s harder than it looks"
+      },
+      {
+        "id": "dd011",
+        "type": "text",
+        "text": "Placement depends on things a design file never shows: where the button is right now, how tall the list is with this user’s data, what is clipping it, and what the pointer is doing. I listed the cases before drawing anything:"
+      },
+      {
+        "id": "dd012",
+        "type": "numbered",
+        "text": "No room below → open upward."
+      },
+      {
+        "id": "dd013",
+        "type": "numbered",
+        "text": "No room on either side → take the roomier side, cap the height, scroll inside."
+      },
+      {
+        "id": "dd014",
+        "type": "numbered",
+        "text": "Near the right edge → line up with the button’s right edge, not its left."
+      },
+      {
+        "id": "dd015",
+        "type": "numbered",
+        "text": "Wider than the room on both sides → slide back inside the screen."
+      },
+      {
+        "id": "dd016",
+        "type": "numbered",
+        "text": "A submenu at the edge → open to the other side; deeper levels keep that direction instead of zig-zagging."
+      },
+      {
+        "id": "dd017",
+        "type": "numbered",
+        "text": "A diagonal move into a submenu → don’t switch while the pointer is heading there (the safe triangle)."
+      },
+      {
+        "id": "dd018",
+        "type": "numbered",
+        "text": "The list scrolls while a submenu is open → close the submenu: its row is gone."
+      },
+      {
+        "id": "dd019",
+        "type": "numbered",
+        "text": "The button moves while the menu is open → re-place every frame, but don’t flip while the current side still fits."
+      },
+      {
+        "id": "dd101",
+        "type": "numbered",
+        "text": "A long list → a search field on top. It filters by whatever is typed, but the request waits for a 1-second pause after the last keystroke — the database isn’t hit on every letter."
+      },
+      {
+        "id": "dd020",
+        "type": "numbered",
+        "text": "Long names, long lists, disabled and destructive items — and the keyboard: arrows, Home/End, typing a letter, Esc back one level, focus back to the button."
+      },
+      {
+        "id": "dd021",
+        "type": "label",
+        "text": "Constraint"
+      },
+      {
+        "id": "dd022",
+        "type": "text",
+        "text": "It’s a popover, not a modal: no overlay, the page stays live, a click anywhere else closes it, and nothing shifts the layout under it."
+      }
+    ],
+    "steps": [
+      {
+        "title": "Flips to fit",
+        "screen": "",
+        "prototype": "dropdown-flip",
+        "backdrop": "#14120e",
+        "hint": "drag it to an edge",
+        "body": [
+          {
+            "id": "dd023",
+            "type": "text",
+            "text": "Drag the button anywhere on the photo, then open it. Low on the screen it opens upward; near the right edge it lines up with the button’s right side."
+          },
+          {
+            "id": "dd024",
+            "type": "text",
+            "text": "The chevron on the button points where the menu will open — before you click. The yellow guide is the side that won, with the room it has."
+          },
+          {
+            "id": "dd025",
+            "type": "label",
+            "text": "Rule"
+          },
+          {
+            "id": "dd026",
+            "type": "text",
+            "text": "Prefer down. Flip only when the list doesn’t fit. While it’s open, keep the side for as long as it still fits, so the menu never jumps under the cursor."
+          }
+        ]
+      },
+      {
+        "title": "Nested submenus",
+        "screen": "",
+        "prototype": "dropdown-submenus",
+        "backdrop": "#14120e",
+        "hint": "hover a folder",
+        "body": [
+          {
+            "id": "dd027",
+            "type": "text",
+            "text": "Folders open popovers on top of the menu, their first row level with the folder. At the right edge the chain opens to the left — and the next level keeps going left instead of bouncing back."
+          },
+          {
+            "id": "dd028",
+            "type": "text",
+            "text": "Move the pointer diagonally from a folder into its submenu: the dashed triangle is the area you can cross without the rows on the way taking over. It turns yellow while you’re inside it."
+          },
+          {
+            "id": "dd029",
+            "type": "label",
+            "text": "Keyboard"
+          },
+          {
+            "id": "dd030",
+            "type": "text",
+            "text": "→ opens a folder, ← and Esc go back one level, Tab closes everything and focus returns to the button. Type a letter to jump to it."
+          }
+        ]
+      },
+      {
+        "title": "No room",
+        "screen": "",
+        "prototype": "dropdown-tight",
+        "backdrop": "#14120e",
+        "hint": "long list, search, long names",
+        "body": [
+          {
+            "id": "dd031",
+            "type": "text",
+            "text": "Bottom-right corner, 32 folders, names longer than the menu. Neither side fits, so the list takes the roomier side and scrolls inside, with its scrollbar showing."
+          },
+          {
+            "id": "dd032",
+            "type": "text",
+            "text": "Long names are cut with an ellipsis and shown in full on hover; the shortcut column is never pushed out. Scroll the list while a submenu is open and the submenu closes — its row is gone."
+          },
+          {
+            "id": "dd102",
+            "type": "label",
+            "text": "Search"
+          },
+          {
+            "id": "dd103",
+            "type": "text",
+            "text": "More than twelve folders and the list gets a search field, pinned on top while the list scrolls. It filters by any part of the name and highlights the match."
+          },
+          {
+            "id": "dd104",
+            "type": "text",
+            "text": "It doesn’t ask the server on every letter. The request goes out after a 1-second pause, and the yellow line under the field shows that second running out and starting over with each key. Typing “roll 2” is 6 keystrokes and 1 request — the counter in the field keeps score."
+          },
+          {
+            "id": "dd105",
+            "type": "bullet",
+            "text": "An empty field brings the full list back at once, with no request — it’s already here."
+          },
+          {
+            "id": "dd106",
+            "type": "bullet",
+            "text": "The same query twice sends nothing the second time."
+          },
+          {
+            "id": "dd107",
+            "type": "bullet",
+            "text": "An answer to an older query that arrives late is dropped, so results never jump back to what you typed a second ago."
+          },
+          {
+            "id": "dd108",
+            "type": "bullet",
+            "text": "Keyboard: typing a letter in the list goes into the field, ↓ goes to the results, ↑ from the first result back to the field, Esc clears the field, then closes the list."
+          },
+          {
+            "id": "dd033",
+            "type": "text",
+            "text": "The Settings button under the screen switches the worst cases on and off on every screen."
+          }
+        ]
+      }
+    ],
+    "outcome": [
+      {
+        "id": "dd034",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "dd035",
+        "type": "text",
+        "text": "The dropdown stops being a picture and becomes a spec with rules: one placement logic for menus, selects, row actions, context menus and date pickers. Designers stop drawing a “menu near the bottom” variant; developers stop patching it screen by screen."
+      },
+      {
+        "id": "dd036",
+        "type": "bullet",
+        "text": "Users: every action is reachable wherever the button ends up — the last table row, a sidebar, a small laptop screen."
+      },
+      {
+        "id": "dd037",
+        "type": "bullet",
+        "text": "Support and QA: “menu cut off” and “can’t reach Delete” stop coming back with every new screen."
+      },
+      {
+        "id": "dd038",
+        "type": "bullet",
+        "text": "Design system: the rules live in the component, not in each mock-up. The edge cases are tested once, in a lab like this one."
+      },
+      {
+        "id": "dd109",
+        "type": "bullet",
+        "text": "Backend: one request per search instead of one per keystroke — a list with thousands of folders stays cheap to search."
+      },
+      {
+        "id": "dd039",
+        "type": "label",
+        "text": "Result"
+      },
+      {
+        "id": "dd040",
+        "type": "text",
+        "text": "[Add a real result if this ships — fewer UI bugs about clipped menus, adoption across products.]"
+      }
+    ]
+  }
+}

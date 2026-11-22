@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "slug": "spike-design-system",
+    "number": "01",
+    "title": "Spike — design system",
+    "description": "File architecture, component anatomy and tokens for a media buying ecosystem across desktop, tablet and mobile.",
+    "recent": true,
+    "cover": "/images/cases/spike-design-system/cover.png",
+    "tags": [
+      "Design system",
+      "B2B"
+    ]
+  },
+  {
+    "slug": "dropdown",
+    "number": "02",
+    "title": "Dropdown that finds room",
+    "description": "A menu that reads the space around it: flips, aligns, nests and scrolls so no action ends up off-screen.",
+    "recent": true,
+    "cover": "/images/cases/dropdown/screenshot-2026-11-21-at-20-12-50-mwrtowy3.png",
+    "tags": [
+      "Design system",
+      "Interaction"
+    ]
+  }
+]
