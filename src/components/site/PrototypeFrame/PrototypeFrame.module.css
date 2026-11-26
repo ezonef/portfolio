@@ -18,6 +18,47 @@
   /* the box-shadow ring and radius should not shrink to nothing at small scales */
   isolation: isolate;
 }
+/* A click on nothing: every control on screen pulses once, a small dot with a bigger soft ring around it.
+   Dark ink on light screens, light ink on dark ones. Above the prototype, never in the way of the pointer. */
+.hint {
+  --ink: 20 20 20;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  animation: hintLife 1000ms linear forwards;
+}
+.hint[data-ink="light"] { --ink: 255 255 255; }
+@keyframes hintLife { to { opacity: 1; } }
+.hintSpot { position: absolute; width: 0; height: 0; }
+.hintDot,
+.hintRing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+.hintDot {
+  width: 8px;
+  height: 8px;
+  background: rgb(var(--ink));
+  box-shadow: 0 0 0 1.5px rgb(var(--ink) / 0%), 0 1px 3px rgb(0 0 0 / 20%);
+  animation: hintDot 900ms ease-out forwards;
+}
+@keyframes hintDot { 0% { scale: .3; opacity: 0; } 18% { scale: 1; opacity: 1; } 70% { opacity: 1; } to { opacity: 0; } }
+.hintRing {
+  width: 26px;
+  height: 26px;
+  background: rgb(var(--ink) / 18%);
+  animation: hintRing 900ms cubic-bezier(.2, .8, .2, 1) forwards;
+}
+@keyframes hintRing { from { scale: .3; opacity: 1; } 55% { scale: 1.1; opacity: .9; } to { scale: 1.4; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  @keyframes hintRing { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes hintDot { 70% { opacity: 1; } to { opacity: 0; } }
+}
+
 .missing {
   display: grid;
   place-items: center;

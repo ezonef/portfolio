@@ -5,6 +5,7 @@
   min-width: 0;
 }
 
+/* Desktop frame ≈ 410×360 (about 8:7): a cover made at 1600×1400 shows whole, as uploaded */
 .cover {
   position: relative;
   height: 360px;

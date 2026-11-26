@@ -14,7 +14,7 @@ import { AutoTextarea } from "./AutoTextarea";
 import { BackdropField } from "./BackdropField";
 import { BlockEditor } from "./BlockEditor";
 import { ImageDrop } from "./ImageDrop";
-import { ScreenField } from "./ScreenField";
+import { LinksField, ScreenLayouts } from "./ScreenLayouts";
 import { TagPicker } from "./TagPicker";
 import { ChangelogPanel } from "./ChangelogPanel";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -526,15 +526,7 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
                           )}
                         </div>
                         <Field label="Screen" hint="An image, or a live prototype in code" as="div">
-                          <ScreenField
-                            key={`${project.slug}-shot-${i}`}
-                            slug={project.slug}
-                            screen={st.screen}
-                            prototype={st.prototype}
-                            embed={st.embed}
-                            backdrop={st.backdrop}
-                            onChange={(patch) => setStep(patch)}
-                          />
+                          <ScreenLayouts slug={project.slug} index={i} step={st} onChange={setStep} />
                         </Field>
                         <div className={styles.grid}>
                           <Field label="Background" hint="Only for this screen" as="div">
@@ -546,6 +538,9 @@ export function AdminApp({ initialProjects, initialCases, initialChangelog, temp
                             </Field>
                           </div>
                         </div>
+                        <Field label="Links" hint="Buttons on the player: Figma, live site, any https page" as="div">
+                          <LinksField links={st.links ?? []} onChange={(links) => setStep({ links: links.length ? links : undefined })} />
+                        </Field>
                       </section>
                       <Section title="What's on the screen" note="Describe it like in Notion. [[words]] become ↗ links that show this screen.">
                         <BlockEditor

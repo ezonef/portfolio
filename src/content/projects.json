@@ -1,7 +1,58 @@
 [
   {
-    "slug": "spike-design-system",
+    "slug": "nls",
     "number": "01",
+    "title": "NLS — B2B platform",
+    "description": "One workspace for ad operations: a live table, filters, column controls, onboarding and custom dashboards.",
+    "recent": true,
+    "cover": "/images/cases/nls/cover.png",
+    "tags": [
+      "B2B",
+      "Product"
+    ]
+  },
+  {
+    "slug": "nls-ai",
+    "number": "02",
+    "title": "NLS AI — actions you can trust",
+    "description": "An AI agent with sources, approval, undo and the user’s own permissions.",
+    "recent": true,
+    "cover": "/images/cases/nls-ai/cover.png",
+    "tags": [
+      "AI",
+      "B2B"
+    ],
+    "hidden": true
+  },
+  {
+    "slug": "spike-product",
+    "number": "03",
+    "title": "Spike — company workspace",
+    "description": "One campaign across five connected products: tasks, buying, automation, hiring and documents, with global search.",
+    "recent": true,
+    "cover": "/images/cases/spike-product/cover.png",
+    "tags": [
+      "Product",
+      "B2B"
+    ],
+    "hidden": true
+  },
+  {
+    "slug": "portfolio",
+    "number": "04",
+    "title": "Portfolio as a product",
+    "description": "A site, local CMS and design system built from Figma to production with AI.",
+    "recent": true,
+    "cover": "/images/cases/portfolio/cover.png",
+    "tags": [
+      "AI",
+      "Design system"
+    ],
+    "hidden": true
+  },
+  {
+    "slug": "spike-design-system",
+    "number": "05",
     "title": "Spike — design system",
     "description": "File architecture, component anatomy and tokens for a media buying ecosystem across desktop, tablet and mobile.",
     "recent": true,
@@ -13,7 +64,7 @@
   },
   {
     "slug": "dropdown",
-    "number": "02",
+    "number": "06",
     "title": "Dropdown that finds room",
     "description": "A menu that reads the space around it: flips, aligns, nests and scrolls so no action ends up off-screen.",
     "recent": true,

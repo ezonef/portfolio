@@ -14,6 +14,11 @@ export type CaseBlockType = CaseBlock["type"];
 export const TEXT_BLOCK_TYPES: CaseTextBlockType[] = ["h1", "h2", "h3", "label", "text", "bullet", "numbered", "quote"];
 export const BLOCK_TYPES: CaseBlockType[] = [...TEXT_BLOCK_TYPES, "image", "divider"];
 
+/** A link next to a screen, like its Figma file or the live site */
+export type CaseLink = { label: string; url: string };
+/** What a screen shows: an image, a code prototype, or a page from a link */
+export type ScreenSource = { screen: string; prototype?: string; embed?: string; url?: string };
+
 export type CaseStep = {
   title: string;
   /** Screen image shown in the player — sits centred on this step's backdrop */
@@ -22,6 +27,12 @@ export type CaseStep = {
   prototype?: string;
   /** A pasted or uploaded HTML prototype (/prototypes/custom/…/index.html), shown in a sandboxed frame */
   embed?: string;
+  /** A Figma file or web page shown live in the player */
+  url?: string;
+  /** Links shown on the player, for example "Figma" or "Live site" */
+  links?: CaseLink[];
+  /** The phone layout of this screen; viewers can switch to it when it is set */
+  mobile?: ScreenSource;
   /** This screen's own background: an uploaded image path, a colour like "#1b1b19", or "" (plain). */
   backdrop: string;
   /** Right side of the caption under the screen, e.g. "status chips" */
@@ -45,6 +56,24 @@ export type CaseStudy = {
 
 /** A backdrop is either a colour ("#rrggbb", or "#rrggbbaa" with opacity) or an image path */
 export const isColor = (v: string) => /^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(v);
+
+export function isWebUrl(v: string) {
+  try {
+    return new URL(v).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+const isFigma = (url: string) => /(^|\.)figma\.com$/.test(new URL(url).hostname);
+export const linkLabel = (url: string) => {
+  if (!isWebUrl(url)) return "Link";
+  return isFigma(url) ? "Figma" : new URL(url).hostname.replace(/^www\./, "");
+};
+/** Figma pages need its embed address to work inside a frame; other sites use their own */
+export const frameUrl = (url: string) =>
+  isWebUrl(url) && isFigma(url) && !new URL(url).pathname.startsWith("/embed")
+    ? `https://www.figma.com/embed?embed_host=portfolio&url=${encodeURIComponent(url)}`
+    : url;
 
 let seq = 0;
 export const blockId = () => `b${Date.now().toString(36)}${(seq++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;
@@ -74,6 +103,9 @@ export function normalizeCase(base: CaseStudy, saved: Record<string, unknown> = 
     backdrop: String(st.backdrop ?? ""),
     ...(st.prototype ? { prototype: String(st.prototype) } : {}),
     ...(st.embed ? { embed: String(st.embed) } : {}),
+    ...(st.url ? { url: String(st.url) } : {}),
+    ...(Array.isArray(st.links) && st.links.length ? { links: st.links as CaseLink[] } : {}),
+    ...(st.mobile ? { mobile: st.mobile as ScreenSource } : {}),
     hint: String(st.hint ?? ""),
     body: Array.isArray(st.body) ? (st.body as CaseBlock[]) : textBlocks(["text", String(st.text ?? "")]),
     ...(st.hidden ? { hidden: true } : {}),

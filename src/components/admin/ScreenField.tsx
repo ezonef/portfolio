@@ -5,18 +5,19 @@ import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { Segmented } from "@/components/ui/Segmented/Segmented";
 import { Step } from "@/components/ui/Step/Step";
-import { EmbedFrame } from "@/components/site/PrototypeFrame/EmbedFrame";
+import { EmbedFrame, LinkFrame } from "@/components/site/PrototypeFrame/EmbedFrame";
 import { PrototypeFrame } from "@/components/site/PrototypeFrame/PrototypeFrame";
-import { isColor } from "@/data/case-types";
+import { isColor, isWebUrl, linkLabel } from "@/data/case-types";
 import { findPrototype, PROTOTYPES } from "@/prototypes/registry";
 import { adminFetch } from "./adminFetch";
 import { CodeEditor } from "./CodeEditor";
 import { ImageDrop } from "./ImageDrop";
+import admin from "./AdminApp.module.css";
 import drop from "./ImageDrop.module.css";
 import { TagPicker } from "./TagPicker";
 import styles from "./ScreenField.module.css";
 
-type Patch = { screen?: string; prototype?: string | undefined; embed?: string | undefined };
+type Patch = { screen?: string; prototype?: string | undefined; embed?: string | undefined; url?: string | undefined };
 type Props = {
   slug: string;
   /** Uploaded image path */
@@ -25,6 +26,8 @@ type Props = {
   prototype?: string;
   /** Pasted or uploaded prototype */
   embed?: string;
+  /** A Figma file or web page */
+  url?: string;
   backdrop: string;
   onChange: (patch: Patch) => void;
 };
@@ -72,8 +75,11 @@ const folderName = (e?: string) => e?.split("/").at(-2)?.replace(/-[a-z0-9]+$/, 
  * A screen is an Image (upload) or Code: a prototype from the library, code pasted here, or a built folder.
  * Switching keeps what was there, so flipping back and forth loses nothing.
  */
-export function ScreenField({ slug, screen, prototype, embed, backdrop, onChange }: Props) {
-  const [mode, setMode] = useState<"image" | "code">(prototype || embed ? "code" : "image");
+export function ScreenField({ slug, screen, prototype, embed, url, backdrop, onChange: send_ }: Props) {
+  // choosing an image or code replaces the link; the link field passes its own value
+  const onChange = (patch: Patch) => send_({ url: undefined, ...patch });
+  const [mode, setMode] = useState<"image" | "code" | "link">(url ? "link" : prototype || embed ? "code" : "image")
+  const [address, setAddress] = useState(url ?? "");
   const [source, setSource] = useState<Source>(embed ? (isCodeEmbed(embed) ? "code" : "folder") : "library");
   const last = useRef({ library: prototype, code: isCodeEmbed(embed) ? embed : undefined, folder: embed && !isCodeEmbed(embed) ? embed : undefined });
 
@@ -98,10 +104,22 @@ export function ScreenField({ slug, screen, prototype, embed, backdrop, onChange
     else if (!prototype && !embed) onChange({ prototype: last.current.library ?? PROTOTYPES[0]?.id, embed: undefined });
   };
 
-  const pickMode = (m: "image" | "code") => {
+  const applyAddress = (value: string) => {
+    setAddress(value);
+    const clean = value.trim();
+    if (isWebUrl(clean)) {
+      remember();
+      onChange({ url: clean, prototype: undefined, embed: undefined });
+    }
+  };
+  const pickMode = (m: "image" | "code" | "link") => {
     if (m === mode) return;
     setMode(m);
-    if (m === "image") {
+    if (m === "link") {
+      remember();
+      if (isWebUrl(address.trim())) onChange({ url: address.trim(), prototype: undefined, embed: undefined });
+      else onChange({ prototype: undefined, embed: undefined });
+    } else if (m === "image") {
       remember();
       onChange({ prototype: undefined, embed: undefined });
     } else apply(source);
@@ -212,10 +230,39 @@ export function ScreenField({ slug, screen, prototype, embed, backdrop, onChange
       <div className={styles.modes} role="group" aria-label="Screen type">
         <Step number="01" title="Image" active={mode === "image"} onClick={() => pickMode("image")} />
         <Step number="02" title="Code" active={mode === "code"} onClick={() => pickMode("code")} />
+        <Step number="03" title="Link" active={mode === "link"} onClick={() => pickMode("link")} />
       </div>
 
       {mode === "image" ? (
         <ImageDrop slug={slug} value={screen} backdrop={backdrop} framed onChange={(src) => onChange({ screen: src })} />
+      ) : mode === "link" ? (
+        <>
+          <input
+            className={admin.input}
+            type="url"
+            inputMode="url"
+            spellCheck={false}
+            value={address}
+            placeholder="https://figma.com/design/… or https://site.com/page"
+            aria-label="Figma or site address"
+            aria-invalid={(!!address.trim() && !isWebUrl(address.trim())) || undefined}
+            onChange={(e) => applyAddress(e.target.value)}
+          />
+          {url && isWebUrl(url) ? (
+            <div className={styles.preview}>
+              <div className={styles.inset} data-fill>
+                <LinkFrame key={url} url={url} title={`${linkLabel(url)} preview`} />
+              </div>
+            </div>
+          ) : (
+            address.trim() && (
+              <p className={`mono-xs ${styles.error}`} role="alert">
+                The address must start with https://
+              </p>
+            )
+          )}
+          <p className={`mono-xs ${styles.help}`}>Shows the page in the player, with a button to open it. If a site refuses to load in a frame, viewers can still use that button.</p>
+        </>
       ) : (
         <>
           <Segmented className={styles.source} label="Prototype source" options={SOURCES} value={source} onChange={pickSource} />
