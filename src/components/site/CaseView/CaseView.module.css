@@ -111,6 +111,27 @@
 .screens[data-fill] {
   inset: 0;
 }
+/* Over a photo, a full-screen prototype keeps 40px of the photo around it, like a window on a desktop */
+.screens[data-fill][data-framed] {
+  inset: 40px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 28%);
+}
+/* Its edge is sharp at the bottom-right corner and fades out towards the top-left */
+.screens[data-fill][data-framed]::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(315deg, rgb(255 255 255 / 70%) 0%, rgb(255 255 255 / 20%) 35%, rgb(255 255 255 / 0%) 65%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
 .screen {
   object-fit: contain;
   filter: drop-shadow(0 18px 40px rgb(0 0 0 / 22%));
@@ -220,7 +241,8 @@
 .toolsSlot {
   display: contents;
 }
-.notesToggle {
+.notesToggle,
+.toolBtn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -232,6 +254,15 @@
   box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
   cursor: pointer;
   transition: background-color var(--duration-hover) ease;
+}
+.toolBtn {
+  flex: none;
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+.toolBtn :global(svg) {
+  width: 14px;
+  height: 14px;
 }
 .notesToggle[aria-expanded="true"] {
   background: var(--color-bg-hover);
@@ -268,12 +299,140 @@
   height: 14px;
 }
 @media (hover: hover) and (pointer: fine) {
-  .notesToggle:hover {
+  .notesToggle:hover,
+  .toolBtn:hover {
     background: var(--color-bg-hover);
   }
 }
-.notesToggle:active {
+.notesToggle:active,
+.toolBtn:active {
   transform: scale(0.97);
+}
+.dockGrip {
+  display: none;
+}
+/* Desktop: every control sits in one block, moved by its grip */
+@media (min-width: 1025px) {
+  .tools {
+    gap: 2px;
+    padding: 4px;
+    border-radius: calc(var(--radius-control) + 4px);
+    background: var(--color-bg-surface);
+    box-shadow: inset 0 0 0 1px var(--color-border-subtle), var(--shadow-popover);
+  }
+  .tools[data-drag] {
+    user-select: none;
+  }
+  .tools .toolBtn,
+  .tools .notesToggle,
+  .toolsSlot > button {
+    background: transparent;
+    box-shadow: none;
+  }
+  .tools .notesToggle[aria-expanded="true"] {
+    background: var(--color-bg-hover);
+  }
+  .dockGrip {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    width: 24px;
+    height: 32px;
+    border-radius: var(--radius-control);
+    color: var(--color-text-tertiary);
+    cursor: grab;
+    touch-action: none;
+    transition: background-color var(--duration-hover) ease;
+  }
+  .tools[data-drag] .dockGrip {
+    background: var(--color-bg-hover);
+    cursor: grabbing;
+  }
+}
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .tools .toolBtn:hover,
+  .tools .notesToggle:hover,
+  .toolsSlot > button:hover,
+  .dockGrip:hover {
+    background: var(--color-bg-hover);
+  }
+}
+
+/* ---------- screen layouts ---------- */
+.screens[data-off] {
+  visibility: hidden;
+}
+.phone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: calc(100% - 32px);
+  aspect-ratio: 390 / 844;
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 0 0 1px var(--color-border-subtle), 0 0 0 7px var(--color-bg-inverse), var(--shadow-popover);
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+}
+.phone[data-on] {
+  visibility: visible;
+}
+.phone .screen {
+  object-fit: cover;
+  object-position: top;
+  filter: none;
+}
+
+/* ---------- fullscreen ---------- */
+/* The sticky panel is its own stacking context, so it has to rise above the site header too */
+.panel:has(> .stageWrap[data-full]) {
+  z-index: 200;
+}
+.stageWrap[data-full] {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-page);
+}
+.stageWrap[data-full] .stage {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+.stageWrap[data-full] .tools {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 0;
+}
+.fullBar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  min-height: 56px;
+  padding: var(--space-8) var(--space-16);
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+}
+.fullBar p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fullActions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-6);
+  max-width: 75%;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 @media (max-width: 1024px) {
@@ -301,15 +460,17 @@
     position: relative;
     right: auto;
     bottom: auto;
+    flex-wrap: wrap;
     justify-content: flex-end;
     padding: 12px 20px 0;
+    transform: none !important;
   }
   /* Phone / tablet: the card is plain text under the screen, always shown */
   .notes,
   .notes[data-open="false"] {
     position: static;
     width: auto;
-    max-height: none;
+    max-height: none !important;
     margin: 0;
     padding: 20px 20px 0;
     border: 0;

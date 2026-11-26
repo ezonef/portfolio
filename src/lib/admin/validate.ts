@@ -1,4 +1,4 @@
-import { BLOCK_TYPES, isColor, TEXT_BLOCK_TYPES, type CaseBlock, type CaseStudy } from "@/data/case-types";
+import { BLOCK_TYPES, isColor, isWebUrl, TEXT_BLOCK_TYPES, type CaseBlock, type CaseLink, type CaseStudy, type ScreenSource } from "@/data/case-types";
 import type { Project } from "@/data/project-meta";
 import { PROTOTYPE_IDS } from "@/prototypes/registry";
 import { SLUG_RE } from "./guard";
@@ -10,6 +10,23 @@ const imagePath = (v: unknown) => str(v, 300) && /^\/images\/[\w\-./]+$/.test(v)
 
 /** Prototypes pasted or uploaded in the admin */
 const EMBED_RE = /^\/prototypes\/custom\/[a-z0-9-]+\/[a-z0-9-]+\/index\.html$/;
+
+const webUrl = (v: unknown) => str(v, 1000) && isWebUrl(v);
+
+/** A screen's content: exactly what the player can show, from our files or an https link */
+function checkSource(s: Record<string, unknown>, name: string): string | null {
+  if (s.prototype !== undefined && !(typeof s.prototype === "string" && PROTOTYPE_IDS.includes(s.prototype)))
+    return `${name}: unknown code prototype "${String(s.prototype)}"`;
+  if (s.embed !== undefined && !(typeof s.embed === "string" && EMBED_RE.test(s.embed))) return `${name}: bad code prototype path`;
+  if (s.url !== undefined && !webUrl(s.url)) return `${name}: the link must start with https://`;
+  if (!s.prototype && !s.embed && !s.url && !imagePath(s.screen)) return `${name} needs an image, code or a link`;
+  return null;
+}
+const cleanSource = ({ screen, prototype, embed, url }: ScreenSource): ScreenSource => ({
+  screen: screen ?? "",
+  ...(url ? { url } : embed ? { embed } : prototype ? { prototype } : {}),
+});
+const filledLinks = (v: unknown) => (Array.isArray(v) ? (v as CaseLink[]).filter((l) => l?.url?.trim()) : []);
 
 function checkProject(p: unknown, i: number): string | null {
   const x = p as Record<string, unknown>;
@@ -46,10 +63,15 @@ function checkCase(c: unknown, slug: string): string | null {
     const name = `${at}, screen ${i + 1}`;
     if (!str(s?.title, 200) || !str(s?.hint, 200)) return `${name}: title or caption is too long`;
     if (s.hidden !== undefined && typeof s.hidden !== "boolean") return `${name}: hidden must be true/false`;
-    if (s.prototype !== undefined && !(typeof s.prototype === "string" && PROTOTYPE_IDS.includes(s.prototype)))
-      return `${name}: unknown code prototype "${String(s.prototype)}"`;
-    if (s.embed !== undefined && !(typeof s.embed === "string" && EMBED_RE.test(s.embed))) return `${name}: bad code prototype path`;
-    if (!s.prototype && !s.embed && !imagePath(s.screen)) return `${name}${s.title ? ` "${s.title}"` : ""} needs an uploaded screen`;
+    const source = checkSource(s, `${name}${s.title ? ` "${s.title}"` : ""}`);
+    if (source) return source;
+    if (s.mobile !== undefined) {
+      const mobile = checkSource(s.mobile as Record<string, unknown>, `${name}, mobile layout`);
+      if (mobile) return mobile;
+    }
+    const links = filledLinks(s.links);
+    if (links.length > 6) return `${name}: 6 links at most`;
+    for (const l of links) if (!str(l.label, 40) || !webUrl(l.url.trim())) return `${name}: link "${l.label || l.url}" must start with https://`;
     if (s.backdrop !== undefined && s.backdrop !== "" && !imagePath(s.backdrop) && !isColor(String(s.backdrop)))
       return `${name}: background must be an uploaded image or a colour like #1b1b19`;
     const e = checkBlocks(s.body, name);
@@ -91,9 +113,14 @@ export function validateContent(body: unknown): { error: string } | { projects: 
     cases[slug] = {
       headline: s.headline, lead: s.lead, role: s.role,
       story: cleanBlocks(s.story),
-      steps: s.steps.map(({ title, screen, prototype, embed, backdrop, hint, body, hidden }) => ({
-        title, screen: screen ?? "", ...(embed ? { embed } : prototype ? { prototype } : {}), backdrop: backdrop ?? "", hint, body: cleanBlocks(body), ...(hidden ? { hidden: true } : {}),
-      })),
+      steps: s.steps.map(({ title, screen, prototype, embed, url, links, mobile, backdrop, hint, body, hidden }) => {
+        const filled = filledLinks(links).map((l) => ({ label: l.label.trim(), url: l.url.trim() }));
+        return {
+          title, ...cleanSource({ screen, prototype, embed, url }),
+          ...(filled.length ? { links: filled } : {}), ...(mobile ? { mobile: cleanSource(mobile) } : {}),
+          backdrop: backdrop ?? "", hint, body: cleanBlocks(body), ...(hidden ? { hidden: true } : {}),
+        };
+      }),
       outcome: cleanBlocks(s.outcome),
     };
   }

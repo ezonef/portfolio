@@ -479,5 +479,852 @@
         "text": "[Add a real result if this ships — fewer UI bugs about clipped menus, adoption across products.]"
       }
     ]
+  },
+  "nls": {
+    "headline": "NLS: one workspace for ad operations.",
+    "lead": "A B2B platform for performance marketing teams. I designed the main working surface: the operations table with its bulk actions, filters and colour coding, onboarding in the real interface, and dashboards that teams build for themselves.",
+    "role": "Product Designer · product structure, flows, UI, design system",
+    "story": [
+      {
+        "id": "ns001",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "ns002",
+        "type": "text",
+        "text": "Performance teams run on a stack of separate tools: an ad manager, a tracker, partner dashboards and spreadsheets for everything between. To answer a basic question, “is this campaign working?”, someone has to join those numbers by hand."
+      },
+      {
+        "id": "ns003",
+        "type": "text",
+        "text": "NLS brings them into one workspace. Its users are media buyers who launch and watch dozens of campaigns a day, and team leads who need to see the whole picture across buyers, accounts and countries."
+      },
+      {
+        "id": "ns004",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "ns005",
+        "type": "bullet",
+        "text": "Campaign structure, delivery, spend and results live in different places, so checking one launch takes several tools."
+      },
+      {
+        "id": "ns006",
+        "type": "bullet",
+        "text": "Routine changes, like a buyer, a tag or pausing a group of ads, are made one row at a time, and a slip is easy to miss."
+      },
+      {
+        "id": "ns007",
+        "type": "bullet",
+        "text": "One table has to stay readable at every level, from an account down to a single ad."
+      },
+      {
+        "id": "ns008",
+        "type": "bullet",
+        "text": "The product only becomes useful after several connections, and a new team can give up before it gets there."
+      },
+      {
+        "id": "ns009",
+        "type": "label",
+        "text": "My role"
+      },
+      {
+        "id": "ns010",
+        "type": "text",
+        "text": "I led the product design of the working surface end to end: structure and flows, the interface, and the components behind it. Every screen here is built from one set of parts, so a pattern learned in the table works the same in filters, colour coding and dashboards."
+      },
+      {
+        "id": "ns011",
+        "type": "label",
+        "text": "Design goal"
+      },
+      {
+        "id": "ns012",
+        "type": "text",
+        "text": "Make the table the place where daily work happens, make changes safe to make in bulk, then let each person shape their view: what they see, how it is grouped and what their dashboard shows."
+      }
+    ],
+    "steps": [
+      {
+        "title": "Operations table",
+        "screen": "",
+        "backdrop": "/images/cases/nls/backdrop-hills.jpg",
+        "hint": "select rows, then hover Launched",
+        "body": [
+          {
+            "id": "n1013",
+            "type": "text",
+            "text": "The whole ad structure lives in one tree: account, bundle, campaign, ad set, ad. Expand a level, switch delivery on or off, or select rows to act on them together."
+          },
+          {
+            "id": "n1014",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "n1015",
+            "type": "bullet",
+            "text": "Parents summarize their children, so a problem is visible before opening a level. Status counters on every account show what is active, waiting or rejected."
+          },
+          {
+            "id": "n1016",
+            "type": "bullet",
+            "text": "Bulk changes wait in a draft. Buyers, tags and delivery are picked first, a red count shows what is not applied yet, and nothing changes in the table until Apply."
+          },
+          {
+            "id": "n1017",
+            "type": "bullet",
+            "text": "Launching a selection shows it as a tree, with a switch on every level. A rejected ad can't be switched on, and a “?” next to it says why and what to do."
+          },
+          {
+            "id": "n1018",
+            "type": "bullet",
+            "text": "One way to pick several values everywhere: what is chosen sits on top as chips, the rest is below. The same control works in the selection bar, the row menu and filters."
+          },
+          {
+            "id": "n1019",
+            "type": "bullet",
+            "text": "Filters move between a simple and an advanced mode without losing what was set. Saved filters and colour templates can be updated, reset or saved as new."
+          },
+          {
+            "id": "n1020",
+            "type": "bullet",
+            "text": "Colour coding marks CPA and ROAS against the team’s own thresholds, so the rows that need a decision stand out at a glance."
+          },
+          {
+            "id": "n1021",
+            "type": "label",
+            "text": "Metrics it was designed to move"
+          },
+          {
+            "id": "n1022",
+            "type": "bullet",
+            "text": "Time to answer “is this launch working?”, from opening the product to a decision."
+          },
+          {
+            "id": "n1023",
+            "type": "bullet",
+            "text": "Tools opened per check: the goal is one table instead of several tabs."
+          },
+          {
+            "id": "n1024",
+            "type": "bullet",
+            "text": "Share of edits made in bulk, and how often a bulk change has to be undone."
+          }
+        ],
+        "prototype": "nls-table"
+      },
+      {
+        "title": "Onboarding",
+        "screen": "",
+        "backdrop": "/images/cases/nls/backdrop-hills.jpg",
+        "hint": "press Start",
+        "body": [
+          {
+            "id": "n2025",
+            "type": "text",
+            "text": "Onboarding happens in the real interface. A task breaks into small steps, and a spotlight points at the one control needed next."
+          },
+          {
+            "id": "n2026",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "n2027",
+            "type": "bullet",
+            "text": "Tasks lead to a result, such as a connected account or a first dashboard, not to a feature tour."
+          },
+          {
+            "id": "n2028",
+            "type": "bullet",
+            "text": "The person does the step themselves on their own data, so what they learn is what they will use the next day."
+          },
+          {
+            "id": "n2029",
+            "type": "bullet",
+            "text": "Progress is kept per task, so a person can leave and come back. Guides stay available later through the help button."
+          },
+          {
+            "id": "n2030",
+            "type": "label",
+            "text": "Metrics it was designed to move"
+          },
+          {
+            "id": "n2031",
+            "type": "bullet",
+            "text": "Activation: the share of new teams that connect their first ad account in the first session."
+          },
+          {
+            "id": "n2032",
+            "type": "bullet",
+            "text": "Time from sign-up to the first connected account."
+          },
+          {
+            "id": "n2033",
+            "type": "bullet",
+            "text": "Drop-off at each onboarding step, to see where people stop."
+          }
+        ],
+        "prototype": "nls-onboarding"
+      },
+      {
+        "title": "Custom dashboard",
+        "screen": "",
+        "backdrop": "/images/cases/nls/backdrop-hills.jpg",
+        "hint": "drag or resize a widget",
+        "body": [
+          {
+            "id": "n3034",
+            "type": "text",
+            "text": "Each team assembles the view it needs from widgets on a 12-column grid. Drag a widget by its grip and the others make room as it moves; pull any edge to resize it, and the page scrolls on its own when you reach the edge."
+          },
+          {
+            "id": "n3035",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "n3036",
+            "type": "bullet",
+            "text": "Dashboards start from a job, not from an empty page: a weekly report, buyers by country, a budget overview, daily performance and a launch plan."
+          },
+          {
+            "id": "n3037",
+            "type": "bullet",
+            "text": "Widgets answer one question each: spend on the map, spend by platform, budget left, top creatives, what needs attention, a launch calendar."
+          },
+          {
+            "id": "n3038",
+            "type": "bullet",
+            "text": "The dashboard uses the same filter as the table, and its list has the same selection bar, tags and saved filters, so nothing has to be learned twice."
+          },
+          {
+            "id": "n3039",
+            "type": "bullet",
+            "text": "Widget actions appear on hover, deleting can be undone right away, and new widgets land at the end without moving the current layout."
+          },
+          {
+            "id": "n3040",
+            "type": "label",
+            "text": "Metrics it was designed to move"
+          },
+          {
+            "id": "n3041",
+            "type": "bullet",
+            "text": "Share of active users with their own dashboard, and how often they come back to it in a week."
+          },
+          {
+            "id": "n3042",
+            "type": "bullet",
+            "text": "Time to build a useful dashboard, from a template compared with from scratch."
+          },
+          {
+            "id": "n3043",
+            "type": "bullet",
+            "text": "Questions to the team lead that the dashboard now answers on its own, such as spend by buyer or by country."
+          }
+        ],
+        "prototype": "nls-dashboard"
+      }
+    ],
+    "outcome": [
+      {
+        "id": "no044",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "no045",
+        "type": "text",
+        "text": "The same model carries through the table, filters, colour coding, onboarding and dashboards, so a person learns one way of working and reuses it across the product."
+      },
+      {
+        "id": "no046",
+        "type": "bullet",
+        "text": "Daily checks start from one table instead of several tools."
+      },
+      {
+        "id": "no047",
+        "type": "bullet",
+        "text": "Changes to many campaigns are made in one pass and checked before they apply."
+      },
+      {
+        "id": "no048",
+        "type": "bullet",
+        "text": "Each person can shape the view without changing it for the team’s data."
+      },
+      {
+        "id": "no049",
+        "type": "bullet",
+        "text": "New users learn on the real interface, one action at a time."
+      },
+      {
+        "id": "no050",
+        "type": "label",
+        "text": "How it is measured"
+      },
+      {
+        "id": "no051",
+        "type": "text",
+        "text": "Each part has its own number to watch: time to a decision and bulk-edit errors for the table, activation and time to the first connected account for onboarding, and dashboard adoption and weekly returns for dashboards."
+      },
+      {
+        "id": "no052",
+        "type": "label",
+        "text": "Note"
+      },
+      {
+        "id": "no053",
+        "type": "text",
+        "text": "The interface here is rebuilt as a prototype on test data, so no client or financial data is shown."
+      }
+    ]
+  },
+  "nls-ai": {
+    "headline": "An AI that touches money has to ask first.",
+    "lead": "A focused look at one NLS feature: an agent that explains a drop in results, proposes a change, and never moves a budget without a clear, reversible decision.",
+    "role": "Product Designer · AI interaction, permissions, states",
+    "story": [
+      {
+        "id": "bc031",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "bc032",
+        "type": "text",
+        "text": "Most AI in analytics stops at a summary. In NLS the agent can reach real actions, like pausing a flow or moving budget. That makes one wrong answer expensive, so the interface matters more than the model."
+      },
+      {
+        "id": "bc033",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "bc034",
+        "type": "bullet",
+        "text": "A confident answer with no visible evidence can’t be checked."
+      },
+      {
+        "id": "bc035",
+        "type": "bullet",
+        "text": "An action taken in chat is easy to approve by accident and hard to trace."
+      },
+      {
+        "id": "bc036",
+        "type": "bullet",
+        "text": "The agent must never be able to do more than the person using it."
+      },
+      {
+        "id": "bc037",
+        "type": "label",
+        "text": "Principle"
+      },
+      {
+        "id": "bc038",
+        "type": "text",
+        "text": "The AI proposes, the person decides, and the product remembers."
+      }
+    ],
+    "steps": [
+      {
+        "title": "From answer to action",
+        "screen": "",
+        "backdrop": "#14120e",
+        "hint": "ask, approve, undo",
+        "body": [
+          {
+            "id": "bc039",
+            "type": "text",
+            "text": "Ask the agent, approve the change, then undo it. The whole path runs in one conversation."
+          },
+          {
+            "id": "bc040",
+            "type": "numbered",
+            "text": "The answer names its sources."
+          },
+          {
+            "id": "bc041",
+            "type": "numbered",
+            "text": "The proposal shows before and after."
+          },
+          {
+            "id": "bc042",
+            "type": "numbered",
+            "text": "Nothing changes until you approve."
+          },
+          {
+            "id": "bc043",
+            "type": "numbered",
+            "text": "Undo restores the saved state."
+          }
+        ],
+        "prototype": "nls-agent"
+      },
+      {
+        "title": "The agent has your permissions",
+        "screen": "",
+        "backdrop": "#14120e",
+        "hint": "try Read only",
+        "body": [
+          {
+            "id": "bc044",
+            "type": "text",
+            "text": "Switch to Read only and run the same request. The agent still explains the problem, but it can’t act."
+          },
+          {
+            "id": "bc045",
+            "type": "label",
+            "text": "Why"
+          },
+          {
+            "id": "bc046",
+            "type": "text",
+            "text": "The agent inherits the rights of the person using it. A read-only user can’t reach a budget through the chat when the interface wouldn’t let them do it directly."
+          }
+        ],
+        "prototype": "nls-agent"
+      }
+    ],
+    "outcome": [
+      {
+        "id": "bc047",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "bc048",
+        "type": "text",
+        "text": "The feature earns trust through its states rather than through a promise of accuracy. Every action can be checked before, traced during and reversed after."
+      },
+      {
+        "id": "bc049",
+        "type": "bullet",
+        "text": "Sources turn an opinion into something a buyer can verify."
+      },
+      {
+        "id": "bc050",
+        "type": "bullet",
+        "text": "The audit log marks what the AI initiated and who approved it."
+      },
+      {
+        "id": "bc051",
+        "type": "bullet",
+        "text": "Automation can grow later on the same rules: limits, an allowlist of actions and an instant stop."
+      },
+      {
+        "id": "bc052",
+        "type": "label",
+        "text": "Note"
+      },
+      {
+        "id": "bc053",
+        "type": "text",
+        "text": "The prototype runs on test data."
+      }
+    ]
+  },
+  "spike-product": {
+    "headline": "Spike: one campaign across five connected products.",
+    "lead": "An internal ecosystem for a media buying company. Tasks, buying, automation, hiring and documents share one structure, so a launch keeps its context from the first brief to the results.",
+    "role": "Product Designer · product structure, key scenarios",
+    "story": [
+      {
+        "id": "bc054",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "bc055",
+        "type": "text",
+        "text": "Spike is the company’s own operating tool. It isn’t a product sold to clients: its users are the people who run launches, approve budgets and hire the team."
+      },
+      {
+        "id": "bc056",
+        "type": "label",
+        "text": "Problem"
+      },
+      {
+        "id": "bc057",
+        "type": "bullet",
+        "text": "Launch context was spread across trackers, documents and chats."
+      },
+      {
+        "id": "bc058",
+        "type": "bullet",
+        "text": "Results were hard to compare between accounts and periods."
+      },
+      {
+        "id": "bc059",
+        "type": "bullet",
+        "text": "Each department kept its own process, so handoffs lost information."
+      },
+      {
+        "id": "bc060",
+        "type": "label",
+        "text": "Approach"
+      },
+      {
+        "id": "bc061",
+        "type": "text",
+        "text": "I followed one test campaign through the whole ecosystem to check that each handoff keeps its context."
+      }
+    ],
+    "steps": [
+      {
+        "title": "Task Manager",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "open a linked row",
+        "body": [
+          {
+            "id": "sx001",
+            "type": "text",
+            "text": "A launch starts as one task. It holds the owner, budget, brief and links to the work in every other product."
+          },
+          {
+            "id": "sx002",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx003",
+            "type": "bullet",
+            "text": "Linked work sits inside the task instead of in a separate report."
+          },
+          {
+            "id": "sx004",
+            "type": "bullet",
+            "text": "The brief stays beside the task, so nobody has to look for the context."
+          },
+          {
+            "id": "sx005",
+            "type": "bullet",
+            "text": "Every linked row opens the exact item in its product."
+          }
+        ],
+        "prototype": "spike-tasks"
+      },
+      {
+        "title": "Buying",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "toggle, sort, expand",
+        "body": [
+          {
+            "id": "sx006",
+            "type": "text",
+            "text": "Buyers compare delivery and purchases in one table. Totals follow the current filter, so the numbers always describe what is on screen."
+          },
+          {
+            "id": "sx007",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx008",
+            "type": "bullet",
+            "text": "Spend and purchases get the strongest emphasis in the total row."
+          },
+          {
+            "id": "sx009",
+            "type": "bullet",
+            "text": "Archived tests stay close for comparison, without mixing into live results."
+          },
+          {
+            "id": "sx010",
+            "type": "bullet",
+            "text": "Each campaign can open the task, workflow and brief behind it."
+          }
+        ],
+        "prototype": "spike-buying"
+      },
+      {
+        "title": "Automation",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "drag a card",
+        "body": [
+          {
+            "id": "sx011",
+            "type": "text",
+            "text": "Cart recovery is built as a visible flow: focus, trigger, condition, delay and action. The logic can be read without opening each step."
+          },
+          {
+            "id": "sx012",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx013",
+            "type": "bullet",
+            "text": "Each step type has one card pattern and one clear output."
+          },
+          {
+            "id": "sx014",
+            "type": "bullet",
+            "text": "Purchase and inactivity run as separate branches."
+          },
+          {
+            "id": "sx015",
+            "type": "bullet",
+            "text": "The canvas can be moved and zoomed without losing the structure."
+          }
+        ],
+        "prototype": "spike-automation"
+      },
+      {
+        "title": "Hiring",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "move a candidate",
+        "body": [
+          {
+            "id": "sx016",
+            "type": "text",
+            "text": "Hiring uses the same workspace as the campaign it supports. A role moves through a board, and every candidate keeps their context."
+          },
+          {
+            "id": "sx017",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx018",
+            "type": "bullet",
+            "text": "Drag on the board, or change the stage in the details panel."
+          },
+          {
+            "id": "sx019",
+            "type": "bullet",
+            "text": "Priority and source are visible before opening a card."
+          },
+          {
+            "id": "sx020",
+            "type": "bullet",
+            "text": "The role links back to its brief and test task."
+          }
+        ],
+        "prototype": "spike-hiring"
+      },
+      {
+        "title": "Documents",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "open a reference",
+        "body": [
+          {
+            "id": "sx021",
+            "type": "text",
+            "text": "Briefs and strategy read side by side. References inside the text open the live campaign, workflow or role."
+          },
+          {
+            "id": "sx022",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx023",
+            "type": "bullet",
+            "text": "Two panes support the real task of comparing a brief with its strategy."
+          },
+          {
+            "id": "sx024",
+            "type": "bullet",
+            "text": "Section navigation stays in the tree."
+          },
+          {
+            "id": "sx025",
+            "type": "bullet",
+            "text": "A reference replaces a copied number that could go stale."
+          }
+        ],
+        "prototype": "spike-docs"
+      },
+      {
+        "title": "Global search",
+        "screen": "",
+        "backdrop": "#e9e7e1",
+        "hint": "press Ctrl+K",
+        "body": [
+          {
+            "id": "sx026",
+            "type": "text",
+            "text": "Five products create too many places to remember. One modal finds any task, campaign, workflow, person or document and opens it in context."
+          },
+          {
+            "id": "sx027",
+            "type": "label",
+            "text": "Decisions"
+          },
+          {
+            "id": "sx028",
+            "type": "bullet",
+            "text": "Results are grouped by product, with a preview before opening."
+          },
+          {
+            "id": "sx029",
+            "type": "bullet",
+            "text": "Arrows, Enter, Tab and Esc cover the whole flow from the keyboard."
+          },
+          {
+            "id": "sx030",
+            "type": "bullet",
+            "text": "An empty result suggests a next query instead of ending the search."
+          }
+        ],
+        "prototype": "spike-search"
+      }
+    ],
+    "outcome": [
+      {
+        "id": "bc071",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "bc072",
+        "type": "text",
+        "text": "Different departments work in one structure, so moving between a task, a budget and a person doesn’t mean switching products."
+      },
+      {
+        "id": "bc073",
+        "type": "bullet",
+        "text": "Launch context stays attached to the work."
+      },
+      {
+        "id": "bc074",
+        "type": "bullet",
+        "text": "Any item is one search away, from any product."
+      },
+      {
+        "id": "bc075",
+        "type": "bullet",
+        "text": "New processes reuse the same layout and components."
+      },
+      {
+        "id": "bc076",
+        "type": "label",
+        "text": "Related"
+      },
+      {
+        "id": "bc077",
+        "type": "text",
+        "text": "The system behind these screens is covered in the Spike design system case."
+      }
+    ]
+  },
+  "portfolio": {
+    "headline": "This portfolio is a product too.",
+    "lead": "A site, a local CMS and a design system, built from Figma to production with AI in the loop. The case shows the process, including where the AI was wrong.",
+    "role": "Designer and builder · product, design system, front end with Claude",
+    "story": [
+      {
+        "id": "bc078",
+        "type": "h2",
+        "text": "Context"
+      },
+      {
+        "id": "bc079",
+        "type": "text",
+        "text": "Static case pages can describe an interaction, but they can’t let someone try it. I wanted a portfolio where the work runs inside the case, and where adding a new case takes minutes."
+      },
+      {
+        "id": "bc080",
+        "type": "label",
+        "text": "Constraints"
+      },
+      {
+        "id": "bc081",
+        "type": "bullet",
+        "text": "One person has to maintain it."
+      },
+      {
+        "id": "bc082",
+        "type": "bullet",
+        "text": "Everything new has to come from the existing design system."
+      },
+      {
+        "id": "bc083",
+        "type": "bullet",
+        "text": "The editor must never become a public attack surface."
+      },
+      {
+        "id": "bc084",
+        "type": "label",
+        "text": "How I work with AI"
+      },
+      {
+        "id": "bc085",
+        "type": "text",
+        "text": "I set the structure, the rules and the quality bar. Claude writes much of the code. Each result is reviewed in the browser, and anything that breaks the system goes back."
+      }
+    ],
+    "steps": [
+      {
+        "title": "From Figma to production",
+        "screen": "",
+        "backdrop": "#14120e",
+        "hint": "open a stage",
+        "body": [
+          {
+            "id": "bc086",
+            "type": "text",
+            "text": "Open each stage to follow one decision from a variable to the live site. The right side lists real corrections from this build."
+          },
+          {
+            "id": "bc087",
+            "type": "label",
+            "text": "What this proves"
+          },
+          {
+            "id": "bc088",
+            "type": "text",
+            "text": "AI speeds up the making. Judgment still decides what is consistent, safe and worth keeping."
+          }
+        ],
+        "prototype": "portfolio-pipeline"
+      }
+    ],
+    "outcome": [
+      {
+        "id": "bc089",
+        "type": "h2",
+        "text": "What it changes"
+      },
+      {
+        "id": "bc090",
+        "type": "text",
+        "text": "The portfolio became a working example of how I build: a shared system, code prototypes inside cases and a publishing flow I can run alone."
+      },
+      {
+        "id": "bc091",
+        "type": "bullet",
+        "text": "Interactive prototypes live directly in case pages."
+      },
+      {
+        "id": "bc092",
+        "type": "bullet",
+        "text": "The admin runs locally and is absent from the public build."
+      },
+      {
+        "id": "bc093",
+        "type": "bullet",
+        "text": "Every new control reuses a design system component."
+      },
+      {
+        "id": "bc094",
+        "type": "label",
+        "text": "Next"
+      },
+      {
+        "id": "bc095",
+        "type": "text",
+        "text": "A proper mobile version, more case studies and a public changelog."
+      }
+    ]
   }
 }
